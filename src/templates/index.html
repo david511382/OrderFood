@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{ .title }}</title>
+</head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<body>
+    <div>{{ .title }}</div>
+    <img src="/src/img/rice.jpg" alt="Smiley face" height="400" width="700">
+    <form id="orderForm" name="orders">
+        蔬果沙拉 半捲35 正常65 加大75</br>
+        <input type="button" value="more"></br>
+
+        蔬果沙拉 半捲35 正常65 加大75</br>
+        <input type="button" value="more"></br>
+
+        蔬果沙拉 半捲35 正常65 加大75</br>
+        <input type="button" value="more"></br>
+        蔬果沙拉 半捲35 正常65 加大75</br>
+        <select>
+            <option value ="1">半捲</option>
+            <option value ="2">正常</option>
+            <option value ="3">加大</option>
+        </select>
+        <input type="checkbox" name="item1" value="5">換拾穀米5  
+        <input type="checkbox" name="item1" value="10">加起司10  
+        數量<input type="text" name="ammount" value="1" onfocus="this.select()">個  
+        價格:<div id="item1">10</div>
+        <input type="button" value="more">
+        <br>
+        
+        <br>
+        <br><br><br>
+        蔬果雞腿沙拉</br>
+        <input type="checkbox" name="item2" value="35"> 半捲35</br>
+        <input type="checkbox" name="item2" value="65" > 正常65</br>
+        <input type="checkbox" name="item2" value="75"> 加大<br>
+        <br>
+        
+        洋蔥牛肉</br>
+        <input type="checkbox" name="item3" value="40"> 半捲40</br>
+        <input type="checkbox" name="item3" value="70" > 正常70</br>
+        <input type="checkbox" name="item3" value="80"> 加大<br>
+        <br>
+        
+        鳳梨牛肉</br>
+        <input type="checkbox" name="item4" value="45"> 半捲45</br>
+        <input type="checkbox" name="item4" value="75" > 正常75</br>
+        <input type="checkbox" name="item4" value="85"> 加大<br>
+        <br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    Cost:<div id="totalCost"></div>
+    </br>
+
+    List</br>
+    <textarea id="result" cols="10" rows="5"></textarea>
+
+
+    <a href="https://github.com/carterjones/signalr">signal r</a>
+
+    <form>test</form>
+    <script>
+    $( "#orderForm" ).submit(function( event ) {
+        event.preventDefault();
+var te =document.orders;
+
+        var form = $(this);
+        var data ={name:form[0][0].value,order:form[0][1].value};
+        alert(data);
+        $.ajax({
+            type:"POST",
+            url: "/post/order",  
+            data:data
+        }).done(done);
+    });
+
+    function done(data){
+        $("#result").val(data);
+    }
+    
+    </script>
+
+    <script src="/src/js/countJs.js"></script>
+
+</body>
+</html>
