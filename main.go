@@ -22,7 +22,10 @@ const domain = "192.168.0.144:5487"
 //const domain = "localhost:5487"
 const r = "rice"
 const v = "vag"
-const t = r
+
+var targetView = v
+
+var userOrders = make(map[string][]string)
 
 var clients []*websocket.Conn = make([]*websocket.Conn, 0)
 var upGrader = websocket.Upgrader{
@@ -39,30 +42,28 @@ func main() {
 	router.LoadHTMLGlob("src/templates/*.html")
 	router.StaticFile("src/img/rice.jpg", "src/img/rice.jpg")
 	router.StaticFile("src/img/vag.jpg", "src/img/vag.jpg")
-	
+	router.StaticFile("favicon.ico", "src/img/head.ico")
+
+	router.StaticFile("src/css/style.css", "src/css/style.css")
+	router.StaticFile("src/css/managerStyle.css", "src/css/managerStyle.css")
+
 	router.StaticFile("src/js/menu.js", "src/js/menu.js")
-	router.StaticFile("src/js/vag.js", "src/js/vag.js")
-	router.StaticFile("src/js/rice.js", "src/js/rice.js")
+	router.StaticFile("src/js/menuView.js", "src/js/menuView.js")
 	router.StaticFile("src/js/post.js", "src/js/post.js")
+	router.StaticFile("src/js/manager.js", "src/js/manager.js")
 	router.StaticFile("src/js/websocket.js", "src/js/websocket.js")
 
 	admin := router.Group("/")
-	switch t {
-	case r:
-		admin.GET("", rice.View)
-		router.POST("/get/menu", func(c *gin.Context) {
-			c.JSON(http.StatusOK, rice.MenuData)
-		})
-	case v:
-		admin.GET("", vag.View)
-		router.POST("/get/menu", func(c *gin.Context) {
-			c.JSON(http.StatusOK, vag.MenuData)
-		})
-	}
+	admin.GET("", index)
 
+	router.GET("/manager", manager)
+
+	router.POST("/get/menu", getMenu)
 	router.POST("/post/order", order)
 	router.POST("/get/name", getUserName)
 	router.POST("/get/order", getTotalOrders)
+	router.POST("/get/user/orders", userOrder)
+	router.POST("/post/view", changeView)
 
 	router.GET("/ws", func(c *gin.Context) {
 		ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
@@ -76,10 +77,34 @@ func main() {
 	router.Run(domain)
 }
 
-func test(c *gin.Context) {
-	c.HTML(http.StatusOK, "test.html", gin.H{
-		"title": "訂飯捲",
+func index(c *gin.Context) {
+	switch targetView {
+	case r:
+		rice.View(c)
+	case v:
+		vag.View(c)
+	}
+}
+
+func manager(c *gin.Context) {
+	user := mapUserName(c)
+	if user != "哥" {
+		c.String(http.StatusOK, user+"禁止進入")
+		return
+	}
+
+	c.HTML(http.StatusOK, "manager.html", gin.H{
+		"title": "後台",
 	})
+}
+
+func getMenu(c *gin.Context) {
+	switch targetView {
+	case r:
+		c.JSON(http.StatusOK, rice.MenuData)
+	case v:
+		c.JSON(http.StatusOK, vag.MenuData)
+	}
 }
 
 func getUserName(c *gin.Context) {
@@ -95,9 +120,9 @@ func mapUserName(c *gin.Context) (name string) {
 	case "192.168.0.121":
 		name = "QQ詩"
 	case "192.168.0.135":
-		name = "宜廷"
+		name = "廷"
 	case "192.168.0.108":
-		name = "雨叡"
+		name = "叡"
 	case "192.168.0.137":
 		name = "雞排"
 	case "192.168.0.115":
@@ -108,6 +133,12 @@ func mapUserName(c *gin.Context) (name string) {
 		name = "宏哥"
 	case "192.168.0.104":
 		name = "小麥"
+	case "192.168.0.123":
+		name = "hank"
+	case "192.168.0.136":
+		name = "Indy"
+	case "192.168.0.128":
+		name = "尾"
 	default:
 		name = ip
 	}
@@ -115,7 +146,23 @@ func mapUserName(c *gin.Context) (name string) {
 	return
 }
 
-var userOrders = make(map[string][]string)
+func changeView(c *gin.Context) {
+	targetView = c.PostForm("view")
+	c.String(http.StatusOK, targetView)
+}
+
+func userOrder(c *gin.Context) {
+	result := ""
+	for name, orders := range userOrders {
+		result += name + "\n"
+		for _, order := range orders {
+			result += order + "\n"
+		}
+		result += "\n"
+	}
+
+	c.String(http.StatusOK, result)
+}
 
 func order(c *gin.Context) {
 	orderStr := c.PostForm("orders")

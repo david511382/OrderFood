@@ -1,0 +1,10 @@
+h1{
+  margin: 0px auto;
+  width: 230;
+}
+
+textarea.list {
+  width: 350px;
+  height: 400px;
+  border-radius: 20px;
+}

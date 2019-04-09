@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{ .title }}</title>
+
+<link rel="stylesheet" type="text/css" href="src/css/managerStyle.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <h1>{{ .title }}</h1>
+    
+    <form id="selectViewForm">
+        <select id="viewSelect" name="view">
+            <option value ="vag">素食</option>
+            <option value ="rice">飯捲</option>
+        </select>
+    </form>
+
+    users order</br>
+    <textarea class="list" id="userOrders" readonly></textarea>
+    </br>
+
+    total</br>
+    <textarea class="list" id="result" readonly></textarea>
+
+    <script src="/src/js/post.js"></script>
+    <script src="/src/js/websocket.js"></script>
+    <script src="/src/js/manager.js"></script>
+</body>
+</html>

@@ -1,5 +1,14 @@
+var submitButton = $( "#SubmitButton" );
+submitButton.click(send);
+
+$.ajax({
+    type:"POST",
+    url: "/get/order"
+}).done(showTotalOrders);
+
 function send(event){
     event.preventDefault();    
+    
     var msg = $("#shopcart").text();
     var data ={orders: msg};
     $.ajax({
@@ -11,13 +20,7 @@ function send(event){
     alert("送出\n"+ msg);
 }
 
-$( "#orderForm" ).submit(send);
-
 function showTotalOrders(data){
     $("#result").html(data);
 }
 
-$.ajax({
-    type:"POST",
-    url: "/get/order"
-}).done(showTotalOrders);

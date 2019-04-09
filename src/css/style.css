@@ -1,0 +1,81 @@
+h1{
+  margin: 0px auto;
+  width: 230;
+}
+
+img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 80px;
+}
+
+div#menu{
+    margin: 0px auto;
+    width: 600px;
+    background-color: #1ef454;
+}
+div#menu div div div button{
+  margin-left: 200px ;
+}
+div#menu div div div.order{
+    background-color: #c0a8f894;
+}
+div#menu div div div.order button{
+  margin-left: 40px ;
+}
+div#menu div div div.order input{
+    width: 30px;
+}
+
+#shopcart{
+    margin: 0px auto;
+    width: 350px;
+    background-color: #1e33f4;
+    color: #FFFFFF;
+}
+
+textarea#result{
+  width: 350px;
+  height: 200px;
+  border-radius: 8px;
+}
+
+.button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px;
+    width: 100px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  .button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+  
+  .button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+  }
+  
+  .button:hover span {
+    padding-right: 25px;
+  }
+  
+  .button:hover span:after {
+    opacity: 1;
+    right: 0;
+  }
