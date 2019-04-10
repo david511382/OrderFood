@@ -13,6 +13,8 @@ var Db IDb
 
 type IDb interface {
 	GetMembers() ([]models.Member, error)
+	AddMembers(models.Member) error
+	UpdateMembers(models.Member) error
 }
 
 func InitMysql(dbCfg config.DbConfig) error {

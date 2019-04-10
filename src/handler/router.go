@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"orderfood/src/handler/auth"
 	"orderfood/src/handler/manager"
 	"orderfood/src/handler/middleware"
 	"orderfood/src/handler/user"
@@ -37,7 +36,8 @@ func Init() *gin.Engine {
 	ver.POST("/post/order", user.Order)
 	ver.POST("/get/user/orders", user.UserOrder)
 	ver.GET("/manager", manager.Manager)
-	ver.POST("/get/name", auth.GetUserName)
+	ver.POST("/get/name", user.GetUserName)
+	ver.PUT("/user", user.ModifyUser)
 
 	router.POST("/get/order", manager.GetTotalOrders)
 	router.POST("/post/view", manager.ChangeView)

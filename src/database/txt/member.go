@@ -3,6 +3,7 @@ package txt
 import (
 	"bufio"
 	"io"
+	"io/ioutil"
 	"orderfood/src/database/models"
 
 	proto "github.com/golang/protobuf/proto"
@@ -17,7 +18,7 @@ func (db *txtDb) GetMembers() ([]models.Member, error) {
 
 	reader := bufio.NewReader(f)
 	members := make([]models.Member, 0)
-	for {
+	for id := 1; ; id++ {
 		line, _, err := reader.ReadLine()
 		if err == io.EOF {
 			break
@@ -28,6 +29,8 @@ func (db *txtDb) GetMembers() ([]models.Member, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		member.ID = int32(id)
 
 		members = append(members, *member)
 	}
@@ -42,8 +45,17 @@ func (db *txtDb) AddMembers(member models.Member) error {
 	}
 	defer f.Close()
 
-	data := member.String()
-	_, err = f.WriteString(data + "\n")
+	out, err := proto.Marshal(&member)
+	if err != nil {
+		return err
+	}
+
+	_, err = f.Write(out)
+	if err != nil {
+		return err
+	}
+
+	_, err = f.WriteString("\n")
 	return err
 
 	// f.Sync()
@@ -53,4 +65,55 @@ func (db *txtDb) AddMembers(member models.Member) error {
 	// fmt.Printf("wrote %d bytes\n", n4)
 
 	// w.Flush()
+}
+
+func (db *txtDb) UpdateMembers(member models.Member) error {
+	f, err := db.Connect("order_member.user_info.txt")
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	id := int(member.GetID())
+
+	allData := make([]byte, 0)
+
+	const n = 10
+	reader := bufio.NewReader(f)
+	for i := 1; i != id; i++ {
+		line, _, err := reader.ReadLine()
+		if err != nil {
+			return err
+		}
+
+		allData = append(allData, line...)
+		allData = append(allData, n)
+	}
+
+	_, _, err = reader.ReadLine()
+	if err != nil {
+		return err
+	}
+
+	newData, err := proto.Marshal(&member)
+	if err != nil {
+		return err
+	}
+
+	allData = append(allData, []byte(newData)...)
+	allData = append(allData, n)
+
+	for {
+		line, _, err := reader.ReadLine()
+		if err == io.EOF {
+			break
+		}
+
+		allData = append(allData, line...)
+		allData = append(allData, n)
+	}
+
+	err = ioutil.WriteFile(db.Filepath, allData, 0644)
+
+	return err
 }

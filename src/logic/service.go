@@ -3,7 +3,6 @@ package logic
 import (
 	"orderfood/src/config"
 	"orderfood/src/database"
-	"orderfood/src/database/models"
 	"strconv"
 	"strings"
 )
@@ -14,11 +13,9 @@ const (
 )
 
 var (
-	targetView = V
-
-	UserOrders = make(map[string][]string)
-
-	Members = make([]models.Member, 0)
+	targetView        = V
+	IsRquiredPassword = false
+	UserOrders        = make(map[string][]string)
 )
 
 func Init(cfg *config.Config) {
@@ -45,10 +42,7 @@ func Init(cfg *config.Config) {
 		return
 	}
 
-	Members, err = database.Db.GetMembers()
-	if err != nil {
-		panic(err)
-	}
+	LoadMembers()
 }
 
 func SetView(view string) {

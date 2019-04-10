@@ -6,6 +6,7 @@ package models;
 // Member 。
 message Member {  
     int32 ID = 1;
-    string Username = 2;
-    string Password = 3;
+    string name = 2;
+    string Username = 3;
+    string Password = 4;
 }

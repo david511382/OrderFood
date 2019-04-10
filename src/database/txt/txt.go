@@ -11,7 +11,19 @@ var (
 )
 
 type txtDb struct {
-	Connect func(file string) (*os.File, error)
+	Filepath string
+}
+
+func (db *txtDb) Connect(filename string) (*os.File, error) {
+	file := filepath(filename)
+
+	f, err := os.OpenFile(file, os.O_RDWR|os.O_APPEND, 0660)
+
+	if err == nil {
+		db.Filepath = file
+	}
+
+	return f, err
 }
 
 func NewDb(dbCfg config.DbConfig) (*txtDb, error) {
@@ -21,13 +33,7 @@ func NewDb(dbCfg config.DbConfig) (*txtDb, error) {
 	}
 	dataPath = path
 
-	d := &txtDb{Connect: func(filename string) (*os.File, error) {
-		file := filepath(filename)
-
-		f, err := os.OpenFile(file, os.O_RDWR|os.O_APPEND, 0660)
-
-		return f, err
-	}}
+	d := &txtDb{}
 
 	//check db
 	f, err := d.Connect("order_member.user_info.txt")

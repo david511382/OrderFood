@@ -43,6 +43,7 @@ func Rebuild(dbCfg config.DbConfig) error {
 
 	createSQL := `CREATE TABLE user_info (
 	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(45) NULL,
 	username VARCHAR(45) NOT NULL,
 	password VARCHAR(45) NULL,
 	PRIMARY KEY (id),

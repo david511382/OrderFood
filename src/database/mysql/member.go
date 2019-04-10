@@ -16,3 +16,11 @@ func (d *mysqlDb) GetMembers() ([]models.Member, error) {
 
 	return members, err
 }
+
+func (d *mysqlDb) AddMembers(models.Member) error {
+	return nil
+}
+
+func (db *mysqlDb) UpdateMembers(member models.Member) error {
+	return nil
+}
