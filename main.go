@@ -4,12 +4,15 @@ import (
 	"flag"
 	"orderfood/src/config"
 	"orderfood/src/handler"
+	"orderfood/src/logic"
 )
 
 func main() {
 	flagParse()
 
 	cfg := config.Get()
+
+	logic.Init(cfg)
 
 	router := handler.Init()
 

@@ -1,2 +1,17 @@
-host: "192.168.0.144"
-port: 5487
+server:
+  host: "192.168.0.144"
+  port: 5487
+
+mysql:
+  domain: "localhost:3306"
+  username: "root"
+  password: "root"
+  database: "order_member"
+  param: "charset=utf8mb4&parseTime=true"
+
+txt:
+  domain: "./data"
+  username: ""
+  password: ""
+  database: "order_member"
+  param: ""

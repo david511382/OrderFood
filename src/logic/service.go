@@ -1,16 +1,55 @@
 package logic
 
 import (
+	"orderfood/src/config"
+	"orderfood/src/database"
+	"orderfood/src/database/models"
 	"strconv"
 	"strings"
 )
 
-const R = "rice"
-const V = "vag"
+const (
+	R = "rice"
+	V = "vag"
+)
 
-var targetView = V
+var (
+	targetView = V
 
-var UserOrders = make(map[string][]string)
+	UserOrders = make(map[string][]string)
+
+	Members = make([]models.Member, 0)
+)
+
+func Init(cfg *config.Config) {
+	// err := database.InitMysql(cfg.MySQL)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// Members, err = database.Db.GetMembers()
+	// if err != nil {
+	// 	err = database.RebuildMysql(cfg.MySQL)
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
+	// }
+
+	err := database.InitTxt(cfg.Txt)
+	if err != nil {
+		err = database.RebuildTxt(cfg.Txt)
+		if err != nil {
+			panic(err)
+		}
+
+		return
+	}
+
+	Members, err = database.Db.GetMembers()
+	if err != nil {
+		panic(err)
+	}
+}
 
 func SetView(view string) {
 	targetView = view

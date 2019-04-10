@@ -1,2 +1,2 @@
 protoc
-protoc --go_out=. src/config/config.proto
+protoc --go_out=. src/database/models/member.proto
