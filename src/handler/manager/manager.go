@@ -2,14 +2,18 @@ package manager
 
 import (
 	"net/http"
-	"orderfood/src/handler/auth"
 	"orderfood/src/logic"
 
 	"github.com/gin-gonic/gin"
 )
 
 func Manager(c *gin.Context) {
-	user := auth.MapUserName(c)
+	v, ok := c.Get("username")
+	if !ok{
+
+	}
+	user := v.(string)
+
 	if user != "哥" {
 		c.String(http.StatusOK, user+"禁止進入")
 		return

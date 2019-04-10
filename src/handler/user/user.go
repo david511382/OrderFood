@@ -3,7 +3,6 @@ package user
 import (
 	"fmt"
 	"net/http"
-	"orderfood/src/handler/auth"
 	"orderfood/src/handler/ws"
 	"orderfood/src/logic"
 	rice "orderfood/src/views/Rice"
@@ -34,7 +33,11 @@ func GetMenu(c *gin.Context) {
 func Order(c *gin.Context) {
 	orderStr := c.PostForm("orders")
 
-	name := auth.MapUserName(c)
+	v, ok := c.Get("username")
+	if !ok{
+
+	}
+	name := v.(string)
 
 	orders := strings.Split(orderStr, "\n")
 	orders = orders[:len(orders)-1]
