@@ -3,6 +3,8 @@ package handler
 import (
 	"orderfood/src/handler/manager"
 	"orderfood/src/handler/middleware"
+	"orderfood/src/handler/order"
+	"orderfood/src/handler/swag"
 	"orderfood/src/handler/user"
 	"orderfood/src/handler/ws"
 
@@ -26,6 +28,8 @@ func Init() *gin.Engine {
 	router.StaticFile("src/js/manager.js", "src/js/manager.js")
 	router.StaticFile("src/js/websocket.js", "src/js/websocket.js")
 
+	router.GET("/docs/*any", swag.Documents)
+
 	admin := router.Group("")
 	ver := admin.Use(
 		middleware.Verify,
@@ -33,13 +37,13 @@ func Init() *gin.Engine {
 
 	ver.GET("", user.Index)
 	ver.POST("/get/menu", user.GetMenu)
-	ver.POST("/post/order", user.Order)
-	ver.POST("/get/user/orders", user.UserOrder)
+	ver.POST("/post/order", order.Order)
 	ver.GET("/manager", manager.Manager)
 	ver.POST("/get/name", user.GetUserName)
 	ver.PUT("/user", user.ModifyUser)
 
-	router.POST("/get/order", manager.GetTotalOrders)
+	router.POST("/get/user/orders", order.UserOrder)
+	router.POST("/get/order", order.GetTotalOrders)
 	router.POST("/post/view", manager.ChangeView)
 
 	router.GET("/ws", ws.Connect)

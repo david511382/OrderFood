@@ -31,9 +31,3 @@ func ChangeView(c *gin.Context) {
 
 	c.String(http.StatusOK, view)
 }
-
-func GetTotalOrders(c *gin.Context) {
-	totalList := logic.IntegrationOrders()
-
-	c.String(http.StatusOK, totalList)
-}

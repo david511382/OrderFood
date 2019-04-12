@@ -2,11 +2,22 @@ package main
 
 import (
 	"flag"
+	_ "orderfood/docs"
 	"orderfood/src/config"
 	"orderfood/src/handler"
 	"orderfood/src/logic"
 )
 
+// @title Order Food API
+// @version 1.0
+// @description 訂餐系統
+
+// @host 192.168.0.144:5487
+// @BasePath /
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	flagParse()
 
