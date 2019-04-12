@@ -18,6 +18,58 @@ definitions:
       Password:
         type: string
     type: object
+  resp.IntMap:
+    properties:
+      Pairs:
+        items:
+          $ref: '#/definitions/resp.IntPair'
+        type: array
+    type: object
+  resp.IntPair:
+    properties:
+      Key:
+        type: string
+      Value:
+        type: integer
+    type: object
+  resp.KindOption:
+    properties:
+      Kind:
+        type: string
+      Price:
+        type: integer
+    type: object
+  resp.MenuItem:
+    properties:
+      Name:
+        type: string
+      SizePrice:
+        items:
+          $ref: '#/definitions/resp.SizePrice'
+        type: array
+    type: object
+  resp.MenuKind:
+    properties:
+      CheckOption:
+        items:
+          $ref: '#/definitions/resp.KindOption'
+        type: array
+      Items:
+        items:
+          $ref: '#/definitions/resp.MenuItem'
+        type: array
+      RequiredSelection:
+        items:
+          $ref: '#/definitions/resp.IntMap'
+        type: array
+    type: object
+  resp.SizePrice:
+    properties:
+      Price:
+        type: integer
+      Size:
+        type: string
+    type: object
 host: 192.168.0.144:5487
 info:
   contact: {}
@@ -36,6 +88,25 @@ paths:
           description: 菜單
           schema:
             type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得菜單
+      tags:
+      - shop
+  /api/shop/menu:
+    get:
+      description: 取得菜單
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            items:
+              $ref: '#/definitions/resp.MenuKind'
+            type: array
         "500":
           description: 内部错误
           schema:

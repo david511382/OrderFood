@@ -32,8 +32,8 @@ function changeView(event){
     
     var data = {view:viewSelect.val()};
     $.ajax({
-        type:"POST",
-        url: "/api/post/view",  
+        type:"PUT",
+        url: "/api/shop",  
         data:data
     }).done(function(data){
         alert("修改為"+ data);

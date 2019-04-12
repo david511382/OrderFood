@@ -1,0 +1,67 @@
+// 撰寫格式是 Proto v3。
+syntax = "proto3";  
+// 生成的程式在 Golang 中將會屬於 `models` 套件。
+package models;
+
+// Shop 。
+message Shop {
+	int32 ID = 1;
+	string Name = 2; 
+}
+
+message ShopItem {
+	int32 ShopID = 1;
+	int32 MenuItemID = 2;
+}
+
+// Item 。
+message Item {
+	int32 ID = 1; 
+	string Name = 2; 	
+}
+
+// Size 。
+message Size {
+	int32 ID = 1;
+	string Name = 2;
+}
+
+// ItemSize 。
+message ItemSize {
+	int32 ItemID = 1;
+	int32 SizeID = 2;
+    int32 Prices = 3;
+}
+
+// Kind 。
+message Kind {
+	int32 ID = 1;
+	string Name = 2;
+}
+
+// ItemKind 。
+message ItemKind {
+	int32 ItemID = 1;
+	int32 KindID = 2;
+	int32 Price = 3;
+}
+
+
+// response
+
+message SizePrice {
+	string Size = 1;
+	int32 Price = 2;
+}
+
+message KindPrice {
+	string Kind = 1; 
+	int32 Price = 2;
+}
+
+// MenuItem 。
+message MenuItem {
+	Item Item = 1;
+	repeated SizePrice SizePrice = 2;
+	repeated KindPrice KindPrice = 3;
+}

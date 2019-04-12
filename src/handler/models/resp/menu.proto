@@ -1,0 +1,40 @@
+// 撰寫格式是 Proto v3。
+syntax = "proto3";  
+// 生成的程式在 Golang 中將會屬於 `resp` 套件。
+package resp;
+
+// MenuItem 。
+message MenuItem {
+	string Name = 1; 
+	repeated SizePrice SizePrice = 2;
+}
+
+// SizePrice 。
+message SizePrice {
+	string Size = 1;
+	int32 Price = 2;
+}
+
+// KindOption 。
+message KindOption {
+	string Kind = 1;
+	int32 Price = 2;
+}
+
+// MenuKind 。
+message MenuKind {
+	repeated MenuItem Items = 1;
+	repeated IntMap RequiredSelection = 3;
+	repeated KindOption CheckOption = 4;
+}
+
+// IntPair 。
+message IntPair {
+   string Key = 1;
+   int32 Value = 2;
+}
+
+// IntMap 。
+message IntMap {
+   repeated IntPair Pairs = 1;
+}

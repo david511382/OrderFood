@@ -13,6 +13,8 @@ var Db IDb
 
 type IDb interface {
 	GetMembers() ([]models.Member, error)
+	GetMenus(shop string) ([]models.MenuItem, error)
+
 	AddMembers(models.Member) error
 	UpdateMembers(models.Member) error
 }
