@@ -17,11 +17,32 @@ import (
 // @Produce  json
 // @Success 200 {string} string "餐點"
 // @Failure 500 {string} string "内部错误"
-// @Router /get/order [post]
+// @Router /order/all [get]
 func GetTotalOrders(c *gin.Context) {
 	totalList := logic.IntegrationOrders()
 
 	c.String(http.StatusOK, totalList)
+}
+
+// UserOrder 取得訂單
+// @Tags order
+// @Summary 取得訂單
+// @Description 取得訂單
+// @Produce  json
+// @Success 200 {string} string "餐點"
+// @Failure 500 {string} string "内部错误"
+// @Router /order [get]
+func UserOrder(c *gin.Context) {
+	result := ""
+	for name, orders := range logic.UserOrders {
+		result += name + "\n"
+		for _, order := range orders {
+			result += order + "\n"
+		}
+		result += "\n"
+	}
+
+	c.String(http.StatusOK, result)
 }
 
 // Order 訂餐
@@ -34,7 +55,7 @@ func GetTotalOrders(c *gin.Context) {
 // @Success 200 {string} string "餐點"
 // @Failure 500 {string} string "内部错误"
 // @Security ApiKeyAuth
-// @Router /post/order [post]
+// @Router /order [put]
 func Order(c *gin.Context) {
 	orderStr := c.PostForm("orders")
 
@@ -58,25 +79,4 @@ func Order(c *gin.Context) {
 	c.String(http.StatusOK, totalList)
 
 	ws.Notify(totalList)
-}
-
-// UserOrder 取得訂單
-// @Tags order
-// @Summary 取得訂單
-// @Description 取得訂單
-// @Produce  json
-// @Success 200 {string} string "餐點"
-// @Failure 500 {string} string "内部错误"
-// @Router /get/user/orders [post]
-func UserOrder(c *gin.Context) {
-	result := ""
-	for name, orders := range logic.UserOrders {
-		result += name + "\n"
-		for _, order := range orders {
-			result += order + "\n"
-		}
-		result += "\n"
-	}
-
-	c.String(http.StatusOK, result)
 }

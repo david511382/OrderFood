@@ -2,8 +2,8 @@ var submitButton = $( "#SubmitButton" );
 submitButton.click(send);
 
 $.ajax({
-    type:"POST",
-    url: "/get/order"
+    type:"GET",
+    url: "/order/all"
 }).done(showTotalOrders);
 
 function send(event){
@@ -12,8 +12,8 @@ function send(event){
     var msg = $("#shopcart").text();
     var data ={orders: msg};
     $.ajax({
-        type:"POST",
-        url: "/post/order",  
+        type:"PUT",
+        url: "/order",  
         data:data
     }).done(showTotalOrders);
 

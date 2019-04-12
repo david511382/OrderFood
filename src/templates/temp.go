@@ -52,8 +52,8 @@ func NameHTML() string {
 	return `</br>使用者:<font id="name"></font></br>
 	<script>
 		$.ajax({
-			type:"POST",
-			url: "/get/name"
+			type:"GET",
+			url: "/user"
 		}).done(function(name){
 			$("#name").text(name);
 		});    

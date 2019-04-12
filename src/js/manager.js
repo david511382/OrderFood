@@ -16,8 +16,8 @@ function reciveWsHandler(evt){
 
 function getUserOrders(){
     $.ajax({
-        type:"POST",
-        url: "/get/user/orders",  
+        type:"GET",
+        url: "/order",  
     }).done(showUserOrders);
 }
 

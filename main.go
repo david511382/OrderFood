@@ -13,7 +13,7 @@ import (
 // @description 訂餐系統
 
 // @host 192.168.0.144:5487
-// @BasePath /
+// @BasePath /api/
 
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header

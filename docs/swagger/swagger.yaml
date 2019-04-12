@@ -1,4 +1,4 @@
-basePath: /
+basePath: /api/
 definitions:
   models.Member:
     properties:
@@ -26,44 +26,8 @@ info:
   title: Order Food API
   version: "1.0"
 paths:
-  /get/name:
-    post:
-      description: 取得用戶名稱
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 用戶名稱
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: 取得用戶名稱
-      tags:
-      - user
-  /get/order:
-    post:
-      description: 取得所有訂單
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 餐點
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 取得所有訂單
-      tags:
-      - order
-  /get/user/orders:
-    post:
+  /order:
+    get:
       description: 取得訂單
       produces:
       - application/json
@@ -79,8 +43,7 @@ paths:
       summary: 取得訂單
       tags:
       - order
-  /post/order:
-    post:
+    put:
       consumes:
       - application/x-www-form-urlencoded
       description: 訂餐
@@ -106,7 +69,69 @@ paths:
       summary: 訂餐
       tags:
       - order
+  /order/all:
+    get:
+      description: 取得所有訂單
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 餐點
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得所有訂單
+      tags:
+      - order
+  /shop:
+    put:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 更改商店
+      parameters:
+      - description: 商店
+        in: formData
+        name: view
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 商店
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 更改商店
+      tags:
+      - shop
   /user:
+    get:
+      description: 取得用戶名稱
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 用戶名稱
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 取得用戶名稱
+      tags:
+      - user
     put:
       consumes:
       - application/json

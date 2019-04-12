@@ -8,67 +8,10 @@
         "version": "1.0"
     },
     "host": "192.168.0.144:5487",
-    "basePath": "/",
+    "basePath": "/api/",
     "paths": {
-        "/get/name": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "取得用戶名稱",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "取得用戶名稱",
-                "responses": {
-                    "200": {
-                        "description": "用戶名稱",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/get/order": {
-            "post": {
-                "description": "取得所有訂單",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "order"
-                ],
-                "summary": "取得所有訂單",
-                "responses": {
-                    "200": {
-                        "description": "餐點",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/get/user/orders": {
-            "post": {
+        "/order": {
+            "get": {
                 "description": "取得訂單",
                 "produces": [
                     "application/json"
@@ -91,10 +34,8 @@
                         }
                     }
                 }
-            }
-        },
-        "/post/order": {
-            "post": {
+            },
+            "put": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -136,7 +77,105 @@
                 }
             }
         },
+        "/order/all": {
+            "get": {
+                "description": "取得所有訂單",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "取得所有訂單",
+                "responses": {
+                    "200": {
+                        "description": "餐點",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "更改商店",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "更改商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "view",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "商店",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "取得用戶名稱",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "取得用戶名稱",
+                "responses": {
+                    "200": {
+                        "description": "用戶名稱",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "put": {
                 "security": [
                     {

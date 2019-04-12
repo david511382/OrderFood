@@ -17,7 +17,7 @@ import (
 // @Success 200 {string} string "用戶名稱"
 // @Failure 500 {string} string "内部错误"
 // @Security ApiKeyAuth
-// @Router /get/name [post]
+// @Router /user [get]
 func GetUserName(c *gin.Context) {
 	v, ok := c.Get("name")
 	if !ok {

@@ -30,23 +30,38 @@ func Init() *gin.Engine {
 
 	router.GET("/docs/*any", swag.Documents)
 
-	admin := router.Group("")
-	ver := admin.Use(
-		middleware.Verify,
-	)
-
-	ver.GET("", user.Index)
-	ver.POST("/get/menu", user.GetMenu)
-	ver.POST("/post/order", order.Order)
-	ver.GET("/manager", manager.Manager)
-	ver.POST("/get/name", user.GetUserName)
-	ver.PUT("/user", user.ModifyUser)
-
-	router.POST("/get/user/orders", order.UserOrder)
-	router.POST("/get/order", order.GetTotalOrders)
-	router.POST("/post/view", manager.ChangeView)
+	router.GET("", user.Index)
+	router.POST("/get/menu", user.GetMenu)
 
 	router.GET("/ws", ws.Connect)
+
+	ver := router.Use(
+		middleware.Verify,
+	)
+	ver.GET("/manager", manager.Manager)
+
+	api := router.Group("api")
+
+	usr := api.Group("user")
+	usrVer := usr.Use(
+		middleware.Verify,
+	)
+	usrVer.GET("/", user.GetUserName)
+	usrVer.PUT("/", user.ModifyUser)
+
+	odr := api.Group("order")
+	odrVer := odr.Use(
+		middleware.Verify,
+	)
+	odr.GET("/", order.UserOrder)
+	odr.GET("/all", order.GetTotalOrders)
+	odrVer.PUT("/", order.Order)
+
+	sop := api.Group("shop")
+	sopVer := sop.Use(
+		middleware.Verify,
+	)
+	sopVer.PUT("/", manager.ChangeView)
 
 	return router
 }
