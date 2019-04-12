@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"orderfood/src/handler/auth"
 	"orderfood/src/handler/manager"
 	"orderfood/src/handler/middleware"
 	"orderfood/src/handler/order"
@@ -31,16 +32,21 @@ func Init() *gin.Engine {
 	router.GET("/docs/*any", swag.Documents)
 
 	router.GET("", user.Index)
-	router.POST("/get/menu", user.GetMenu)
 
 	router.GET("/ws", ws.Connect)
 
-	ver := router.Use(
+	mangr := router.Group("manager")
+	mangrVer := mangr.Use(
 		middleware.Verify,
 	)
-	ver.GET("/manager", manager.Manager)
+	mangrVer.GET("/", manager.Manager)
 
 	api := router.Group("api")
+
+	api.GET("/menu", user.GetMenu)
+
+	au := api.Group("auth")
+	au.POST("/register", auth.Register)
 
 	usr := api.Group("user")
 	usrVer := usr.Use(

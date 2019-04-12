@@ -8,7 +8,6 @@ require (
 	github.com/gin-gonic/gin v1.3.0
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/golang/protobuf v1.3.1
-	github.com/gorilla/mux v1.7.1
 	github.com/gorilla/websocket v1.4.0
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/json-iterator/go v1.1.5 // indirect
@@ -18,8 +17,7 @@ require (
 	github.com/swaggo/gin-swagger v1.1.0
 	github.com/swaggo/swag v1.4.0
 	github.com/ugorji/go/codec v0.0.0-20190204201341-e444a5086c43 // indirect
-	golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f // indirect
-	google.golang.org/genproto v0.0.0-20180831171423-11092d34479b // indirect
+	google.golang.org/appengine v1.5.0 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/yaml.v2 v2.2.2
 )

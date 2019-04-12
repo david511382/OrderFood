@@ -53,7 +53,7 @@ func NameHTML() string {
 	<script>
 		$.ajax({
 			type:"GET",
-			url: "/user"
+			url: "/api/user"
 		}).done(function(name){
 			$("#name").text(name);
 		});    

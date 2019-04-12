@@ -17,7 +17,7 @@ function reciveWsHandler(evt){
 function getUserOrders(){
     $.ajax({
         type:"GET",
-        url: "/order",  
+        url: "/api/order",  
     }).done(showUserOrders);
 }
 
@@ -33,7 +33,7 @@ function changeView(event){
     var data = {view:viewSelect.val()};
     $.ajax({
         type:"POST",
-        url: "/post/view",  
+        url: "/api/post/view",  
         data:data
     }).done(function(data){
         alert("修改為"+ data);

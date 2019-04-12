@@ -26,6 +26,58 @@ info:
   title: Order Food API
   version: "1.0"
 paths:
+  /api/menu:
+    get:
+      description: 取得菜單
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得菜單
+      tags:
+      - shop
+  /auth/register:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 註冊
+      parameters:
+      - description: 稱號
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 帳號
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: 密碼
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 註冊
+      tags:
+      - auth
   /order:
     get:
       description: 取得訂單

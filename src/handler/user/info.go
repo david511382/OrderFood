@@ -3,7 +3,7 @@ package user
 import (
 	"net/http"
 	"orderfood/src/database"
-	"orderfood/src/handler/user/reqs"
+	"orderfood/src/handler/models/reqs"
 	"orderfood/src/logic"
 
 	"github.com/gin-gonic/gin"

@@ -3,7 +3,7 @@ submitButton.click(send);
 
 $.ajax({
     type:"GET",
-    url: "/order/all"
+    url: "/api/order/all"
 }).done(showTotalOrders);
 
 function send(event){
@@ -13,7 +13,7 @@ function send(event){
     var data ={orders: msg};
     $.ajax({
         type:"PUT",
-        url: "/order",  
+        url: "/api/order",  
         data:data
     }).done(showTotalOrders);
 

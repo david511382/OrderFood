@@ -2,8 +2,8 @@ var menuData;
 var menu;
 
 $.ajax({
-        type: "POST",
-        url: "/get/menu"
+        type: "GET",
+        url: "/api/menu"
     }).done(function(data) {
         menuData = data;
         menu = document.getElementById("menu");

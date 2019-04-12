@@ -13,9 +13,8 @@ const (
 )
 
 var (
-	targetView        = V
-	IsRquiredPassword = false
-	UserOrders        = make(map[string][]string)
+	targetView = V
+	UserOrders = make(map[string][]string)
 )
 
 func Init(cfg *config.Config) {
