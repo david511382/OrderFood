@@ -1,0 +1,292 @@
+basePath: /api/
+definitions:
+  models.Member:
+    properties:
+      ID:
+        type: integer
+      Password:
+        type: string
+      Username:
+        type: string
+      name:
+        type: string
+    type: object
+  reqs.ModifyUser:
+    properties:
+      Name:
+        type: string
+      Password:
+        type: string
+    type: object
+  resp.IntMap:
+    properties:
+      Pairs:
+        items:
+          $ref: '#/definitions/resp.IntPair'
+        type: array
+    type: object
+  resp.IntPair:
+    properties:
+      Key:
+        type: string
+      Value:
+        type: integer
+    type: object
+  resp.KindOption:
+    properties:
+      Kind:
+        type: string
+      Price:
+        type: integer
+    type: object
+  resp.MenuItem:
+    properties:
+      Name:
+        type: string
+      SizePrice:
+        items:
+          $ref: '#/definitions/resp.SizePrice'
+        type: array
+    type: object
+  resp.MenuKind:
+    properties:
+      CheckOption:
+        items:
+          $ref: '#/definitions/resp.KindOption'
+        type: array
+      Items:
+        items:
+          $ref: '#/definitions/resp.MenuItem'
+        type: array
+      RequiredSelection:
+        items:
+          $ref: '#/definitions/resp.IntMap'
+        type: array
+    type: object
+  resp.SizePrice:
+    properties:
+      Price:
+        type: integer
+      Size:
+        type: string
+    type: object
+host: localhost:5487
+info:
+  contact: {}
+  description: 訂餐系統
+  license: {}
+  title: Order Food API
+  version: "1.0"
+paths:
+  /api/menu:
+    get:
+      description: 取得菜單
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得菜單
+      tags:
+      - shop
+  /api/shop/menu:
+    get:
+      description: 取得菜單
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            items:
+              $ref: '#/definitions/resp.MenuKind'
+            type: array
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得菜單
+      tags:
+      - shop
+  /auth/register:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 註冊
+      parameters:
+      - description: 稱號
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 帳號
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: 密碼
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 註冊
+      tags:
+      - auth
+  /order:
+    get:
+      description: 取得訂單
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 餐點
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得訂單
+      tags:
+      - order
+    put:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 訂餐
+      parameters:
+      - description: 餐點
+        in: formData
+        name: orders
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 餐點
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 訂餐
+      tags:
+      - order
+  /order/all:
+    get:
+      description: 取得所有訂單
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 餐點
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得所有訂單
+      tags:
+      - order
+  /shop:
+    put:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 更改商店
+      parameters:
+      - description: 商店
+        in: formData
+        name: view
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 商店
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 更改商店
+      tags:
+      - shop
+  /user:
+    get:
+      description: 取得用戶名稱
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 用戶名稱
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 取得用戶名稱
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: 修改用戶名稱和密碼
+      parameters:
+      - description: 修改用戶資訊
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/reqs.ModifyUser'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 用戶資訊
+          schema:
+            $ref: '#/definitions/models.Member'
+            type: object
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 修改用戶資訊
+      tags:
+      - user
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
