@@ -59,7 +59,7 @@ func UserOrder(c *gin.Context) {
 func Order(c *gin.Context) {
 	orderStr := c.PostForm("orders")
 
-	v, ok := c.Get("username")
+	v, ok := c.Get("name")
 	if !ok {
 
 	}
