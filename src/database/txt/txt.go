@@ -81,13 +81,28 @@ func NewDb(dbCfg config.DbConfig) (*txtDb, error) {
 }
 
 func (d *txtDb) RebuildDb(dbCfg config.DbConfig) error {
-	filename := "order_member.user_info.txt"
-	file := dataPath + string(os.PathSeparator) + filename
+	files := []string{
+		memberDT.TableName(),
+		shopDT.TableName(),
+		shopItemDT.TableName(),
+		itemDT.TableName(),
+		itemSizeDT.TableName(),
+		sizeDT.TableName(),
+		itemKindDT.TableName(),
+		kindDT.TableName(),
+	}
 
-	f, err := os.Create(file)
-	defer f.Close()
+	for _, filename := range files {
+		file := dataPath + string(os.PathSeparator) + filename
 
-	return err
+		f, err := os.Create(file)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+	}
+
+	return nil
 }
 
 func filepath(filename string) string {
