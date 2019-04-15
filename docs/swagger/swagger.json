@@ -7,64 +7,9 @@
         "license": {},
         "version": "1.0"
     },
-    "host": "192.168.0.144:5487",
+    "host": "localhost:5487",
     "basePath": "/api/",
     "paths": {
-        "/api/menu": {
-            "get": {
-                "description": "取得菜單",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "取得菜單",
-                "responses": {
-                    "200": {
-                        "description": "菜單",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/shop/menu": {
-            "get": {
-                "description": "取得菜單",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "取得菜單",
-                "responses": {
-                    "200": {
-                        "description": "菜單",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/resp.MenuKind"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/auth/register": {
             "post": {
                 "description": "註冊",
@@ -104,6 +49,32 @@
                 "responses": {
                     "200": {
                         "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/menu": {
+            "get": {
+                "description": "取得菜單",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "取得菜單",
+                "responses": {
+                    "200": {
+                        "description": "菜單",
                         "schema": {
                             "type": "string"
                         }
@@ -251,6 +222,74 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "新增商店",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "新增商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.Shop"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/menu": {
+            "get": {
+                "description": "取得菜單",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "取得菜單",
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.MenuKind"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
         "/user": {
@@ -356,6 +395,9 @@
                 },
                 "Password": {
                     "type": "string"
+                },
+                "Username": {
+                    "type": "string"
                 }
             }
         },
@@ -426,6 +468,17 @@
                     "items": {
                         "$ref": "#/definitions/resp.IntMap"
                     }
+                }
+            }
+        },
+        "resp.Shop": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "Name": {
+                    "type": "string"
                 }
             }
         },

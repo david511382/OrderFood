@@ -21,7 +21,8 @@ import (
 func GetUserName(c *gin.Context) {
 	v, ok := c.Get("name")
 	if !ok {
-
+		c.AbortWithError(http.StatusBadRequest, nil)
+		return
 	}
 	name := v.(string)
 
@@ -40,13 +41,6 @@ func GetUserName(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Router /user [put]
 func ModifyUser(c *gin.Context) {
-	v, ok := c.Get("username")
-	if !ok {
-		c.AbortWithError(http.StatusBadRequest, nil)
-		return
-	}
-	username := v.(string)
-
 	req := reqs.ModifyUser{}
 	err := c.BindJSON(&req)
 	if err != nil {
@@ -54,7 +48,7 @@ func ModifyUser(c *gin.Context) {
 		return
 	}
 
-	member := logic.GetMember(username)
+	member := logic.GetMember(req.GetUsername())
 	if member == nil {
 		c.AbortWithError(http.StatusBadRequest, nil)
 		return
