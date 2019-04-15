@@ -14,37 +14,37 @@ var (
 	undefinedError error = errors.New("Undefined Error")
 
 	shopDT *dbTable = &dbTable{
-		Name:  "order_shop.shop.txt",
-		Model: models.Shop{},
+		name:  "order_shop.shop.txt",
+		model: models.Shop{},
 	}
 	shopItemDT *dbTable = &dbTable{
-		Name:  "order_shop.shop_item.txt",
-		Model: models.ShopItem{},
+		name:  "order_shop.shop_item.txt",
+		model: models.ShopItem{},
 	}
 	itemDT *dbTable = &dbTable{
-		Name:  "order_shop.item.txt",
-		Model: models.Item{},
+		name:  "order_shop.item.txt",
+		model: models.Item{},
 	}
 	itemSizeDT *dbTable = &dbTable{
-		Name:  "order_shop.item_size.txt",
-		Model: models.ItemSize{},
+		name:  "order_shop.item_size.txt",
+		model: models.ItemSize{},
 	}
 	sizeDT *dbTable = &dbTable{
-		Name:  "order_shop.size.txt",
-		Model: models.Size{},
+		name:  "order_shop.size.txt",
+		model: models.Size{},
 	}
 	itemKindDT *dbTable = &dbTable{
-		Name:  "order_shop.item_kind.txt",
-		Model: models.ItemKind{},
+		name:  "order_shop.item_kind.txt",
+		model: models.ItemKind{},
 	}
 	kindDT *dbTable = &dbTable{
-		Name:  "order_shop.kind.txt",
-		Model: models.Kind{},
+		name:  "order_shop.kind.txt",
+		model: models.Kind{},
 	}
 
 	memberDT *dbTable = &dbTable{
-		Name:  "order_member.user_info.txt",
-		Model: models.Member{},
+		name:  "order_member.user_info.txt",
+		model: models.Member{},
 	}
 )
 

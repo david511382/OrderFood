@@ -4,9 +4,17 @@ import (
 	"orderfood/src/database/models"
 )
 
-func (d *txtDb) GetMenus(shop string) ([]models.MenuItem, error) {
+func (d *txtDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 	// get shop id
-	ishops, err := shopDT.Select().Where().Exec()
+	ishops, err := shopDT.Select().Where(
+		func(model interface{}) bool {
+			shop := model.(models.Shop)
+			if shop.Name == shopName {
+				return true
+			}
+
+			return false
+		}).Exec()
 	if err != nil {
 		return nil, err
 	}
@@ -23,4 +31,8 @@ func (d *txtDb) GetMenus(shop string) ([]models.MenuItem, error) {
 	// get item size and price
 	// get item kind and price
 	return nil, nil
+}
+
+func (d *txtDb) AddShop(shop *models.Shop) (*models.Shop, error) {
+	return shop, nil
 }
