@@ -8,6 +8,7 @@ import (
 	"orderfood/src/config"
 	"orderfood/src/handler"
 	"orderfood/src/logic"
+	"strings"
 )
 
 // @title Order Food API
@@ -32,9 +33,19 @@ func main() {
 	if ips, err := getIP(); err == nil {
 		releaseServer := &config.Config{
 			Server: config.Server{
-				Host: ips[len(ips)-1],
 				Port: cfg.Port,
 			},
+		}
+
+		for _, ip := range ips {
+			if strings.HasPrefix(ip, "192.168.0.") {
+				releaseServer.Server.Host = ip
+				break
+			}
+		}
+
+		if releaseServer.Server.Host == "" {
+			releaseServer.Server.Host = ips[len(ips)-1]
 		}
 
 		go router.Run(releaseServer.Domain())
