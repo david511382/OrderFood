@@ -1,6 +1,7 @@
 package util
 
 import (
+	"os"
 	"os/user"
 	"path/filepath"
 	"strings"
@@ -24,4 +25,8 @@ func GetFilePath(filename string) (string, error) {
 	}
 
 	return filename, nil
+}
+
+func MakeFolderOn(folderPath string) error {
+	return os.MkdirAll(folderPath, os.ModePerm)
 }

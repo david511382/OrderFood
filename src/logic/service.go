@@ -3,6 +3,8 @@ package logic
 import (
 	"orderfood/src/config"
 	"orderfood/src/database"
+	"orderfood/src/util"
+
 	"strconv"
 	"strings"
 )
@@ -18,30 +20,50 @@ var (
 )
 
 func Init(cfg *config.Config) {
-	// err := database.InitMysql(cfg.MySQL)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	initTxt(cfg.Txt)
 
-	// Members, err = database.Db.GetMembers()
-	// if err != nil {
-	// 	err = database.RebuildMysql(cfg.MySQL)
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-	// }
+	LoadMembers()
+}
 
-	err := database.InitTxt(cfg.Txt)
+func initTxt(dbCfg config.DbConfig) {
+	err := database.InitTxt(dbCfg)
 	if err != nil {
-		err = database.RebuildTxt(cfg.Txt)
-		if err != nil {
-			panic(err)
+		err = database.RebuildTxt(dbCfg)
+		if err != nil { // no folder
+			path, err := util.GetFilePath("")
+			if err != nil {
+				panic(err)
+			}
+			path += `\data`
+
+			err = util.MakeFolderOn(path)
+			if err != nil {
+				panic(err)
+			}
+
+			err = database.RebuildTxt(dbCfg)
+			if err != nil {
+				panic(err)
+			}
 		}
 
 		return
 	}
+}
 
-	LoadMembers()
+func initMySQL(dbCfg config.DbConfig) {
+	err := database.InitMysql(dbCfg)
+	if err != nil {
+		panic(err)
+	}
+
+	Members, err = database.Db.GetMembers()
+	if err != nil {
+		err = database.RebuildMysql(dbCfg)
+		if err != nil {
+			panic(err)
+		}
+	}
 }
 
 func SetView(view string) {
