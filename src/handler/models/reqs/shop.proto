@@ -1,0 +1,9 @@
+// 撰寫格式是 Proto v3。
+syntax = "proto3";  
+// 生成的程式在 Golang 中將會屬於 `reqs` 套件。
+package reqs;
+
+// Shop 。
+message Shop {
+	string Name = 1; 
+}

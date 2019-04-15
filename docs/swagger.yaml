@@ -63,6 +63,13 @@ definitions:
           $ref: '#/definitions/resp.IntMap'
         type: array
     type: object
+  resp.Shop:
+    properties:
+      ID:
+        type: integer
+      Name:
+        type: string
+    type: object
   resp.SizePrice:
     properties:
       Price:
@@ -78,42 +85,6 @@ info:
   title: Order Food API
   version: "1.0"
 paths:
-  /api/menu:
-    get:
-      description: 取得菜單
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 菜單
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 取得菜單
-      tags:
-      - shop
-  /api/shop/menu:
-    get:
-      description: 取得菜單
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 菜單
-          schema:
-            items:
-              $ref: '#/definitions/resp.MenuKind'
-            type: array
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 取得菜單
-      tags:
-      - shop
   /auth/register:
     post:
       consumes:
@@ -149,6 +120,23 @@ paths:
       summary: 註冊
       tags:
       - auth
+  /menu:
+    get:
+      description: 取得菜單
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得菜單
+      tags:
+      - shop
   /order:
     get:
       description: 取得訂單
@@ -210,6 +198,32 @@ paths:
       tags:
       - order
   /shop:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 新增商店
+      parameters:
+      - description: 商店
+        in: formData
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            items:
+              $ref: '#/definitions/resp.Shop'
+            type: array
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 新增商店
+      tags:
+      - shop
     put:
       consumes:
       - application/x-www-form-urlencoded
@@ -234,6 +248,25 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 更改商店
+      tags:
+      - shop
+  /shop/menu:
+    get:
+      description: 取得菜單
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            items:
+              $ref: '#/definitions/resp.MenuKind'
+            type: array
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得菜單
       tags:
       - shop
   /user:

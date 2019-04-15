@@ -5,6 +5,7 @@ import (
 	"orderfood/src/handler/manager"
 	"orderfood/src/handler/middleware"
 	"orderfood/src/handler/order"
+	"orderfood/src/handler/shop"
 	"orderfood/src/handler/swag"
 	"orderfood/src/handler/user"
 	"orderfood/src/handler/ws"
@@ -68,6 +69,8 @@ func Init() *gin.Engine {
 		middleware.Verify,
 	)
 	sopVer.PUT("/", manager.ChangeView)
+	sopVer.POST("/", shop.AddShop)
+	sop.GET("/menu", shop.GetMenu)
 
 	return router
 }

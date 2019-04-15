@@ -14,7 +14,7 @@ import (
 // @Produce  json
 // @Success 200 {array} resp.MenuKind "菜單"
 // @Failure 500 {string} string "内部错误"
-// @Router /api/shop/menu [get]
+// @Router /shop/menu [get]
 func GetMenu(c *gin.Context) {
 	data, err := logic.GetMenu()
 	if err != nil {
