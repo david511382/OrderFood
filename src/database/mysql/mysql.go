@@ -25,7 +25,7 @@ func NewDb(dbCfg config.DbConfig) (*mysqlDb, error) {
 	return d, err
 }
 
-func Rebuild(dbCfg config.DbConfig) error {
+func (d *mysqlDb) RebuildDb(dbCfg config.DbConfig) error {
 	d, err := NewDb(dbCfg)
 	if err != nil {
 		return err

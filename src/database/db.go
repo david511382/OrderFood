@@ -11,12 +11,18 @@ import (
 
 var Db IDb
 
+type IDBM interface {
+	RebuildDb(dbCfg config.DbConfig) error
+}
+
 type IDb interface {
 	GetMembers() ([]models.Member, error)
 	GetMenus(shop string) ([]models.MenuItem, error)
 
 	AddMembers(models.Member) error
 	UpdateMembers(models.Member) error
+
+	IDBM
 }
 
 func InitMysql(dbCfg config.DbConfig) error {
@@ -27,18 +33,10 @@ func InitMysql(dbCfg config.DbConfig) error {
 	return err
 }
 
-func RebuildMysql(dbCfg config.DbConfig) error {
-	return mysql.Rebuild(dbCfg)
-}
-
 func InitTxt(dbCfg config.DbConfig) error {
 	d, err := txt.NewDb(dbCfg)
 
 	Db = d
 
 	return err
-}
-
-func RebuildTxt(dbCfg config.DbConfig) error {
-	return txt.Rebuild(dbCfg)
 }

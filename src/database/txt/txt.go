@@ -1,13 +1,51 @@
 package txt
 
 import (
+	"errors"
 	"orderfood/src/config"
+	"orderfood/src/database/models"
 	"orderfood/src/util"
 	"os"
 )
 
 var (
 	dataPath string
+
+	undefinedError error = errors.New("Undefined Error")
+
+	shopDT *dbTable = &dbTable{
+		Name:  "order_shop.shop.txt",
+		Model: models.Shop{},
+	}
+	shopItemDT *dbTable = &dbTable{
+		Name:  "order_shop.shop_item.txt",
+		Model: models.ShopItem{},
+	}
+	itemDT *dbTable = &dbTable{
+		Name:  "order_shop.item.txt",
+		Model: models.Item{},
+	}
+	itemSizeDT *dbTable = &dbTable{
+		Name:  "order_shop.item_size.txt",
+		Model: models.ItemSize{},
+	}
+	sizeDT *dbTable = &dbTable{
+		Name:  "order_shop.size.txt",
+		Model: models.Size{},
+	}
+	itemKindDT *dbTable = &dbTable{
+		Name:  "order_shop.item_kind.txt",
+		Model: models.ItemKind{},
+	}
+	kindDT *dbTable = &dbTable{
+		Name:  "order_shop.kind.txt",
+		Model: models.Kind{},
+	}
+
+	memberDT *dbTable = &dbTable{
+		Name:  "order_member.user_info.txt",
+		Model: models.Member{},
+	}
 )
 
 type txtDb struct {
@@ -42,7 +80,7 @@ func NewDb(dbCfg config.DbConfig) (*txtDb, error) {
 	return d, err
 }
 
-func Rebuild(dbCfg config.DbConfig) error {
+func (d *txtDb) RebuildDb(dbCfg config.DbConfig) error {
 	filename := "order_member.user_info.txt"
 	file := dataPath + string(os.PathSeparator) + filename
 

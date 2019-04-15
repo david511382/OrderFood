@@ -10,27 +10,17 @@ import (
 )
 
 func (db *txtDb) GetMembers() ([]models.Member, error) {
-	f, err := db.Connect("order_member.user_info.txt")
+	imembers, err := memberDT.Select().Exec()
 	if err != nil {
 		return nil, err
 	}
-	defer f.Close()
 
-	reader := bufio.NewReader(f)
 	members := make([]models.Member, 0)
-	for id := 1; ; id++ {
-		line, _, err := reader.ReadLine()
-		if err == io.EOF {
-			break
+	for _, v := range imembers {
+		member, ok := v.(*models.Member)
+		if !ok {
+			return nil, undefinedError
 		}
-
-		member := &models.Member{}
-		err = proto.Unmarshal(line, member)
-		if err != nil {
-			return nil, err
-		}
-
-		member.ID = int32(id)
 
 		members = append(members, *member)
 	}
