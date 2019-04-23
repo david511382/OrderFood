@@ -37,10 +37,10 @@ func Init() *gin.Engine {
 	router.GET("/ws", ws.Connect)
 
 	mangr := router.Group("manager")
-	mangrVer := mangr.Use(
+	mangr.Use(
 		middleware.Verify,
 	)
-	mangrVer.GET("/", manager.Manager)
+	mangr.GET("/", manager.Manager)
 
 	api := router.Group("api")
 
@@ -50,26 +50,26 @@ func Init() *gin.Engine {
 	au.POST("/register", auth.Register)
 
 	usr := api.Group("user")
-	usrVer := usr.Use(
+	usr.Use(
 		middleware.Verify,
 	)
-	usrVer.GET("/", user.GetUserName)
-	usrVer.PUT("/", user.ModifyUser)
+	usr.GET("/", user.GetUserName)
+	usr.PUT("/", user.ModifyUser)
 
 	odr := api.Group("order")
-	odrVer := odr.Use(
+	odr.Use(
 		middleware.Verify,
 	)
 	odr.GET("/", order.UserOrder)
 	odr.GET("/all", order.GetTotalOrders)
-	odrVer.PUT("/", order.Order)
+	odr.PUT("/", order.Order)
 
 	sop := api.Group("shop")
-	sopVer := sop.Use(
+	sop.Use(
 		middleware.Verify,
 	)
-	sopVer.PUT("/", manager.ChangeView)
-	sopVer.POST("/", shop.AddShop)
+	sop.PUT("/", manager.ChangeView)
+	sop.POST("/", shop.AddShop)
 	sop.GET("/menu", shop.GetMenu)
 
 	return router
