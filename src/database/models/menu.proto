@@ -30,7 +30,7 @@ message Size {
 message ItemSize {
 	int32 ItemID = 1;
 	int32 SizeID = 2;
-    int32 Prices = 3;
+    int32 Price = 3;
 }
 
 // Kind 。

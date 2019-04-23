@@ -200,32 +200,6 @@ paths:
       tags:
       - order
   /shop:
-    post:
-      consumes:
-      - application/x-www-form-urlencoded
-      description: 新增商店
-      parameters:
-      - description: 商店
-        in: formData
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 菜單
-          schema:
-            items:
-              $ref: '#/definitions/resp.Shop'
-            type: array
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 新增商店
-      tags:
-      - shop
     put:
       consumes:
       - application/x-www-form-urlencoded
@@ -250,6 +224,33 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 更改商店
+      tags:
+      - shop
+  /shop/:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 新增商店
+      parameters:
+      - description: 商店
+        in: formData
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            items:
+              $ref: '#/definitions/resp.Shop'
+            type: array
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 新增商店
       tags:
       - shop
   /shop/menu:

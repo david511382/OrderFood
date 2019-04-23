@@ -222,7 +222,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/shop/": {
             "post": {
                 "description": "新增商店",
                 "consumes": [

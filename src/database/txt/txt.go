@@ -12,6 +12,7 @@ var (
 	dataPath string
 
 	undefinedError error = errors.New("Undefined Error")
+	dbDataError    error = errors.New("db data Error")
 
 	shopDT *dbTable = &dbTable{
 		name:  "order_shop.shop.txt",
