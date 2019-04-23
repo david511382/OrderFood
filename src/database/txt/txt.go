@@ -46,6 +46,17 @@ var (
 		name:  "order_member.user_info.txt",
 		model: models.Member{},
 	}
+
+	allFileNames []string = []string{
+		memberDT.TableName(),
+		shopDT.TableName(),
+		shopItemDT.TableName(),
+		itemDT.TableName(),
+		itemSizeDT.TableName(),
+		sizeDT.TableName(),
+		itemKindDT.TableName(),
+		kindDT.TableName(),
+	}
 )
 
 type txtDb struct {
@@ -74,25 +85,23 @@ func NewDb(dbCfg config.DbConfig) (*txtDb, error) {
 	d := &txtDb{}
 
 	//check db
-	f, err := d.Connect("order_member.user_info.txt")
-	defer f.Close()
+	for _, filename := range allFileNames {
+		f, err := d.Connect(filename)
+		if err != nil {
+			return d, err
+		}
+
+		err = f.Close()
+		if err != nil {
+			return d, err
+		}
+	}
 
 	return d, err
 }
 
 func (d *txtDb) RebuildDb(dbCfg config.DbConfig) error {
-	files := []string{
-		memberDT.TableName(),
-		shopDT.TableName(),
-		shopItemDT.TableName(),
-		itemDT.TableName(),
-		itemSizeDT.TableName(),
-		sizeDT.TableName(),
-		itemKindDT.TableName(),
-		kindDT.TableName(),
-	}
-
-	for _, filename := range files {
+	for _, filename := range allFileNames {
 		file := dataPath + string(os.PathSeparator) + filename
 
 		f, err := os.Create(file)
