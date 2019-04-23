@@ -18,6 +18,6 @@ func AddShop(name string) (*models.Shop, error) {
 }
 
 func GetShop() ([]*models.Shop, error) {
-	shop, err := database.Db.GetShop()
+	shop, err := database.Db.GetShops()
 	return shop, err
 }

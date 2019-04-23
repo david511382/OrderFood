@@ -24,3 +24,29 @@ func GetMenu(c *gin.Context) {
 
 	c.JSON(http.StatusOK, data)
 }
+
+// AddItem 新增商品
+// @Tags shop
+// @Summary 新增商品
+// @Description 新增商品
+// @Accept  x-www-form-urlencoded
+// @Produce  json
+// @Param name formData string true "商品"
+// @Success 200 {object} resp.Shop "商品"
+// @Failure 500 {string} string "内部错误"
+// @Router /shop/item/ [post]
+func AddItem(c *gin.Context) {
+	itemName := c.PostForm("name")
+	if itemName == "" {
+		c.AbortWithError(http.StatusBadRequest, nil)
+		return
+	}
+
+	data, err := logic.AddItem(itemName)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, data)
+}

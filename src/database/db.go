@@ -18,10 +18,11 @@ type IDBM interface {
 type IDb interface {
 	GetMembers() ([]models.Member, error)
 	GetMenus(shop string) ([]models.MenuItem, error)
-	GetShop() ([]*models.Shop, error)
+	GetShops() ([]*models.Shop, error)
 
 	AddMembers(models.Member) error
 	AddShop(*models.Shop) (*models.Shop, error)
+	AddItem(*models.Item) (*models.Item, error)
 
 	UpdateMembers(models.Member) error
 

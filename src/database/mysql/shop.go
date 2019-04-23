@@ -12,6 +12,10 @@ func (d *mysqlDb) AddShop(shop *models.Shop) (*models.Shop, error) {
 	return shop, nil
 }
 
-func (d *mysqlDb) GetShop() ([]*models.Shop, error) {
+func (d *mysqlDb) GetShops() ([]*models.Shop, error) {
+	return nil, nil
+}
+
+func (d *mysqlDb) AddItem(item *models.Item) (*models.Item, error) {
 	return nil, nil
 }

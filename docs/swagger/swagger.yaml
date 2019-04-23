@@ -79,7 +79,7 @@ definitions:
       Size:
         type: string
     type: object
-host: 127.0.0.1:5487
+host: '{{.Host}}'
 info:
   contact: {}
   description: 訂餐系統
@@ -235,7 +235,9 @@ paths:
         "200":
           description: 菜單
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/resp.Shop'
+            type: array
         "500":
           description: 内部错误
           schema:
@@ -259,14 +261,39 @@ paths:
         "200":
           description: 菜單
           schema:
-            items:
-              $ref: '#/definitions/resp.Shop'
-            type: array
+            $ref: '#/definitions/resp.Shop'
+            type: object
         "500":
           description: 内部错误
           schema:
             type: string
       summary: 新增商店
+      tags:
+      - shop
+  /shop/item/:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 新增商品
+      parameters:
+      - description: 商品
+        in: formData
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 商品
+          schema:
+            $ref: '#/definitions/resp.Shop'
+            type: object
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 新增商品
       tags:
       - shop
   /shop/menu:

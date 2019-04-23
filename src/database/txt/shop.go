@@ -158,7 +158,7 @@ func (d *txtDb) AddShop(shop *models.Shop) (*models.Shop, error) {
 	return shop, nil
 }
 
-func (d *txtDb) GetShop() ([]*models.Shop, error) {
+func (d *txtDb) GetShops() ([]*models.Shop, error) {
 	ishops, err := shopDT.Select().Exec()
 	if err != nil {
 		return nil, err
