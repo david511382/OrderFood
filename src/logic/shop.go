@@ -16,3 +16,8 @@ func AddShop(name string) (*models.Shop, error) {
 
 	return shop, nil
 }
+
+func GetShop() ([]*models.Shop, error) {
+	shop, err := database.Db.GetShop()
+	return shop, err
+}

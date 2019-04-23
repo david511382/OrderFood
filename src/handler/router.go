@@ -70,6 +70,7 @@ func Init() *gin.Engine {
 	)
 	sop.PUT("/", manager.ChangeView)
 	sop.POST("/", shop.AddShop)
+	sop.GET("/", shop.GetShop)
 	sop.GET("/menu", shop.GetMenu)
 
 	return router

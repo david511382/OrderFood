@@ -9,7 +9,6 @@ import (
 )
 
 func Verify(c *gin.Context) {
-	defer c.Next()
 	defer logic.LoadMembers()
 
 	ip := c.Request.RemoteAddr

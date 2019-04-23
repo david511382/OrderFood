@@ -15,7 +15,7 @@ import (
 // @version 1.0
 // @description 訂餐系統
 
-// @host localhost:5487
+// @host 127.0.0.1:5487
 // @BasePath /api/
 
 // @securityDefinitions.apikey ApiKeyAuth

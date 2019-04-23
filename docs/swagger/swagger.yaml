@@ -79,7 +79,7 @@ definitions:
       Size:
         type: string
     type: object
-host: localhost:5487
+host: 127.0.0.1:5487
 info:
   contact: {}
   description: 訂餐系統
@@ -227,6 +227,22 @@ paths:
       tags:
       - shop
   /shop/:
+    get:
+      description: 取得商店
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得商店
+      tags:
+      - shop
     post:
       consumes:
       - application/x-www-form-urlencoded

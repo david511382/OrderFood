@@ -157,3 +157,17 @@ func (d *txtDb) AddShop(shop *models.Shop) (*models.Shop, error) {
 	_, err = f.WriteString("\n")
 	return shop, nil
 }
+
+func (d *txtDb) GetShop() ([]*models.Shop, error) {
+	ishops, err := shopDT.Select().Exec()
+	if err != nil {
+		return nil, err
+	}
+
+	result := make([]*models.Shop, 0)
+	for _, v := range ishops {
+		result = append(result, v.(*models.Shop))
+	}
+
+	return result, nil
+}
