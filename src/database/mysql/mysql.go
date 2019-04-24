@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"orderfood/src/config"
+	"orderfood/src/database/common"
 
 	"github.com/jmoiron/sqlx"
 
@@ -10,6 +11,18 @@ import (
 
 type mysqlDb struct {
 	Connect func() (*sqlx.DB, error)
+}
+
+func (d *mysqlDb) Member() common.IMember {
+	return nil
+}
+
+func (d *mysqlDb) Menu() common.IMenu {
+	return nil
+}
+
+func (d *mysqlDb) DBM() common.IDBM {
+	return d
 }
 
 func NewDb(dbCfg config.DbConfig) (*mysqlDb, error) {

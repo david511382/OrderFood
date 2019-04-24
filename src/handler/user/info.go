@@ -61,7 +61,7 @@ func ModifyUser(c *gin.Context) {
 	member.Name = req.GetName()
 	member.Password = req.GetPassword()
 
-	err = database.Db.UpdateMembers(*member)
+	err = database.Db.Member().UpdateMembers(*member)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return

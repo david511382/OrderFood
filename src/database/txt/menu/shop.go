@@ -1,15 +1,20 @@
-package txt
+package menu
 
 import (
+	"orderfood/src/database/common"
 	"orderfood/src/database/models"
+	"orderfood/src/database/txt/orm"
 
 	linq "github.com/ahmetb/go-linq"
 	proto "github.com/golang/protobuf/proto"
 )
 
-func (d *txtDb) GetMenus(shopName string) ([]models.MenuItem, error) {
+type MenuDb struct {
+}
+
+func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 	// get shop id
-	ishops, err := shopDT.Select().Where(
+	ishops, err := orm.ShopDT.Select().Where(
 		func(model interface{}) bool {
 			shop := model.(*models.Shop)
 			if shop.Name == shopName {
@@ -23,12 +28,12 @@ func (d *txtDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 	}
 
 	if len(ishops) != 1 {
-		return nil, dbDataError
+		return nil, common.DbDataError
 	}
 	shop := (ishops[0]).(*models.Shop)
 
 	// get item ids
-	ishopItems, err := shopItemDT.Select().Where(
+	ishopItems, err := orm.ShopItemDT.Select().Where(
 		func(model interface{}) bool {
 			shopItem := model.(*models.ShopItem)
 			if shopItem.GetShopID() == shop.GetID() {
@@ -47,7 +52,7 @@ func (d *txtDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 	}
 
 	// make every item
-	iItems, err := itemDT.Select().Where(
+	iItems, err := orm.ItemDT.Select().Where(
 		func(model interface{}) bool {
 			item := model.(*models.Item)
 			for i, id := range shopItemIDs {
@@ -74,23 +79,23 @@ func (d *txtDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 	}
 
 	// get item size and price
-	iAllItemSizes, err := itemSizeDT.Select().Exec()
+	iAllItemSizes, err := orm.ItemSizeDT.Select().Exec()
 	if err != nil {
 		return nil, err
 	}
 
-	iAllSizes, err := sizeDT.Select().Exec()
+	iAllSizes, err := orm.SizeDT.Select().Exec()
 	if err != nil {
 		return nil, err
 	}
 
 	// get item kind and price
-	iAllItemKinds, err := itemKindDT.Select().Exec()
+	iAllItemKinds, err := orm.ItemKindDT.Select().Exec()
 	if err != nil {
 		return nil, err
 	}
 
-	iAllKinds, err := kindDT.Select().Exec()
+	iAllKinds, err := orm.KindDT.Select().Exec()
 	if err != nil {
 		return nil, err
 	}
@@ -137,8 +142,8 @@ func (d *txtDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 	return result, nil
 }
 
-func (d *txtDb) AddShop(shop *models.Shop) (*models.Shop, error) {
-	f, err := d.Connect(shopDT.TableName())
+func (d *MenuDb) AddShop(shop *models.Shop) (*models.Shop, error) {
+	f, _, err := orm.Connect(orm.ShopDT.TableName())
 	if err != nil {
 		return nil, err
 	}
@@ -158,8 +163,8 @@ func (d *txtDb) AddShop(shop *models.Shop) (*models.Shop, error) {
 	return shop, nil
 }
 
-func (d *txtDb) GetShops() ([]*models.Shop, error) {
-	ishops, err := shopDT.Select().Exec()
+func (d *MenuDb) GetShops() ([]*models.Shop, error) {
+	ishops, err := orm.ShopDT.Select().Exec()
 	if err != nil {
 		return nil, err
 	}

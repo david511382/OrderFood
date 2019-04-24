@@ -10,7 +10,7 @@ var (
 )
 
 func LoadMembers() {
-	members, err := database.Db.GetMembers()
+	members, err := database.Db.Member().GetMembers()
 	if err != nil {
 		panic(err)
 	}

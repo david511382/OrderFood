@@ -1,13 +1,14 @@
-package txt
+package menu
 
 import (
 	"orderfood/src/database/models"
+	"orderfood/src/database/txt/orm"
 
 	proto "github.com/golang/protobuf/proto"
 )
 
-func (d *txtDb) AddItem(item *models.Item) (*models.Item, error) {
-	f, err := d.Connect(itemDT.TableName())
+func (d *MenuDb) AddItem(item *models.Item) (*models.Item, error) {
+	f, _, err := orm.Connect(orm.ItemDT.TableName())
 	if err != nil {
 		return nil, err
 	}
@@ -27,8 +28,8 @@ func (d *txtDb) AddItem(item *models.Item) (*models.Item, error) {
 	return item, nil
 }
 
-func (d *txtDb) GetItems() ([]*models.Item, error) {
-	iitems, err := itemDT.Select().Exec()
+func (d *MenuDb) GetItems() ([]*models.Item, error) {
+	iitems, err := orm.ItemDT.Select().Exec()
 	if err != nil {
 		return nil, err
 	}

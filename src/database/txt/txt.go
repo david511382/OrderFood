@@ -1,79 +1,39 @@
 package txt
 
 import (
-	"errors"
 	"orderfood/src/config"
-	"orderfood/src/database/models"
+	"orderfood/src/database/common"
+	"orderfood/src/database/txt/member"
+	"orderfood/src/database/txt/menu"
+	"orderfood/src/database/txt/orm"
 	"orderfood/src/util"
 	"os"
 )
 
-var (
-	dataPath string
-
-	undefinedError error = errors.New("Undefined Error")
-	dbDataError    error = errors.New("db data Error")
-
-	shopDT *dbTable = &dbTable{
-		name:  "order_shop.shop.txt",
-		model: models.Shop{},
-	}
-	shopItemDT *dbTable = &dbTable{
-		name:  "order_shop.shop_item.txt",
-		model: models.ShopItem{},
-	}
-	itemDT *dbTable = &dbTable{
-		name:  "order_shop.item.txt",
-		model: models.Item{},
-	}
-	itemSizeDT *dbTable = &dbTable{
-		name:  "order_shop.item_size.txt",
-		model: models.ItemSize{},
-	}
-	sizeDT *dbTable = &dbTable{
-		name:  "order_shop.size.txt",
-		model: models.Size{},
-	}
-	itemKindDT *dbTable = &dbTable{
-		name:  "order_shop.item_kind.txt",
-		model: models.ItemKind{},
-	}
-	kindDT *dbTable = &dbTable{
-		name:  "order_shop.kind.txt",
-		model: models.Kind{},
-	}
-
-	memberDT *dbTable = &dbTable{
-		name:  "order_member.user_info.txt",
-		model: models.Member{},
-	}
-
-	allFileNames []string = []string{
-		memberDT.TableName(),
-		shopDT.TableName(),
-		shopItemDT.TableName(),
-		itemDT.TableName(),
-		itemSizeDT.TableName(),
-		sizeDT.TableName(),
-		itemKindDT.TableName(),
-		kindDT.TableName(),
-	}
-)
-
 type txtDb struct {
-	Filepath string
+	member common.IMember
+	menu   common.IMenu
+}
+
+func (d *txtDb) Member() common.IMember {
+	return d.member
+}
+
+func (d *txtDb) Menu() common.IMenu {
+	return d.menu
+}
+
+func (d *txtDb) DBM() common.IDBM {
+	return d
 }
 
 func (db *txtDb) Connect(filename string) (*os.File, error) {
-	file := filepath(filename)
-
-	f, err := os.OpenFile(file, os.O_RDWR|os.O_APPEND, 0660)
-
-	if err == nil {
-		db.Filepath = file
+	f, _, err := orm.Connect(filename)
+	if err != nil {
+		return nil, err
 	}
 
-	return f, err
+	return f, nil
 }
 
 func NewDb(dbCfg config.DbConfig) (*txtDb, error) {
@@ -81,30 +41,23 @@ func NewDb(dbCfg config.DbConfig) (*txtDb, error) {
 	if err != nil {
 		return nil, err
 	}
-	dataPath = path
+	orm.Init(path)
 
-	d := &txtDb{}
+	db := &txtDb{}
+	db.member = &member.MemberDb{}
+	db.menu = &menu.MenuDb{}
 
 	//check db
-	for _, filename := range allFileNames {
-		f, err := d.Connect(filename)
-		if err != nil {
-			return d, err
-		}
-
-		err = f.Close()
-		if err != nil {
-			return d, err
-		}
+	if err := orm.CheckDb(); err != nil {
+		return db, err
 	}
 
-	return d, err
+	return db, nil
 }
 
 func (d *txtDb) RebuildDb(dbCfg config.DbConfig) error {
-	for _, filename := range allFileNames {
-		file := dataPath + string(os.PathSeparator) + filename
-
+	allFileNames := orm.GetAllFilePaths()
+	for _, file := range allFileNames {
 		f, err := os.Create(file)
 		if err != nil {
 			return err
@@ -113,8 +66,4 @@ func (d *txtDb) RebuildDb(dbCfg config.DbConfig) error {
 	}
 
 	return nil
-}
-
-func filepath(filename string) string {
-	return dataPath + string(os.PathSeparator) + filename
 }

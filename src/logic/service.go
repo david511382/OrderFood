@@ -28,7 +28,7 @@ func Init(cfg *config.Config) {
 func initTxt(dbCfg config.DbConfig) {
 	err := database.InitTxt(dbCfg)
 	if err != nil {
-		err = database.Db.RebuildDb(dbCfg)
+		err = database.Db.DBM().RebuildDb(dbCfg)
 		if err != nil { // no folder
 			path, err := util.GetFilePath("")
 			if err != nil {
@@ -41,7 +41,7 @@ func initTxt(dbCfg config.DbConfig) {
 				panic(err)
 			}
 
-			err = database.Db.RebuildDb(dbCfg)
+			err = database.Db.DBM().RebuildDb(dbCfg)
 			if err != nil {
 				panic(err)
 			}
@@ -57,9 +57,9 @@ func initMySQL(dbCfg config.DbConfig) {
 		panic(err)
 	}
 
-	Members, err = database.Db.GetMembers()
+	Members, err = database.Db.Member().GetMembers()
 	if err != nil {
-		err = database.Db.RebuildDb(dbCfg)
+		err = database.Db.DBM().RebuildDb(dbCfg)
 		if err != nil {
 			panic(err)
 		}

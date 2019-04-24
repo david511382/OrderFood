@@ -1,4 +1,4 @@
-package txt
+package orm
 
 import (
 	"bufio"
@@ -10,11 +10,11 @@ import (
 	proto "github.com/golang/protobuf/proto"
 )
 
-type table string
+type Table string
 
-type dbTable struct {
-	name  table
-	model interface{}
+type DbTable struct {
+	Name  Table
+	Model interface{}
 }
 
 const (
@@ -22,18 +22,18 @@ const (
 	tagSpe  = ","
 )
 
-func (dt *dbTable) TableName() string {
-	return string(dt.name)
+func (dt *DbTable) TableName() string {
+	return string(dt.Name)
 }
 
-func (dt *dbTable) Select(cols ...string) *query {
+func (dt *DbTable) Select(cols ...string) *query {
 	q := &query{
 		table:        dt,
 		cols:         make([]string, 0),
 		selectedCols: make([]*string, 0),
 	}
 
-	t := reflect.TypeOf(dt.model)
+	t := reflect.TypeOf(dt.Model)
 	if t == nil || t.Kind() != reflect.Struct {
 		return nil
 	}
@@ -93,14 +93,14 @@ func (dt *dbTable) Select(cols ...string) *query {
 }
 
 type query struct {
-	table          *dbTable
+	table          *DbTable
 	cols           []string
 	selectedCols   []*string
 	checkCondition func(model interface{}) bool
 }
 
 type col struct {
-	table table
+	table Table
 	name  string
 }
 
@@ -119,8 +119,7 @@ func (q *query) Where(condition func(model interface{}) bool) *query {
 }
 
 func (q *query) Exec() ([]interface{}, error) {
-	db := txtDb{}
-	f, err := db.Connect(q.table.TableName())
+	f, _, err := Connect(q.table.TableName())
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +133,7 @@ func (q *query) Exec() ([]interface{}, error) {
 			break
 		}
 
-		model, err := readLine(line, q.table.model, id)
+		model, err := readLine(line, q.table.Model, id)
 		if err != nil {
 			return nil, err
 		}

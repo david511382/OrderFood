@@ -9,7 +9,7 @@ func AddShop(name string) (*models.Shop, error) {
 	shop := &models.Shop{
 		Name: name,
 	}
-	shop, err := database.Db.AddShop(shop)
+	shop, err := database.Db.Menu().AddShop(shop)
 	if err != nil {
 		return nil, err
 	}
@@ -18,6 +18,6 @@ func AddShop(name string) (*models.Shop, error) {
 }
 
 func GetShop() ([]*models.Shop, error) {
-	shop, err := database.Db.GetShops()
+	shop, err := database.Db.Menu().GetShops()
 	return shop, err
 }

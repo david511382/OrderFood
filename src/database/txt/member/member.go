@@ -1,16 +1,21 @@
-package txt
+package member
 
 import (
 	"bufio"
 	"io"
 	"io/ioutil"
+	"orderfood/src/database/common"
 	"orderfood/src/database/models"
+	"orderfood/src/database/txt/orm"
 
 	proto "github.com/golang/protobuf/proto"
 )
 
-func (db *txtDb) GetMembers() ([]models.Member, error) {
-	imembers, err := memberDT.Select().Exec()
+type MemberDb struct {
+}
+
+func (db *MemberDb) GetMembers() ([]models.Member, error) {
+	imembers, err := orm.MemberDT.Select().Exec()
 	if err != nil {
 		return nil, err
 	}
@@ -19,7 +24,7 @@ func (db *txtDb) GetMembers() ([]models.Member, error) {
 	for _, v := range imembers {
 		member, ok := v.(*models.Member)
 		if !ok {
-			return nil, undefinedError
+			return nil, common.UndefinedError
 		}
 
 		members = append(members, *member)
@@ -28,8 +33,8 @@ func (db *txtDb) GetMembers() ([]models.Member, error) {
 	return members, nil
 }
 
-func (db *txtDb) AddMembers(member models.Member) error {
-	f, err := db.Connect("order_member.user_info.txt")
+func (db *MemberDb) AddMembers(member models.Member) error {
+	f, _, err := orm.Connect("order_member.user_info.txt")
 	if err != nil {
 		return err
 	}
@@ -57,8 +62,8 @@ func (db *txtDb) AddMembers(member models.Member) error {
 	// w.Flush()
 }
 
-func (db *txtDb) UpdateMembers(member models.Member) error {
-	f, err := db.Connect("order_member.user_info.txt")
+func (db *MemberDb) UpdateMembers(member models.Member) error {
+	f, filepath, err := orm.Connect("order_member.user_info.txt")
 	if err != nil {
 		return err
 	}
@@ -103,7 +108,7 @@ func (db *txtDb) UpdateMembers(member models.Member) error {
 		allData = append(allData, n)
 	}
 
-	err = ioutil.WriteFile(db.Filepath, allData, 0644)
+	err = ioutil.WriteFile(filepath, allData, 0644)
 
 	return err
 }
