@@ -92,6 +92,27 @@ func (dt *DbTable) Select(cols ...string) *query {
 	return q
 }
 
+func (dt *DbTable) Insert(data proto.Message) error {
+	f, _, err := Connect(dt.TableName())
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	out, err := proto.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	_, err = f.Write(out)
+	if err != nil {
+		return err
+	}
+
+	_, err = f.WriteString("\n")
+	return err
+}
+
 type query struct {
 	table          *DbTable
 	cols           []string

@@ -3,29 +3,11 @@ package menu
 import (
 	"orderfood/src/database/models"
 	"orderfood/src/database/txt/orm"
-
-	proto "github.com/golang/protobuf/proto"
 )
 
 func (d *MenuDb) AddItem(item *models.Item) (*models.Item, error) {
-	f, _, err := orm.Connect(orm.ItemDT.TableName())
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	out, err := proto.Marshal(item)
-	if err != nil {
-		return nil, err
-	}
-
-	_, err = f.Write(out)
-	if err != nil {
-		return nil, err
-	}
-
-	_, err = f.WriteString("\n")
-	return item, nil
+	err := orm.ItemDT.Insert(item)
+	return item, err
 }
 
 func (d *MenuDb) GetItems() ([]*models.Item, error) {

@@ -10,7 +10,6 @@ var (
 	dataPath string
 
 	undefinedError error = errors.New("Undefined Error")
-	dbDataError    error = errors.New("db data Error")
 
 	ShopDT *DbTable = &DbTable{
 		Name:  "order_shop.shop.txt",

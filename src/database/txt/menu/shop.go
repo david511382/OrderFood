@@ -6,7 +6,6 @@ import (
 	"orderfood/src/database/txt/orm"
 
 	linq "github.com/ahmetb/go-linq"
-	proto "github.com/golang/protobuf/proto"
 )
 
 type MenuDb struct {
@@ -143,24 +142,8 @@ func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 }
 
 func (d *MenuDb) AddShop(shop *models.Shop) (*models.Shop, error) {
-	f, _, err := orm.Connect(orm.ShopDT.TableName())
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	out, err := proto.Marshal(shop)
-	if err != nil {
-		return nil, err
-	}
-
-	_, err = f.Write(out)
-	if err != nil {
-		return nil, err
-	}
-
-	_, err = f.WriteString("\n")
-	return shop, nil
+	err := orm.ShopDT.Insert(shop)
+	return shop, err
 }
 
 func (d *MenuDb) GetShops() ([]*models.Shop, error) {

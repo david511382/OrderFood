@@ -34,23 +34,7 @@ func (db *MemberDb) GetMembers() ([]models.Member, error) {
 }
 
 func (db *MemberDb) AddMembers(member models.Member) error {
-	f, _, err := orm.Connect("order_member.user_info.txt")
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	out, err := proto.Marshal(&member)
-	if err != nil {
-		return err
-	}
-
-	_, err = f.Write(out)
-	if err != nil {
-		return err
-	}
-
-	_, err = f.WriteString("\n")
+	err := orm.MemberDT.Insert(&member)
 	return err
 
 	// f.Sync()
