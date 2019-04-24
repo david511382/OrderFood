@@ -19,3 +19,7 @@ func (d *mysqlDb) GetShops() ([]*models.Shop, error) {
 func (d *mysqlDb) AddItem(item *models.Item) (*models.Item, error) {
 	return nil, nil
 }
+
+func (d *mysqlDb) GetItems() ([]*models.Item, error) {
+	return nil, nil
+}

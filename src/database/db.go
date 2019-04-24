@@ -19,6 +19,7 @@ type IDb interface {
 	GetMembers() ([]models.Member, error)
 	GetMenus(shop string) ([]models.MenuItem, error)
 	GetShops() ([]*models.Shop, error)
+	GetItems() ([]*models.Item, error) 
 
 	AddMembers(models.Member) error
 	AddShop(*models.Shop) (*models.Shop, error)

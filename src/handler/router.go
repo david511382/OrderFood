@@ -73,6 +73,7 @@ func Init() *gin.Engine {
 	sop.GET("/", shop.GetShop)
 
 	sop.POST("/item/", shop.AddItem)
+	sop.GET("/item/", shop.GetItem)
 	sop.GET("/menu", shop.GetMenu)
 
 	return router

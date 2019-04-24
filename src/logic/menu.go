@@ -25,3 +25,8 @@ func AddItem(name string) (*models.Item, error) {
 	item, err := database.Db.AddItem(item)
 	return item, err
 }
+
+func GetItem() ([]*models.Item, error) {
+	items, err := database.Db.GetItems()
+	return items, err
+}

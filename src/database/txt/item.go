@@ -26,3 +26,17 @@ func (d *txtDb) AddItem(item *models.Item) (*models.Item, error) {
 	_, err = f.WriteString("\n")
 	return item, nil
 }
+
+func (d *txtDb) GetItems() ([]*models.Item, error) {
+	iitems, err := itemDT.Select().Exec()
+	if err != nil {
+		return nil, err
+	}
+
+	result := make([]*models.Item, 0)
+	for _, v := range iitems {
+		result = append(result, v.(*models.Item))
+	}
+
+	return result, nil
+}
