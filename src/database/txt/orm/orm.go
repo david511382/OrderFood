@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"strings"
 
+	"io/ioutil"
 	proto "github.com/golang/protobuf/proto"
 )
 
@@ -113,6 +114,46 @@ func (dt *DbTable) Insert(data proto.Message) error {
 	return err
 }
 
+func (dt *DbTable) Update(data proto.Message,condiction func(interface{}) bool) error {
+	f, filepath, err := Connect(dt.TableName())
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	const n = 10 // \n
+	allData := make([]byte, 0)	
+	reader := bufio.NewReader(f)
+	for id:=1;;id++{
+		line, _, err := reader.ReadLine()
+		if err == io.EOF {
+			break
+		}else if err != nil {
+			return err
+		}
+
+		model, err := readLine(line, dt.Model, id)
+		if err != nil {
+			return err
+		}
+
+		if condiction(model){
+			model=data
+		}
+
+		line,err=proto.Marshal(model)
+		if err != nil {
+			return err
+		}
+
+		allData = append(allData, line...)
+		allData = append(allData, n)
+	}
+
+	err = ioutil.WriteFile(filepath, allData, 0644)
+	return err
+}
+
 type query struct {
 	table          *DbTable
 	cols           []string
@@ -134,7 +175,7 @@ type dataTable struct {
 	rows []*rowData
 }
 
-func (q *query) Where(condition func(model interface{}) bool) *query {
+func (q *query) Where(condition func(interface{}) bool) *query {
 	q.checkCondition = condition
 	return q
 }
@@ -171,7 +212,7 @@ func (q *query) Exec() ([]interface{}, error) {
 	return result, nil
 }
 
-func readLine(line []byte, m interface{}, id int) (interface{}, error) {
+func readLine(line []byte, m interface{}, id int) (proto.Message, error) {
 	switch m.(type) {
 	case models.Shop:
 		model := &models.Shop{}
@@ -238,6 +279,6 @@ func readLine(line []byte, m interface{}, id int) (interface{}, error) {
 		model.ID = int32(id)
 		return model, nil
 	}
-
+	
 	return nil, undefinedError
 }

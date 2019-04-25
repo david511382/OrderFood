@@ -1,14 +1,9 @@
 package member
 
 import (
-	"bufio"
-	"io"
-	"io/ioutil"
 	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 	"orderfood/src/database/txt/orm"
-
-	proto "github.com/golang/protobuf/proto"
 )
 
 type MemberDb struct {
@@ -47,52 +42,13 @@ func (db *MemberDb) AddMembers(member models.Member) error {
 }
 
 func (db *MemberDb) UpdateMembers(member models.Member) error {
-	f, filepath, err := orm.Connect("order_member.user_info.txt")
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	id := int(member.GetID())
-
-	allData := make([]byte, 0)
-
-	const n = 10
-	reader := bufio.NewReader(f)
-	for i := 1; i != id; i++ {
-		line, _, err := reader.ReadLine()
-		if err != nil {
-			return err
+	err:=orm.MemberDT.Update(&member ,func(c interface{})bool{
+		m:= c.(*models.Member)
+		if m.GetUsername() == member.GetUsername(){
+			return true
 		}
-
-		allData = append(allData, line...)
-		allData = append(allData, n)
-	}
-
-	_, _, err = reader.ReadLine()
-	if err != nil {
-		return err
-	}
-
-	newData, err := proto.Marshal(&member)
-	if err != nil {
-		return err
-	}
-
-	allData = append(allData, []byte(newData)...)
-	allData = append(allData, n)
-
-	for {
-		line, _, err := reader.ReadLine()
-		if err == io.EOF {
-			break
-		}
-
-		allData = append(allData, line...)
-		allData = append(allData, n)
-	}
-
-	err = ioutil.WriteFile(filepath, allData, 0644)
+		return false
+	})
 
 	return err
 }
