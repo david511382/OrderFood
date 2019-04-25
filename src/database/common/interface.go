@@ -25,7 +25,9 @@ type IMenu interface {
 	GetMenus(shop string) ([]models.MenuItem, error)
 	GetShops() ([]*models.Shop, error)
 	GetItems() ([]*models.Item, error)
+	GetSizes() ([]*models.Size, error)
 
 	AddShop(*models.Shop) (*models.Shop, error)
 	AddItem(*models.Item) (*models.Item, error)
+	AddSize(*models.Size) (*models.Size, error)
 }

@@ -76,3 +76,58 @@ func GetItem(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, response)
 }
+
+// AddSize 新增尺寸
+// @Tags shop
+// @Summary 新增尺寸
+// @Description 新增尺寸
+// @Accept  x-www-form-urlencoded
+// @Produce  json
+// @Param name formData string true "尺寸"
+// @Success 200 {object} resp.Size "尺寸"
+// @Failure 500 {string} string "内部错误"
+// @Router /shop/size [post]
+func AddSize(c *gin.Context) {
+	sizeName := c.PostForm("name")
+	if sizeName == "" {
+		c.AbortWithError(http.StatusBadRequest, nil)
+		return
+	}
+
+	data, err := logic.AddSize(sizeName)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	response := &resp.Size{
+		ID:data.GetID(),
+		Size:data.GetName(),
+	}
+	c.JSON(http.StatusOK, response)
+}
+
+// GetSize 取得尺寸
+// @Tags shop
+// @Summary 取得尺寸
+// @Description 取得尺寸
+// @Produce  json
+// @Success 200 {array} resp.Size "尺寸"
+// @Failure 500 {string} string "内部错误"
+// @Router /shop/size [get]
+func GetSize(c *gin.Context) {
+	data, err := logic.GetSize()
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	response := make([]*resp.Size, 0)
+	for _, v := range data {
+		response = append(response, &resp.Size{
+			ID:v.GetID(),
+			Size: v.GetName(),
+		})
+	}
+	c.JSON(http.StatusOK, response)
+}

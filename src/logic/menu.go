@@ -30,3 +30,16 @@ func GetItem() ([]*models.Item, error) {
 	items, err := database.Db.Menu().GetItems()
 	return items, err
 }
+
+func AddSize(name string) (*models.Size, error) {
+	size := &models.Size{
+		Name: name,
+	}
+	size, err := database.Db.Menu().AddSize(size)
+	return size, err
+}
+
+func GetSize() ([]*models.Size, error) {
+	sizes, err := database.Db.Menu().GetSizes()
+	return sizes, err
+}

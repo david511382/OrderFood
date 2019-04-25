@@ -385,6 +385,72 @@
                 }
             }
         },
+        "/shop/size": {
+            "get": {
+                "description": "取得尺寸",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "取得尺寸",
+                "responses": {
+                    "200": {
+                        "description": "尺寸",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.Size"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增尺寸",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "新增尺寸",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "尺寸",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "尺寸",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.Size"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "get": {
                 "security": [
@@ -571,6 +637,17 @@
                     "type": "integer"
                 },
                 "Name": {
+                    "type": "string"
+                }
+            }
+        },
+        "resp.Size": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "Size": {
                     "type": "string"
                 }
             }

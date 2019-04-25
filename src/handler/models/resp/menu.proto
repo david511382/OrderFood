@@ -15,6 +15,12 @@ message SizePrice {
 	int32 Price = 2;
 }
 
+// Size 。
+message Size {
+	int32 ID = 1;
+	string Size = 2;
+}
+
 // KindOption 。
 message KindOption {
 	string Kind = 1;

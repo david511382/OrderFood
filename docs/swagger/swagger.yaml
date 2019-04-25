@@ -72,6 +72,13 @@ definitions:
       Name:
         type: string
     type: object
+  resp.Size:
+    properties:
+      ID:
+        type: integer
+      Size:
+        type: string
+    type: object
   resp.SizePrice:
     properties:
       Price:
@@ -331,6 +338,50 @@ paths:
           schema:
             type: string
       summary: 取得菜單
+      tags:
+      - shop
+  /shop/size:
+    get:
+      description: 取得尺寸
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 尺寸
+          schema:
+            items:
+              $ref: '#/definitions/resp.Size'
+            type: array
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得尺寸
+      tags:
+      - shop
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 新增尺寸
+      parameters:
+      - description: 尺寸
+        in: formData
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 尺寸
+          schema:
+            $ref: '#/definitions/resp.Size'
+            type: object
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 新增尺寸
       tags:
       - shop
   /user:
