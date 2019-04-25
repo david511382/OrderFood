@@ -12,7 +12,7 @@ func (d *MenuDb) AddItem(item *models.Item) (*models.Item, error) {
 }
 
 func (d *MenuDb) GetItems() ([]*models.Item, error) {
-	iitems, err := orm.ItemDT.Select().Exec()
+	iitems, err := orm.ItemDT.Select(nil)
 	if err != nil {
 		return nil, err
 	}

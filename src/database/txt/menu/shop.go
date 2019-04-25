@@ -13,7 +13,7 @@ type MenuDb struct {
 
 func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 	// get shop id
-	ishops, err := orm.ShopDT.Select().Where(
+	ishops, err := orm.ShopDT.Select(
 		func(model interface{}) bool {
 			shop := model.(*models.Shop)
 			if shop.Name == shopName {
@@ -21,7 +21,7 @@ func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 			}
 
 			return false
-		}).Exec()
+		})
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +32,7 @@ func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 	shop := (ishops[0]).(*models.Shop)
 
 	// get item ids
-	ishopItems, err := orm.ShopItemDT.Select().Where(
+	ishopItems, err := orm.ShopItemDT.Select(
 		func(model interface{}) bool {
 			shopItem := model.(*models.ShopItem)
 			if shopItem.GetShopID() == shop.GetID() {
@@ -40,7 +40,7 @@ func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 			}
 
 			return false
-		}).Exec()
+		})
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 	}
 
 	// make every item
-	iItems, err := orm.ItemDT.Select().Where(
+	iItems, err := orm.ItemDT.Select(
 		func(model interface{}) bool {
 			item := model.(*models.Item)
 			for i, id := range shopItemIDs {
@@ -63,7 +63,7 @@ func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 			}
 
 			return false
-		}).Exec()
+		})
 	if err != nil {
 		return nil, err
 	}
@@ -78,23 +78,23 @@ func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 	}
 
 	// get item size and price
-	iAllItemSizes, err := orm.ItemSizeDT.Select().Exec()
+	iAllItemSizes, err := orm.ItemSizeDT.Select(nil)
 	if err != nil {
 		return nil, err
 	}
 
-	iAllSizes, err := orm.SizeDT.Select().Exec()
+	iAllSizes, err := orm.SizeDT.Select(nil)
 	if err != nil {
 		return nil, err
 	}
 
 	// get item kind and price
-	iAllItemKinds, err := orm.ItemKindDT.Select().Exec()
+	iAllItemKinds, err := orm.ItemKindDT.Select(nil)
 	if err != nil {
 		return nil, err
 	}
 
-	iAllKinds, err := orm.KindDT.Select().Exec()
+	iAllKinds, err := orm.KindDT.Select(nil)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func (d *MenuDb) AddShop(shop *models.Shop) (*models.Shop, error) {
 }
 
 func (d *MenuDb) GetShops() ([]*models.Shop, error) {
-	ishops, err := orm.ShopDT.Select().Exec()
+	ishops, err := orm.ShopDT.Select(nil)
 	if err != nil {
 		return nil, err
 	}

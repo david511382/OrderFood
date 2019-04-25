@@ -10,7 +10,7 @@ type MemberDb struct {
 }
 
 func (db *MemberDb) GetMembers() ([]models.Member, error) {
-	imembers, err := orm.MemberDT.Select().Exec()
+	imembers, err := orm.MemberDT.Select(nil)
 	if err != nil {
 		return nil, err
 	}
