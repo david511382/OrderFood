@@ -43,7 +43,32 @@ func getID( m interface{})int{
 	return 0
 }
 
-func setIDTest(id int32, m interface{}) error {
+func toPromes(m interface{})(pm proto.Message, err error) {
+	switch m.(type) {
+	case *models.Shop:
+		pm = m.(*models.Shop)
+	case *models.ShopItem:
+		pm = m.(*models.ShopItem)
+	case *models.Item:
+		pm = m.(*models.Item)
+	case *models.ItemSize:
+		pm = m.(*models.ItemSize)
+	case *models.Size:
+		pm = m.(*models.Size)
+	case *models.ItemKind:
+		pm = m.(*models.ItemKind)
+	case *models.Kind:
+		pm = m.(*models.Kind)
+	case *models.Member:
+		pm = m.(*models.Member)
+	default:
+		return nil, undefinedError	
+	}
+
+	return pm, nil
+}
+
+func setID(id int32, m interface{}) error {
 	t := reflect.TypeOf(m)
 	if t == nil || t.Kind() != reflect.Ptr {
 		return typeError
@@ -81,45 +106,6 @@ func setIDTest(id int32, m interface{}) error {
 	}
 
 	return nil
-}
-
-func setID(id int32, m interface{}) (proto.Message, error) {
-	switch m.(type) {
-	case *models.Shop:
-		model := &models.Shop{}
-		err:=setIDTest(id,model)
-		return model,err
-	case *models.ShopItem:
-		model := &models.ShopItem{}
-		err:=setIDTest(id,model)
-		return model,err
-	case *models.Item:
-		model := &models.Item{}
-		err:=setIDTest(id,model)
-		return model,err
-	case *models.ItemSize:
-		model := &models.ItemSize{}
-		err:=setIDTest(id,model)
-		return model,err
-	case *models.Size:
-		model := &models.Size{}
-		err:=setIDTest(id,model)
-		return model,err
-	case *models.ItemKind:
-		model := &models.ItemKind{}
-		err:=setIDTest(id,model)
-		return model,err
-	case *models.Kind:
-		model := &models.Kind{}
-		err:=setIDTest(id,model)
-		return model,err
-	case *models.Member:
-		model := &models.Member{}
-		err:=setIDTest(id,model)
-		return model,err
-	}
-
-	return nil, undefinedError
 }
 
 func readLine(line []byte, m interface{}) (proto.Message, error) {

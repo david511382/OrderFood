@@ -119,7 +119,14 @@ func (dt *DbTable) Insert(data interface{}) error {
 	}
 	id += getID(preData)
 	
-	newData, err:= setID(int32(id),data)
+	err= setID(int32(id),data)
+	if err != nil {
+		return err
+	}
+	newData,err:= toPromes(data)
+	if err != nil {
+		return err
+	}
 	out, err := proto.Marshal(newData)
 	if err != nil {
 		return err
@@ -158,7 +165,17 @@ func (dt *DbTable) Update(data proto.Message,condiction func(interface{}) bool) 
 		}
 
 		if condiction(model){
-			model=data
+			id:= getID(model)
+
+			err= setID(int32(id),data)
+			if err != nil {
+				return err
+			}
+			
+			model,err= toPromes(data)
+			if err != nil {
+				return err
+			}
 		}
 
 		line,err=proto.Marshal(model)
