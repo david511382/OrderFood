@@ -10,39 +10,40 @@ var (
 	dataPath string
 
 	undefinedError error = errors.New("Undefined Error")
+	typeError error = errors.New("Type Error")
 
 	ShopDT *DbTable = &DbTable{
 		Name:  "order_shop.shop.txt",
-		Model: models.Shop{},
+		Model: &models.Shop{},
 	}
 	ShopItemDT *DbTable = &DbTable{
 		Name:  "order_shop.shop_item.txt",
-		Model: models.ShopItem{},
+		Model: &models.ShopItem{},
 	}
 	ItemDT *DbTable = &DbTable{
 		Name:  "order_shop.item.txt",
-		Model: models.Item{},
+		Model: &models.Item{},
 	}
 	ItemSizeDT *DbTable = &DbTable{
 		Name:  "order_shop.item_size.txt",
-		Model: models.ItemSize{},
+		Model: &models.ItemSize{},
 	}
 	SizeDT *DbTable = &DbTable{
 		Name:  "order_shop.size.txt",
-		Model: models.Size{},
+		Model: &models.Size{},
 	}
 	ItemKindDT *DbTable = &DbTable{
 		Name:  "order_shop.item_kind.txt",
-		Model: models.ItemKind{},
+		Model: &models.ItemKind{},
 	}
 	KindDT *DbTable = &DbTable{
 		Name:  "order_shop.kind.txt",
-		Model: models.Kind{},
+		Model: &models.Kind{},
 	}
 
 	MemberDT *DbTable = &DbTable{
 		Name:  "order_member.user_info.txt",
-		Model: models.Member{},
+		Model: &models.Member{},
 	}
 
 	allFileNames []string = []string{

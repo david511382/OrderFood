@@ -28,8 +28,8 @@ func (db *MemberDb) GetMembers() ([]models.Member, error) {
 	return members, nil
 }
 
-func (db *MemberDb) AddMembers(member models.Member) error {
-	err := orm.MemberDT.Insert(&member)
+func (db *MemberDb) AddMembers(member *models.Member) error {
+	err := orm.MemberDT.Insert(member)
 	return err
 
 	// f.Sync()

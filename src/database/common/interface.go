@@ -17,7 +17,7 @@ type IDBM interface {
 
 type IMember interface {
 	GetMembers() ([]models.Member, error)
-	AddMembers(models.Member) error
+	AddMembers(*models.Member) error
 	UpdateMembers(models.Member) error
 }
 

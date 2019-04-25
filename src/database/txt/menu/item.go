@@ -7,6 +7,7 @@ import (
 
 func (d *MenuDb) AddItem(item *models.Item) (*models.Item, error) {
 	err := orm.ItemDT.Insert(item)
+	
 	return item, err
 }
 

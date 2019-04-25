@@ -3,7 +3,6 @@ package orm
 import (
 	"bufio"
 	"io"
-	"orderfood/src/database/models"
 	"reflect"
 	"strings"
 
@@ -15,7 +14,7 @@ type Table string
 
 type DbTable struct {
 	Name  Table
-	Model interface{}
+	Model proto.Message
 }
 
 const (
@@ -35,9 +34,10 @@ func (dt *DbTable) Select(cols ...string) *query {
 	}
 
 	t := reflect.TypeOf(dt.Model)
-	if t == nil || t.Kind() != reflect.Struct {
+	if t == nil || t.Kind() != reflect.Ptr {
 		return nil
 	}
+	t=t.Elem()
 
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
@@ -93,14 +93,34 @@ func (dt *DbTable) Select(cols ...string) *query {
 	return q
 }
 
-func (dt *DbTable) Insert(data proto.Message) error {
+func (dt *DbTable) Insert(data interface{}) error {
 	f, _, err := Connect(dt.TableName())
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 
-	out, err := proto.Marshal(data)
+	reader := bufio.NewReader(f)
+	var last []byte
+	id:=0
+	for {
+		line, _, err :=  reader.ReadLine()
+		if err == io.EOF {
+			break
+		}else if err != nil {
+			return err
+		}
+		id=1
+		last = line	
+	}	
+	preData, err := readLine(last, dt.Model)
+	if err != nil {
+		return err
+	}
+	id += getID(preData)
+	
+	newData, err:= setID(int32(id),data)
+	out, err := proto.Marshal(newData)
 	if err != nil {
 		return err
 	}
@@ -124,7 +144,7 @@ func (dt *DbTable) Update(data proto.Message,condiction func(interface{}) bool) 
 	const n = 10 // \n
 	allData := make([]byte, 0)	
 	reader := bufio.NewReader(f)
-	for id:=1;;id++{
+	for {
 		line, _, err := reader.ReadLine()
 		if err == io.EOF {
 			break
@@ -132,7 +152,7 @@ func (dt *DbTable) Update(data proto.Message,condiction func(interface{}) bool) 
 			return err
 		}
 
-		model, err := readLine(line, dt.Model, id)
+		model, err := readLine(line, dt.Model)
 		if err != nil {
 			return err
 		}
@@ -195,7 +215,7 @@ func (q *query) Exec() ([]interface{}, error) {
 			break
 		}
 
-		model, err := readLine(line, q.table.Model, id)
+		model, err := readLine(line, q.table.Model)
 		if err != nil {
 			return nil, err
 		}
@@ -210,75 +230,4 @@ func (q *query) Exec() ([]interface{}, error) {
 	}
 
 	return result, nil
-}
-
-func readLine(line []byte, m interface{}, id int) (proto.Message, error) {
-	switch m.(type) {
-	case models.Shop:
-		model := &models.Shop{}
-		err := proto.Unmarshal(line, model)
-		if err != nil {
-			return nil, err
-		}
-		model.ID = int32(id)
-		return model, nil
-	case models.ShopItem:
-		model := &models.ShopItem{}
-		err := proto.Unmarshal(line, model)
-		if err != nil {
-			return nil, err
-		}
-		//model.ID = int32(id)
-		return model, nil
-	case models.Item:
-		model := &models.Item{}
-		err := proto.Unmarshal(line, model)
-		if err != nil {
-			return nil, err
-		}
-		model.ID = int32(id)
-		return model, nil
-	case models.ItemSize:
-		model := &models.ItemSize{}
-		err := proto.Unmarshal(line, model)
-		if err != nil {
-			return nil, err
-		}
-		//model.ID = int32(id)
-		return model, nil
-	case models.Size:
-		model := &models.Size{}
-		err := proto.Unmarshal(line, model)
-		if err != nil {
-			return nil, err
-		}
-		model.ID = int32(id)
-		return model, nil
-	case models.ItemKind:
-		model := &models.ItemKind{}
-		err := proto.Unmarshal(line, model)
-		if err != nil {
-			return nil, err
-		}
-		//model.ID = int32(id)
-		return model, nil
-	case models.Kind:
-		model := &models.Kind{}
-		err := proto.Unmarshal(line, model)
-		if err != nil {
-			return nil, err
-		}
-		model.ID = int32(id)
-		return model, nil
-	case models.Member:
-		model := &models.Member{}
-		err := proto.Unmarshal(line, model)
-		if err != nil {
-			return nil, err
-		}
-		model.ID = int32(id)
-		return model, nil
-	}
-	
-	return nil, undefinedError
 }
