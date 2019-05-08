@@ -2,7 +2,11 @@
 
 package main
 
-import _ "orderfood/docs"
+import (
+	"fmt"
+	"net/http"
+	_ "orderfood/docs"
+)
 
 var isReleaseMode bool
 
@@ -10,10 +14,9 @@ func initServer() {
 	isReleaseMode = false
 }
 
-func getAddr() string {
-	return cfg.Domain()
-}
-
-func close() {
-
+func run(s *http.Server) {
+	fmt.Printf("Listen: %s\n", s.Addr)
+	if err := s.ListenAndServe(); err != nil {
+		panic(err)
+	}
 }

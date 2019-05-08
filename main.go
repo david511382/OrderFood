@@ -6,6 +6,11 @@ import (
 	"orderfood/src/logic"
 )
 
+const (
+	readTimeOut  = 10000
+	writeTimeout = 10000
+)
+
 var (
 	cfg *config.Config
 )
@@ -20,16 +25,20 @@ var (
 // @in header
 // @name Authorization
 func main() {
-	defer close()
-
 	initServer()
 
 	logic.Init(cfg)
 
-	router := handler.Init(isReleaseMode)
+	server := handler.Init(isReleaseMode)
 
-	addr := getAddr()
-	router.Run(addr)
+	addr := cfg.Domain()
+
+	server.Addr = addr
+	server.ReadTimeout = readTimeOut
+	server.WriteTimeout = writeTimeout
+	server.MaxHeaderBytes = 1 << 20
+
+	run(server)
 }
 
 func init() {

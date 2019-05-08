@@ -3,14 +3,21 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"fmt"
 	"net"
+	"net/http"
 	"orderfood/firewall"
 	"orderfood/src/config"
 	"orderfood/src/util"
 	"strings"
+	"time"
+)
+
+const (
+	firewallName = "OrderFood"
 )
 
 var (
@@ -27,11 +34,73 @@ func initServer() {
 	addFireWall()
 }
 
-func getAddr() string {
+func flagParse() {
+	//flag.BoolVar(&isManualListenIP, "ip", false, "is manual set ip")
+
+	flag.Parse()
+}
+
+func addFireWall() {
+	appname := "orderfood.exe"
+	appname, err := util.GetFilePath(appname)
+	if err != nil {
+		panic(err)
+	}
+	dirs := "in"
+	action := "allow"
+
+	err = firewall.AddFireWall(firewallName, appname, dirs, action)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("open fire wall")
+}
+
+func removeFireWall() {
+	err := firewall.DelFireWall(firewallName)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("close fire wall")
+}
+
+func run(s *http.Server) {
+	defer removeFireWall()
+
+	showAddr()
+
+	go func() {
+		if err := s.ListenAndServe(); err != nil {
+			fmt.Printf("Listen: %s\n", err)
+		}
+	}()
+
+	input := ""
+	for {
+		fmt.Println("input q to quit server")
+		fmt.Scanln(&input)
+		if input == "q" {
+			break
+		}
+	}
+
+	fmt.Println("Shutdown Server ...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := s.Shutdown(ctx); err != nil {
+		fmt.Println("Server Shutdown:", err)
+	}
+
+	fmt.Println("Server exiting")
+}
+
+func showAddr() {
 	releaseIP, err := getIP()
 	if err != nil {
-		fmt.Println(err)
-		return ""
+		panic(err)
 	}
 
 	releaseServer := &config.Config{
@@ -44,8 +113,6 @@ func getAddr() string {
 	releaseIP = releaseServer.Domain()
 
 	fmt.Println("current addr : " + releaseIP)
-
-	return releaseIP
 }
 
 func getIP() (string, error) {
@@ -78,36 +145,4 @@ func getIP() (string, error) {
 	}
 
 	return "", errors.New("ip not found")
-}
-
-func flagParse() {
-	//flag.BoolVar(&isManualListenIP, "ip", false, "is manual set ip")
-
-	flag.Parse()
-}
-
-const (
-	firewallName = "OrderFood"
-)
-
-func addFireWall() {
-	appname := "orderfood.exe"
-	appname, err := util.GetFilePath(appname)
-	if err != nil {
-		panic(err)
-	}
-	dirs := "in"
-	action := "allow"
-
-	err = firewall.AddFireWall(firewallName, appname, dirs, action)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func close() {
-	err := firewall.DelFireWall(firewallName)
-	if err != nil {
-		panic(err)
-	}
 }
