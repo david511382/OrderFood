@@ -23,15 +23,16 @@ message Size {
 
 // KindOption 。
 message KindOption {
-	string Kind = 1;
-	int32 Price = 2;
+	int32 ID = 1;
+	string Name = 2;
+	int32 Price = 3;
 }
 
 // MenuKind 。
 message MenuKind {
 	repeated MenuItem Items = 1;
-	repeated IntMap RequiredSelection = 3;
-	repeated KindOption CheckOption = 4;
+	repeated IntMap RequiredSelection = 2;
+	repeated KindOption CheckOption = 3;
 }
 
 // IntPair 。

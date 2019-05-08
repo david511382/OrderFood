@@ -7,7 +7,7 @@
         "license": {},
         "version": "1.0"
     },
-    "host": "localhost:5487",
+    "host": "{{.Host}}",
     "basePath": "/api/",
     "paths": {
         "/auth/register": {
@@ -222,6 +222,35 @@
                         }
                     }
                 }
+            }
+        },
+        "/shop/": {
+            "get": {
+                "description": "取得商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "取得商店",
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.Shop"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             },
             "post": {
                 "description": "新增商店",
@@ -248,10 +277,140 @@
                     "200": {
                         "description": "菜單",
                         "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.Shop"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/item": {
+            "get": {
+                "description": "取得商品",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "取得商品",
+                "responses": {
+                    "200": {
+                        "description": "商品",
+                        "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/resp.Shop"
+                                "$ref": "#/definitions/resp.MenuItem"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增商品",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "新增商品",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商品",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "商品",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.MenuItem"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/kind": {
+            "get": {
+                "description": "取得種類",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "取得種類",
+                "responses": {
+                    "200": {
+                        "description": "種類",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.KindOption"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增種類",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "新增種類",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "種類",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "種類",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.KindOption"
                         }
                     },
                     "500": {
@@ -281,6 +440,72 @@
                             "items": {
                                 "$ref": "#/definitions/resp.MenuKind"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop/size": {
+            "get": {
+                "description": "取得尺寸",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "取得尺寸",
+                "responses": {
+                    "200": {
+                        "description": "尺寸",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.Size"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增尺寸",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "新增尺寸",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "尺寸",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "尺寸",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.Size"
                         }
                     },
                     "500": {
@@ -395,6 +620,9 @@
                 },
                 "Password": {
                     "type": "string"
+                },
+                "Username": {
+                    "type": "string"
                 }
             }
         },
@@ -423,7 +651,10 @@
         "resp.KindOption": {
             "type": "object",
             "properties": {
-                "Kind": {
+                "ID": {
+                    "type": "integer"
+                },
+                "Name": {
                     "type": "string"
                 },
                 "Price": {
@@ -475,6 +706,17 @@
                     "type": "integer"
                 },
                 "Name": {
+                    "type": "string"
+                }
+            }
+        },
+        "resp.Size": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "Size": {
                     "type": "string"
                 }
             }

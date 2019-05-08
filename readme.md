@@ -1,4 +1,5 @@
 protoc
+go get -u github.com/golang/protobuf/protoc-gen-go
 start protomodel.bat
 
 go run main.go -ip

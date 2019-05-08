@@ -36,7 +36,7 @@ func GetMenu(c *gin.Context) {
 // @Param name formData string true "商品"
 // @Success 200 {object} resp.MenuItem "商品"
 // @Failure 500 {string} string "内部错误"
-// @Router /shop/item/ [post]
+// @Router /shop/item [post]
 func AddItem(c *gin.Context) {
 	itemName := c.PostForm("name")
 	if itemName == "" {
@@ -60,7 +60,7 @@ func AddItem(c *gin.Context) {
 // @Produce  json
 // @Success 200 {array} resp.MenuItem "商品"
 // @Failure 500 {string} string "内部错误"
-// @Router /shop/item/ [get]
+// @Router /shop/item [get]
 func GetItem(c *gin.Context) {
 	data, err := logic.GetItem()
 	if err != nil {
@@ -101,8 +101,8 @@ func AddSize(c *gin.Context) {
 	}
 
 	response := &resp.Size{
-		ID:data.GetID(),
-		Size:data.GetName(),
+		ID:   data.GetID(),
+		Size: data.GetName(),
 	}
 	c.JSON(http.StatusOK, response)
 }
@@ -125,8 +125,63 @@ func GetSize(c *gin.Context) {
 	response := make([]*resp.Size, 0)
 	for _, v := range data {
 		response = append(response, &resp.Size{
-			ID:v.GetID(),
+			ID:   v.GetID(),
 			Size: v.GetName(),
+		})
+	}
+	c.JSON(http.StatusOK, response)
+}
+
+// AddKind 新增種類
+// @Tags shop
+// @Summary 新增種類
+// @Description 新增種類
+// @Accept  x-www-form-urlencoded
+// @Produce  json
+// @Param name formData string true "種類"
+// @Success 200 {object} resp.KindOption "種類"
+// @Failure 500 {string} string "内部错误"
+// @Router /shop/kind [post]
+func AddKind(c *gin.Context) {
+	name := c.PostForm("name")
+	if name == "" {
+		c.AbortWithError(http.StatusBadRequest, nil)
+		return
+	}
+
+	data, err := logic.AddKind(name)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	response := &resp.KindOption{
+		ID:   data.GetID(),
+		Name: data.GetName(),
+	}
+	c.JSON(http.StatusOK, response)
+}
+
+// GetKind 取得種類
+// @Tags shop
+// @Summary 取得種類
+// @Description 取得種類
+// @Produce  json
+// @Success 200 {array} resp.KindOption "種類"
+// @Failure 500 {string} string "内部错误"
+// @Router /shop/kind [get]
+func GetKind(c *gin.Context) {
+	data, err := logic.GetKind()
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	response := make([]*resp.KindOption, 0)
+	for _, v := range data {
+		response = append(response, &resp.KindOption{
+			ID:   v.GetID(),
+			Name: v.GetName(),
 		})
 	}
 	c.JSON(http.StatusOK, response)

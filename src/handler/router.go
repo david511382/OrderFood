@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"net/http"
 	"orderfood/src/handler/auth"
 	"orderfood/src/handler/manager"
 	"orderfood/src/handler/middleware"
@@ -14,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Init(isReleaseMode bool) *http.Server {
+func Init(isReleaseMode bool) *gin.Engine {
 	router := gin.Default()
 
 	if isReleaseMode {
@@ -78,15 +77,13 @@ func Init(isReleaseMode bool) *http.Server {
 	sop.POST("/", shop.AddShop)
 	sop.GET("/", shop.GetShop)
 
-	sop.POST("/item/", shop.AddItem)
-	sop.GET("/item/", shop.GetItem)
+	sop.POST("/item", shop.AddItem)
+	sop.GET("/item", shop.GetItem)
 	sop.POST("/size", shop.AddSize)
 	sop.GET("/size", shop.GetSize)
+	sop.POST("/kind", shop.AddKind)
+	sop.GET("/kind", shop.GetKind)
 	sop.GET("/menu", shop.GetMenu)
 
-	server := &http.Server{
-		Handler: router,
-	}
-
-	return server
+	return router
 }

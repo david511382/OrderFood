@@ -43,3 +43,16 @@ func GetSize() ([]*models.Size, error) {
 	sizes, err := database.Db.Menu().GetSizes()
 	return sizes, err
 }
+
+func AddKind(name string) (*models.Kind, error) {
+	kind := &models.Kind{
+		Name: name,
+	}
+	kind, err := database.Db.Menu().AddKind(kind)
+	return kind, err
+}
+
+func GetKind() ([]*models.Kind, error) {
+	kinds, err := database.Db.Menu().GetKinds()
+	return kinds, err
+}
