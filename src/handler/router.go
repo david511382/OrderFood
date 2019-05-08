@@ -13,8 +13,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Init() *gin.Engine {
+func Init(isReleaseMode bool) *gin.Engine {
 	router := gin.Default()
+
+	if isReleaseMode {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		router.GET("/docs/*any", swag.Documents)
+	}
 
 	router.LoadHTMLGlob("src/templates/*.html")
 	router.StaticFile("src/img/rice.jpg", "src/img/rice.jpg")
@@ -29,8 +35,6 @@ func Init() *gin.Engine {
 	router.StaticFile("src/js/post.js", "src/js/post.js")
 	router.StaticFile("src/js/manager.js", "src/js/manager.js")
 	router.StaticFile("src/js/websocket.js", "src/js/websocket.js")
-
-	router.GET("/docs/*any", swag.Documents)
 
 	router.GET("", user.Index)
 

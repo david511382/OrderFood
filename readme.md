@@ -1,7 +1,9 @@
 protoc
 start protomodel.bat
 
-swag init
+go run main.go -ip
+go build -tags release
+./orderfood -ip
 
 docker
 docker build -t dockerfile .
