@@ -14,10 +14,14 @@ import (
 	"orderfood/src/util"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
 	firewallName = "OrderFood"
+	readTimeOut  = 10000
+	writeTimeout = 10000
 )
 
 var (
@@ -66,10 +70,18 @@ func removeFireWall() {
 	fmt.Println("close fire wall")
 }
 
-func run(s *http.Server) {
+func run(router *gin.Engine, addr string) {
 	defer removeFireWall()
 
 	showAddr()
+
+	s := &http.Server{
+		Handler:        router,
+		Addr:           addr,
+		ReadTimeout:    readTimeOut,
+		WriteTimeout:   writeTimeout,
+		MaxHeaderBytes: 1 << 20,
+	}
 
 	go func() {
 		if err := s.ListenAndServe(); err != nil {

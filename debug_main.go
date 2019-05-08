@@ -3,9 +3,9 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 	_ "orderfood/docs"
+
+	"github.com/gin-gonic/gin"
 )
 
 var isReleaseMode bool
@@ -14,9 +14,8 @@ func initServer() {
 	isReleaseMode = false
 }
 
-func run(s *http.Server) {
-	fmt.Printf("Listen: %s\n", s.Addr)
-	if err := s.ListenAndServe(); err != nil {
+func run(router *gin.Engine, addr string) {
+	if err := router.Run(addr); err != nil {
 		panic(err)
 	}
 }
