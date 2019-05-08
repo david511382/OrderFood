@@ -7,7 +7,9 @@ import (
 	"flag"
 	"fmt"
 	"net"
+	"orderfood/firewall"
 	"orderfood/src/config"
+	"orderfood/src/util"
 	"strings"
 )
 
@@ -21,6 +23,8 @@ func initServer() {
 	flagParse()
 
 	isReleaseMode = true
+
+	addFireWall()
 }
 
 func getAddr() string {
@@ -80,4 +84,30 @@ func flagParse() {
 	//flag.BoolVar(&isManualListenIP, "ip", false, "is manual set ip")
 
 	flag.Parse()
+}
+
+const (
+	firewallName = "OrderFood"
+)
+
+func addFireWall() {
+	appname := "orderfood.exe"
+	appname, err := util.GetFilePath(appname)
+	if err != nil {
+		panic(err)
+	}
+	dirs := "in"
+	action := "allow"
+
+	err = firewall.AddFireWall(firewallName, appname, dirs, action)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func close() {
+	err := firewall.DelFireWall(firewallName)
+	if err != nil {
+		panic(err)
+	}
 }

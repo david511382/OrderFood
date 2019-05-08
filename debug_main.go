@@ -13,3 +13,7 @@ func initServer() {
 func getAddr() string {
 	return cfg.Domain()
 }
+
+func close() {
+
+}

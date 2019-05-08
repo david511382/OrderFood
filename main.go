@@ -20,6 +20,8 @@ var (
 // @in header
 // @name Authorization
 func main() {
+	defer close()
+
 	initServer()
 
 	logic.Init(cfg)
