@@ -3,40 +3,31 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"net"
 	"orderfood/src/config"
-	"strconv"
 	"strings"
-	"time"
 )
 
 var (
 	isReleaseMode bool
 
 	isManualListenIP bool
-	ipChan           chan string
-	defaultIP        string
 )
 
 func initServer() {
 	flagParse()
 
 	isReleaseMode = true
-	ipChan, defaultIP = listenIP()
 }
 
 func getAddr() string {
-	releaseIP := ""
-
-	for releaseIP == "" {
-		select {
-		case releaseIP = <-ipChan:
-		case <-time.After(10 * time.Second):
-			releaseIP = defaultIP
-			fmt.Println("use default addr")
-		}
+	releaseIP, err := getIP()
+	if err != nil {
+		fmt.Println(err)
+		return ""
 	}
 
 	releaseServer := &config.Config{
@@ -48,90 +39,45 @@ func getAddr() string {
 
 	releaseIP = releaseServer.Domain()
 
-	fmt.Println("use addr : " + releaseIP)
+	fmt.Println("current addr : " + releaseIP)
 
 	return releaseIP
 }
 
-func getIP() ([]string, error) {
+func getIP() (string, error) {
+	const ipStart = "192.168."
+	targetMask := net.IPv4Mask(255, 255, 255, 0)
+	targetMaskStr := targetMask.String()
+
 	ifaces, err := net.Interfaces()
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	result := make([]string, 0)
 	for _, i := range ifaces {
 		addrs, err := i.Addrs()
 		if err != nil {
-			return nil, err
+			return "", err
 		}
 
 		for _, addr := range addrs {
 			if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
 				if ipnet.IP.To4() != nil {
-					result = append(result, ipnet.IP.String())
+					if maskStr := ipnet.Mask.String(); maskStr == targetMaskStr {
+						if ip := ipnet.IP.String(); strings.HasPrefix(ip, ipStart) {
+							return ip, nil
+						}
+					}
 				}
 			}
 		}
 	}
 
-	return result, nil
-}
-
-func listenIP() (ipChan chan string, defaultIP string) {
-	ipChan = make(chan string)
-
-	ips, err := getIP()
-	if err != nil {
-		fmt.Println(err)
-		ipChan <- ""
-		return
-	}
-
-	const ipStart = "192.168."
-	defaultIP = ips[len(ips)-1]
-	for _, ip := range ips {
-		if strings.HasPrefix(ip, ipStart) {
-			defaultIP = ip
-			break
-		}
-	}
-
-	go func() {
-		defer close(ipChan)
-
-		if isManualListenIP {
-			output := make([]string, 0)
-			output = append(output, "all ips")
-			for i, ip := range ips {
-				output = append(output, "id:"+strconv.Itoa(i)+"  ip:"+ip)
-			}
-			output = append(output, "input ip id")
-			outputStr := strings.Join(output, "\n")
-			fmt.Println(outputStr)
-
-			input := ""
-			fmt.Scanln(&input)
-			iip, err := strconv.Atoi(input)
-			if err == nil {
-				if iip >= len(ips) || iip < 0 {
-					fmt.Print("out of range")
-				} else {
-					defaultIP = ips[iip]
-				}
-			} else {
-				fmt.Println("wrong input " + input)
-			}
-		}
-
-		ipChan <- defaultIP
-	}()
-
-	return
+	return "", errors.New("ip not found")
 }
 
 func flagParse() {
-	flag.BoolVar(&isManualListenIP, "ip", true, "is manual set ip")
+	//flag.BoolVar(&isManualListenIP, "ip", false, "is manual set ip")
 
 	flag.Parse()
 }
