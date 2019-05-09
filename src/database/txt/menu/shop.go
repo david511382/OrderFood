@@ -24,9 +24,7 @@ func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 		})
 	if err != nil {
 		return nil, err
-	}
-
-	if len(ishops) != 1 {
+	} else if len(ishops) != 1 {
 		return nil, common.DbDataError
 	}
 	shop := (ishops[0]).(*models.Shop)
@@ -43,6 +41,8 @@ func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 		})
 	if err != nil {
 		return nil, err
+	} else if len(ishopItems) == 0 {
+		return nil, common.DbDataError
 	}
 
 	shopItemIDs := make([]int32, 0)

@@ -422,7 +422,7 @@
                 }
             }
         },
-        "/shop/menu": {
+        "/shop/menu/{shop}": {
             "get": {
                 "description": "取得菜單",
                 "produces": [
@@ -432,6 +432,15 @@
                     "shop"
                 ],
                 "summary": "取得菜單",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "shop",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "菜單",

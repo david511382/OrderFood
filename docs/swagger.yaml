@@ -367,9 +367,15 @@ paths:
       summary: 新增種類
       tags:
       - shop
-  /shop/menu:
+  /shop/menu/{shop}:
     get:
       description: 取得菜單
+      parameters:
+      - description: 商店
+        in: path
+        name: shop
+        required: true
+        type: string
       produces:
       - application/json
       responses:

@@ -84,7 +84,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 	sop.GET("/size", shop.GetSize)
 	sop.POST("/kind", shop.AddKind)
 	sop.GET("/kind", shop.GetKind)
-	sop.GET("/menu", shop.GetMenu)
+	sop.GET("/menu/:shop", shop.GetMenu)
 
 	return router
 }
