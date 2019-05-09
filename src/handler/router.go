@@ -46,6 +46,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 		middleware.Verify,
 	)
 	mangr.GET("/", manager.Manager)
+	mangr.PUT("/shop", manager.ChangeView)
 
 	api := router.Group("api")
 
@@ -73,7 +74,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 	sop.Use(
 		middleware.Verify,
 	)
-	sop.PUT("/", manager.ChangeView)
+
 	sop.POST("/", shop.AddShop)
 	sop.GET("/", shop.GetShop)
 
