@@ -6,9 +6,7 @@ import (
 	"orderfood/src/handler/models/resp"
 )
 
-func GetMenu() ([]resp.MenuKind, error) {
-	shop := GetView()
-
+func GetMenu(shop string) ([]resp.MenuKind, error) {
 	_, err := database.Db.Menu().GetMenus(shop)
 	if err != nil {
 		return nil, err
