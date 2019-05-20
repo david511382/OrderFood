@@ -29,6 +29,7 @@ type IMenu interface {
 	GetKinds() ([]*models.Kind, error)
 
 	AddShop(*models.Shop) (*models.Shop, error)
+	AddShopItem(*models.ShopItem) (*models.ShopItem, error)
 	AddItem(*models.Item) (*models.Item, error)
 	AddSize(*models.Size) (*models.Size, error)
 	AddKind(*models.Kind) (*models.Kind, error)

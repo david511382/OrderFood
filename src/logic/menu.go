@@ -16,15 +16,28 @@ func GetMenu(shop string) ([]resp.MenuKind, error) {
 	return resp, nil
 }
 
-func AddItem(name string) (*models.Item, error) {
+func AddShopItem(shopID int32, name string) (*models.Item, error) {
 	item := &models.Item{
 		Name: name,
 	}
 	item, err := database.Db.Menu().AddItem(item)
+	if err != nil {
+		return item, err
+	}
+
+	shopitem := &models.ShopItem{
+		ShopID:     shopID,
+		MenuItemID: item.GetID(),
+	}
+	shopitem, err = database.Db.Menu().AddShopItem(shopitem)
+	if err != nil {
+		return nil, err
+	}
+
 	return item, err
 }
 
-func GetItem() ([]*models.Item, error) {
+func GetShopItem() ([]*models.Item, error) {
 	items, err := database.Db.Menu().GetItems()
 	return items, err
 }

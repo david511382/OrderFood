@@ -5,8 +5,10 @@ package resp;
 
 // MenuItem 。
 message MenuItem {
-	string Name = 1; 
-	repeated SizePrice SizePrice = 2;
+	int32 ShopID = 1; 
+	int32 ItemID = 2; 
+	string Name = 3; 
+	repeated SizePrice SizePrice = 4;
 }
 
 // SizePrice 。

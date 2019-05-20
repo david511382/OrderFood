@@ -3,6 +3,7 @@ package shop
 import (
 	"net/http"
 	"orderfood/src/logic"
+	"strconv"
 
 	"orderfood/src/handler/models/resp"
 
@@ -36,6 +37,7 @@ func GetMenu(c *gin.Context) {
 // @Description 新增商品
 // @Accept  x-www-form-urlencoded
 // @Produce  json
+// @Param shop_id formData int true "商店ID"
 // @Param name formData string true "商品"
 // @Success 200 {object} resp.MenuItem "商品"
 // @Failure 500 {string} string "内部错误"
@@ -46,8 +48,14 @@ func AddItem(c *gin.Context) {
 		c.AbortWithError(http.StatusBadRequest, nil)
 		return
 	}
+	shopIDStr := c.PostForm("shop_id")
+	shopID, err := strconv.Atoi(shopIDStr)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, nil)
+		return
+	}
 
-	data, err := logic.AddItem(itemName)
+	data, err := logic.AddShopItem(int32(shopID), itemName)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -61,11 +69,12 @@ func AddItem(c *gin.Context) {
 // @Summary 取得商品
 // @Description 取得商品
 // @Produce  json
+// @Param shop_id formData int false "商店ID"
 // @Success 200 {array} resp.MenuItem "商品"
 // @Failure 500 {string} string "内部错误"
 // @Router /shop/item [get]
 func GetItem(c *gin.Context) {
-	data, err := logic.GetItem()
+	data, err := logic.GetShopItem()
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -74,7 +83,8 @@ func GetItem(c *gin.Context) {
 	response := make([]*resp.MenuItem, 0)
 	for _, v := range data {
 		response = append(response, &resp.MenuItem{
-			Name: v.GetName(),
+			ItemID: v.GetID(),
+			Name:   v.GetName(),
 		})
 	}
 	c.JSON(http.StatusOK, response)

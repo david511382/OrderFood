@@ -45,8 +45,12 @@ definitions:
     type: object
   resp.MenuItem:
     properties:
+      ItemID:
+        type: integer
       Name:
         type: string
+      ShopID:
+        type: integer
       SizePrice:
         items:
           $ref: '#/definitions/resp.SizePrice'
@@ -282,6 +286,11 @@ paths:
   /shop/item:
     get:
       description: 取得商品
+      parameters:
+      - description: 商店ID
+        in: formData
+        name: shop_id
+        type: integer
       produces:
       - application/json
       responses:
@@ -303,6 +312,11 @@ paths:
       - application/x-www-form-urlencoded
       description: 新增商品
       parameters:
+      - description: 商店ID
+        in: formData
+        name: shop_id
+        required: true
+        type: integer
       - description: 商品
         in: formData
         name: name
