@@ -12,13 +12,18 @@ func (d *MenuDb) AddItem(item *models.Item) (*models.Item, error) {
 }
 
 func (d *MenuDb) GetItems(shopID int32) ([]*models.Item, error) {
-	iitemIDs, err := orm.ShopItemDT.Select(func(model interface{}) bool {
+	condition := func(model interface{}) bool {
 		item := model.(*models.ShopItem)
 		if item.GetShopID() == shopID {
 			return true
 		}
 		return false
-	})
+	}
+	if shopID == 0 {
+		condition = nil
+	}
+
+	iitemIDs, err := orm.ShopItemDT.Select(condition)
 	if err != nil {
 		return nil, err
 	}
@@ -56,4 +61,10 @@ func (d *MenuDb) AddShopItem(item *models.ShopItem) (*models.ShopItem, error) {
 	err := orm.ShopItemDT.Insert(item)
 
 	return item, err
+}
+
+func (d *MenuDb) AddItemSize(itemSize *models.ItemSize) (*models.ItemSize, error) {
+	err := orm.ItemSizeDT.Insert(itemSize)
+
+	return itemSize, err
 }

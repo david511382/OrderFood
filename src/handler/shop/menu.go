@@ -103,6 +103,40 @@ func GetItem(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// AddItemSize 新增商品尺寸
+// @Tags shop
+// @Summary 新增商品尺寸
+// @Description 新增商品尺寸
+// @Accept  x-www-form-urlencoded
+// @Produce  json
+// @Param item_id formData int true "商店ID"
+// @Param size_id formData int true "尺寸ID"
+// @Success 200 {object} resp.MenuItem "商品"
+// @Failure 500 {string} string "内部错误"
+// @Router /shop/item/size [post]
+func AddItemSize(c *gin.Context) {
+	itemIDStr := c.PostForm("item_id")
+	itemID, err := strconv.Atoi(itemIDStr)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, nil)
+		return
+	}
+	sizeIDStr := c.PostForm("size_id")
+	sizeID, err := strconv.Atoi(sizeIDStr)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, nil)
+		return
+	}
+
+	data, err := logic.AddItemSize(int32(itemID), int32(sizeID))
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, data)
+}
+
 // AddSize 新增尺寸
 // @Tags shop
 // @Summary 新增尺寸

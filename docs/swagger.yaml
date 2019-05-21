@@ -338,6 +338,37 @@ paths:
       summary: 取得商品
       tags:
       - shop
+  /shop/item/size:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 新增商品尺寸
+      parameters:
+      - description: 商店ID
+        in: formData
+        name: item_id
+        required: true
+        type: integer
+      - description: 尺寸ID
+        in: formData
+        name: size_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 商品
+          schema:
+            $ref: '#/definitions/resp.MenuItem'
+            type: object
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 新增商品尺寸
+      tags:
+      - shop
   /shop/kind:
     get:
       description: 取得種類

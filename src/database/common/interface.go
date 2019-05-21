@@ -32,5 +32,6 @@ type IMenu interface {
 	AddShopItem(*models.ShopItem) (*models.ShopItem, error)
 	AddItem(*models.Item) (*models.Item, error)
 	AddSize(*models.Size) (*models.Size, error)
+	AddItemSize(*models.ItemSize) (*models.ItemSize, error)
 	AddKind(*models.Kind) (*models.Kind, error)
 }

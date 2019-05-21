@@ -50,6 +50,39 @@ func AddSize(name string) (*models.Size, error) {
 	return size, err
 }
 
+func AddItemSize(itemID int32, sizeID int32) (*models.ItemSize, error) {
+	sizes, err := database.Db.Menu().GetSizes()
+	exist := false
+	for _, size := range sizes {
+		if size.GetID() == sizeID {
+			exist = true
+			break
+		}
+	}
+	if !exist {
+		return nil, ParamError
+	}
+
+	items, err := database.Db.Menu().GetItems(0)
+	exist = false
+	for _, item := range items {
+		if item.GetID() == itemID {
+			exist = true
+			break
+		}
+	}
+	if !exist {
+		return nil, ParamError
+	}
+
+	itemSize := &models.ItemSize{
+		ItemID: itemID,
+		SizeID: sizeID,
+	}
+	itemSize, err = database.Db.Menu().AddItemSize(itemSize)
+	return itemSize, err
+}
+
 func GetSize() ([]*models.Size, error) {
 	sizes, err := database.Db.Menu().GetSizes()
 	return sizes, err

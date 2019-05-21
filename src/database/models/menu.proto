@@ -48,7 +48,6 @@ message ItemKind {
 
 
 // response
-
 message SizePrice {
 	string Size = 1;
 	int32 Price = 2;

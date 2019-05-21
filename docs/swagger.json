@@ -336,6 +336,52 @@
                 }
             }
         },
+        "/shop/item/size": {
+            "post": {
+                "description": "新增商品尺寸",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "新增商品尺寸",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "商店ID",
+                        "name": "item_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "尺寸ID",
+                        "name": "size_id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "商品",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.MenuItem"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/shop/item/{shop_id}": {
             "get": {
                 "description": "取得商品",

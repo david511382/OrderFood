@@ -23,3 +23,7 @@ func (d *mysqlDb) AddItem(item *models.Item) (*models.Item, error) {
 func (d *mysqlDb) GetItems(shopID int32) ([]*models.Item, error) {
 	return nil, nil
 }
+
+func (d *mysqlDb) AddItemSize(itemSize *models.ItemSize) (*models.ItemSize, error) {
+	return nil, nil
+}
