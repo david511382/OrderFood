@@ -37,8 +37,8 @@ func AddShopItem(shopID int32, name string) (*models.Item, error) {
 	return item, err
 }
 
-func GetShopItem() ([]*models.Item, error) {
-	items, err := database.Db.Menu().GetItems()
+func GetShopItem(shopID int32) ([]*models.Item, error) {
+	items, err := database.Db.Menu().GetItems(shopID)
 	return items, err
 }
 

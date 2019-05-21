@@ -20,6 +20,6 @@ func (d *mysqlDb) AddItem(item *models.Item) (*models.Item, error) {
 	return nil, nil
 }
 
-func (d *mysqlDb) GetItems() ([]*models.Item, error) {
+func (d *mysqlDb) GetItems(shopID int32) ([]*models.Item, error) {
 	return nil, nil
 }

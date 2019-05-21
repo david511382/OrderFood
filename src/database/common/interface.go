@@ -24,7 +24,7 @@ type IMember interface {
 type IMenu interface {
 	GetMenus(shop string) ([]models.MenuItem, error)
 	GetShops() ([]*models.Shop, error)
-	GetItems() ([]*models.Item, error)
+	GetItems(shopID int32) ([]*models.Item, error)
 	GetSizes() ([]*models.Size, error)
 	GetKinds() ([]*models.Kind, error)
 

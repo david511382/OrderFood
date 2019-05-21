@@ -69,12 +69,25 @@ func AddItem(c *gin.Context) {
 // @Summary 取得商品
 // @Description 取得商品
 // @Produce  json
-// @Param shop_id formData int false "商店ID"
+// @Param shop_id path int false "商店ID"
 // @Success 200 {array} resp.MenuItem "商品"
 // @Failure 500 {string} string "内部错误"
-// @Router /shop/item [get]
+// @Router /shop/item/{shop_id} [get]
 func GetItem(c *gin.Context) {
-	data, err := logic.GetShopItem()
+	var shopID int
+	var err error
+	shopIDStr := c.Param("shop_id")
+	if shopIDStr == "undefined" {
+		shopID = 0
+	} else {
+		shopID, err = strconv.Atoi(shopIDStr)
+		if err != nil {
+			c.AbortWithError(http.StatusBadRequest, nil)
+			return
+		}
+	}
+
+	data, err := logic.GetShopItem(int32(shopID))
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return

@@ -79,7 +79,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 	sop.GET("/", shop.GetShop)
 
 	sop.POST("/item", shop.AddItem)
-	sop.GET("/item", shop.GetItem)
+	sop.GET("/item/:shop_id", shop.GetItem)
 	sop.POST("/size", shop.AddSize)
 	sop.GET("/size", shop.GetSize)
 	sop.POST("/kind", shop.AddKind)

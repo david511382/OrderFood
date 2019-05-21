@@ -56,8 +56,11 @@ func (d *MenuDb) GetMenus(shopName string) ([]models.MenuItem, error) {
 			item := model.(*models.Item)
 			for i, id := range shopItemIDs {
 				if item.GetID() == id {
-					shopItemIDs = append(shopItemIDs[:0], shopItemIDs[:i]...)
-					shopItemIDs = append(shopItemIDs, shopItemIDs[i+1:]...)
+					pre := shopItemIDs[:i]
+					aft := shopItemIDs[i+1:]
+					shopItemIDs = append(shopItemIDs[:0], pre...)
+					shopItemIDs = append(shopItemIDs, aft...)
+
 					return true
 				}
 			}
