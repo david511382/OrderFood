@@ -5,6 +5,7 @@ import (
 	"io"
 
 	"io/ioutil"
+
 	proto "github.com/golang/protobuf/proto"
 )
 
@@ -24,7 +25,7 @@ func (dt *DbTable) TableName() string {
 	return string(dt.Name)
 }
 
-func (dt *DbTable) Select(condiction func(interface{}) bool) ([]interface{},error) {
+func (dt *DbTable) Select(condiction func(interface{}) bool) ([]interface{}, error) {
 	f, _, err := Connect(dt.TableName())
 	if err != nil {
 		return nil, err
@@ -37,8 +38,8 @@ func (dt *DbTable) Select(condiction func(interface{}) bool) ([]interface{},erro
 		line, _, err := reader.ReadLine()
 		if err == io.EOF {
 			break
-		}else if err != nil {
-			return nil,err
+		} else if err != nil {
+			return nil, err
 		}
 
 		model, err := readLine(line, dt.Model)
@@ -46,7 +47,7 @@ func (dt *DbTable) Select(condiction func(interface{}) bool) ([]interface{},erro
 			return nil, err
 		}
 
-		if condiction==nil||condiction(model){
+		if condiction == nil || condiction(model) {
 			result = append(result, model)
 		}
 	}
@@ -63,28 +64,26 @@ func (dt *DbTable) Insert(data interface{}) error {
 
 	reader := bufio.NewReader(f)
 	var last []byte
-	id:=0
 	for {
-		line, _, err :=  reader.ReadLine()
+		line, _, err := reader.ReadLine()
 		if err == io.EOF {
 			break
-		}else if err != nil {
+		} else if err != nil {
 			return err
 		}
-		id=1
-		last = line	
-	}	
+		last = line
+	}
 	preData, err := readLine(last, dt.Model)
 	if err != nil {
 		return err
 	}
-	id += getID(preData)
-	
-	err= setID(int32(id),data)
+
+	id := getID(preData) + 1
+	err = setID(int32(id), data)
 	if err != nil {
 		return err
 	}
-	newData,err:= toPromes(data)
+	newData, err := toPromes(data)
 	if err != nil {
 		return err
 	}
@@ -102,7 +101,7 @@ func (dt *DbTable) Insert(data interface{}) error {
 	return err
 }
 
-func (dt *DbTable) Update(data proto.Message,condiction func(interface{}) bool) error {
+func (dt *DbTable) Update(data proto.Message, condiction func(interface{}) bool) error {
 	f, filepath, err := Connect(dt.TableName())
 	if err != nil {
 		return err
@@ -110,13 +109,13 @@ func (dt *DbTable) Update(data proto.Message,condiction func(interface{}) bool) 
 	defer f.Close()
 
 	const n = 10 // \n
-	allData := make([]byte, 0)	
+	allData := make([]byte, 0)
 	reader := bufio.NewReader(f)
 	for {
 		line, _, err := reader.ReadLine()
 		if err == io.EOF {
 			break
-		}else if err != nil {
+		} else if err != nil {
 			return err
 		}
 
@@ -125,21 +124,21 @@ func (dt *DbTable) Update(data proto.Message,condiction func(interface{}) bool) 
 			return err
 		}
 
-		if condiction==nil||condiction(model){
-			id:= getID(model)
+		if condiction == nil || condiction(model) {
+			id := getID(model)
 
-			err= setID(int32(id),data)
+			err = setID(int32(id), data)
 			if err != nil {
 				return err
 			}
-			
-			model,err= toPromes(data)
+
+			model, err = toPromes(data)
 			if err != nil {
 				return err
 			}
 		}
 
-		line,err=proto.Marshal(model)
+		line, err = proto.Marshal(model)
 		if err != nil {
 			return err
 		}
