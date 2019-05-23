@@ -20,7 +20,10 @@ var (
 )
 
 func Init(cfg *config.Config) {
-	initTxt(cfg.Txt)
+	err := initMySQL(cfg.MySQL)
+	if err != nil {
+		initTxt(cfg.Txt)
+	}
 
 	LoadMembers()
 }
@@ -51,19 +54,21 @@ func initTxt(dbCfg config.DbConfig) {
 	}
 }
 
-func initMySQL(dbCfg config.DbConfig) {
+func initMySQL(dbCfg config.DbConfig) error {
 	err := database.InitMysql(dbCfg)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	Members, err = database.Db.Member().GetMembers()
 	if err != nil {
 		err = database.Db.DBM().RebuildDb(dbCfg)
 		if err != nil {
-			panic(err)
+			return err
 		}
 	}
+
+	return nil
 }
 
 func SetView(view string) {
