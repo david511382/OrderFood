@@ -1,6 +1,6 @@
-//+build !release
+//+build !release,!docker
 
-package main
+package tags
 
 import (
 	_ "orderfood/docs"
@@ -8,10 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var isReleaseMode bool
-
-func initServer() {
+func initConfig()  {
 	isReleaseMode = false
+	configPath = "./src/config/config.yml"
 }
 
 func run(router *gin.Engine, addr string) {

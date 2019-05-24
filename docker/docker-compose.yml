@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: mysql
+    build: mysql
+    volumes:
+      - data-volume:/var/lib/mysql
+    networks:
+        orderfoodnetwork:
+            ipv4_address: 172.19.0.9
+            
+  orderfood:
+    container_name: orderfood
+    build:
+        context: ../
+        dockerfile: docker/orderfood/dockerfile
+    ports:
+      - "5487:5487"
+    networks:
+        orderfoodnetwork:
+            ipv4_address: 172.19.0.8
+           
+volumes:
+  data-volume:
+  
+networks:
+   orderfoodnetwork:
+      ipam:
+         config:
+         - subnet: 172.19.0.0/16

@@ -4,7 +4,6 @@ go 1.12
 
 require (
 	github.com/ahmetb/go-linq v3.0.0+incompatible
-	github.com/akavel/rsrc v0.8.0 // indirect
 	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc
 	github.com/gin-gonic/gin v1.3.0
 	github.com/go-openapi/jsonpointer v0.19.0 // indirect

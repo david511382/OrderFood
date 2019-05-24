@@ -7,8 +7,7 @@ go build -tags release
 ./orderfood -ip
 
 docker
-docker build -t dockerfile .
-docker run --rm -p 5487:5487 -i dockerfile /bin/orderfood
+docker-compose -f ./docker/docker-compose.yml up -d --build
 https://philipzheng.gitbooks.io/docker_practice/content/dockerfile/instructions.html
 
 go get github.com/akavel/rsrc

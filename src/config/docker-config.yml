@@ -1,0 +1,10 @@
+server:
+  host: ""
+  port: 5487
+
+mysql:
+  domain: "172.19.0.9:3306"
+  username: "root"
+  password: "root"
+  database: "order_member"
+  param: "charset=utf8mb4&parseTime=true"

@@ -1,13 +1,9 @@
 package main
 
 import (
-	"orderfood/src/config"
 	"orderfood/src/handler"
 	"orderfood/src/logic"
-)
-
-var (
-	cfg *config.Config
+	"orderfood/tags"
 )
 
 // @title Order Food API
@@ -20,7 +16,7 @@ var (
 // @in header
 // @name Authorization
 func main() {
-	initServer()
+	cfg, isReleaseMode := tags.InitConfig()
 
 	logic.Init(cfg)
 
@@ -28,14 +24,5 @@ func main() {
 
 	addr := cfg.Domain()
 
-	run(router, addr)
-}
-
-func init() {
-	err := config.ReadConfig("./src/config/config.yml")
-	if err != nil {
-		panic(err)
-	}
-
-	cfg = config.Get()
+	tags.Run(router, addr)
 }

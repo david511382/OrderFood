@@ -1,0 +1,16 @@
+FROM golang:1.12 AS builder
+MAINTAINER David
+
+LABEL description="test" version="1.0" owner="David"
+
+RUN mkdir /orderfood
+WORKDIR /orderfood
+
+COPY . .
+
+#COPY go.mod .
+#COPY go.sum .
+#RUN go mod download 
+RUN go build -tags docker -o /bin/orderfood
+
+CMD ["/bin/orderfood"]

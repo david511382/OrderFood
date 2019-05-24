@@ -1,73 +1,25 @@
 //+build release
 
-package main
+package tags
 
 import (
 	"context"
 	"errors"
-	"flag"
 	"fmt"
 	"net"
 	"net/http"
-	"orderfood/firewall"
 	"orderfood/src/config"
-	"orderfood/src/util"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-const (
-	firewallName = "OrderFood"
-	readTimeOut  = 10000
-	writeTimeout = 10000
-)
-
-var (
-	isReleaseMode bool
-
-	isManualListenIP bool
-)
-
-func initServer() {
-	flagParse()
-
+func initConfig() {
 	isReleaseMode = true
+	configPath = "./src/config/config.yml"
 
 	addFireWall()
-}
-
-func flagParse() {
-	//flag.BoolVar(&isManualListenIP, "ip", false, "is manual set ip")
-
-	flag.Parse()
-}
-
-func addFireWall() {
-	appname := "orderfood.exe"
-	appname, err := util.GetFilePath(appname)
-	if err != nil {
-		panic(err)
-	}
-	dirs := "in"
-	action := "allow"
-
-	err = firewall.AddFireWall(firewallName, appname, dirs, action)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("open fire wall")
-}
-
-func removeFireWall() {
-	err := firewall.DelFireWall(firewallName)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("close fire wall")
 }
 
 func run(router *gin.Engine, addr string) {
