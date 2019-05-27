@@ -6,5 +6,5 @@ mysql:
   domain: "172.19.0.9:3306"
   username: "root"
   password: "root"
-  database: "order_member"
+  database: ""
   param: "charset=utf8mb4&parseTime=true"

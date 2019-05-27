@@ -3,7 +3,6 @@ package logic
 import (
 	"orderfood/src/config"
 	"orderfood/src/database"
-	"orderfood/src/util"
 
 	"strconv"
 	"strings"
@@ -31,26 +30,7 @@ func Init(cfg *config.Config) {
 func initTxt(dbCfg config.DbConfig) {
 	err := database.InitTxt(dbCfg)
 	if err != nil {
-		err = database.Db.DBM().RebuildDb(dbCfg)
-		if err != nil { // no folder
-			path, err := util.GetFilePath("")
-			if err != nil {
-				panic(err)
-			}
-			path += `\data`
-
-			err = util.MakeFolderOn(path)
-			if err != nil {
-				panic(err)
-			}
-
-			err = database.Db.DBM().RebuildDb(dbCfg)
-			if err != nil {
-				panic(err)
-			}
-		}
-
-		return
+		panic(err)
 	}
 }
 
@@ -58,14 +38,6 @@ func initMySQL(dbCfg config.DbConfig) error {
 	err := database.InitMysql(dbCfg)
 	if err != nil {
 		return err
-	}
-
-	Members, err = database.Db.Member().GetMembers()
-	if err != nil {
-		err = database.Db.DBM().RebuildDb(dbCfg)
-		if err != nil {
-			return err
-		}
 	}
 
 	return nil

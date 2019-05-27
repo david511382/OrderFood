@@ -6,7 +6,7 @@ mysql:
   domain: "localhost:3306"
   username: "root"
   password: "root"
-  database: "order_member"
+  database: ""
   param: "charset=utf8mb4&parseTime=true"
 
 txt:

@@ -1,7 +1,6 @@
 package common
 
 import (
-	"orderfood/src/config"
 	"orderfood/src/database/models"
 )
 
@@ -12,7 +11,7 @@ type IDb interface {
 }
 
 type IDBM interface {
-	RebuildDb(dbCfg config.DbConfig) error
+	RebuildDb() error
 }
 
 type IMember interface {

@@ -55,7 +55,7 @@ func NewDb(dbCfg config.DbConfig) (*txtDb, error) {
 	return db, nil
 }
 
-func (d *txtDb) RebuildDb(dbCfg config.DbConfig) error {
+func (d *txtDb) RebuildDb() error {
 	allFileNames := orm.GetAllFilePaths()
 	for _, file := range allFileNames {
 		f, err := os.Create(file)

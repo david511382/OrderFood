@@ -17,7 +17,7 @@ func (d *mysqlDb) GetMembers() ([]models.Member, error) {
 	return members, err
 }
 
-func (d *mysqlDb) AddMembers(models.Member) error {
+func (d *mysqlDb) AddMembers(*models.Member) error {
 	return nil
 }
 

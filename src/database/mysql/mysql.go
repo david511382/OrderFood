@@ -4,9 +4,10 @@ import (
 	"orderfood/src/config"
 	"orderfood/src/database/common"
 
-	"github.com/jmoiron/sqlx"
+	"orderfood/src/util"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
 )
 
 type mysqlDb struct {
@@ -14,7 +15,7 @@ type mysqlDb struct {
 }
 
 func (d *mysqlDb) Member() common.IMember {
-	return nil
+	return d
 }
 
 func (d *mysqlDb) Menu() common.IMenu {
@@ -25,25 +26,34 @@ func (d *mysqlDb) DBM() common.IDBM {
 	return d
 }
 
-func NewDb(dbCfg config.DbConfig) (*mysqlDb, error) {
+func NewDb(dbCfg config.DbConfig) *mysqlDb {
 	d := &mysqlDb{Connect: func() (*sqlx.DB, error) {
 		db, err := sqlx.Open("mysql", dbCfg.MysqlURL())
 		return db, err
 	}}
 
-	//check db
-	db, err := d.Connect()
-	defer db.Close()
-
-	return d, err
+	return d
 }
 
-func (d *mysqlDb) RebuildDb(dbCfg config.DbConfig) error {
-	d, err := NewDb(dbCfg)
+func (d *mysqlDb) CheckDb() error {
+	db, err := d.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	_, err = db.Exec("use orderfood_menu;")
+	if err != nil {
+		return err
+	}
+	_, err = db.Exec("use orderfood_member;")
 	if err != nil {
 		return err
 	}
 
+	return nil
+}
+
+func (d *mysqlDb) RebuildDb() error {
 	//check db struct
 	db, err := d.Connect()
 	if err != nil {
@@ -51,18 +61,25 @@ func (d *mysqlDb) RebuildDb(dbCfg config.DbConfig) error {
 	}
 	defer db.Close()
 
-	dropSQL := `DROP TABLE user_info;`
-	_, err = db.Exec(dropSQL)
+	// Loads queries from file
+	data, err := util.ReadFile("src/database/mysql/init_mysql.sql")
+	if err != nil {
+		return err
+	}
 
-	createSQL := `CREATE TABLE user_info (
-	id INT NOT NULL AUTO_INCREMENT,
-	name VARCHAR(45) NULL,
-	username VARCHAR(45) NOT NULL,
-	password VARCHAR(45) NULL,
-	PRIMARY KEY (id),
-	UNIQUE INDEX username_UNIQUE (username ASC) VISIBLE);`
-
-	_, err = db.Exec(createSQL)
+	const end string = ";"
+	endByte := ([]byte(end))[0]
+	start := 0
+	for i, v := range data {
+		if v == endByte {
+			sql := string(data[start:i])
+			_, err = db.Exec(sql)
+			if err != nil {
+				return err
+			}
+			start = i + 1
+		}
+	}
 
 	return err
 }

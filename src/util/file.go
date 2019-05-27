@@ -1,6 +1,7 @@
 package util
 
 import (
+	"io/ioutil"
 	"os"
 	"os/user"
 	"path/filepath"
@@ -25,6 +26,21 @@ func GetFilePath(filename string) (string, error) {
 	}
 
 	return filename, nil
+}
+
+// ReadConfig read config from filepath
+func ReadFile(filename string) ([]byte, error) {
+	filepath, err := GetFilePath(filename)
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
 }
 
 func MakeFolderOn(folderPath string) error {
