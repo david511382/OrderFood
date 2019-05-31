@@ -9,58 +9,38 @@ message Shop {
 	string Name = 2; 
 }
 
-message ShopItem {
-	int32 ShopID = 1;
-	int32 MenuItemID = 2;
-}
-
 // Item 。
 message Item {
 	int32 ID = 1; 
-	string Name = 2; 	
+	string Name = 2;
+	int32 ShopID = 3; 
+	int32 Price = 4;
 }
 
-// Size 。
-message Size {
+// ItemOption 。
+message ItemOption {
+	int32 ID = 1;
+	int32 ItemID = 2;
+	int32 OptionID = 3;
+}
+
+// Option 。
+message Option {
+	int32 ID = 1;
+	bool IsOptional = 2;
+	int32 SelectNum = 3;
+}
+
+// OptionSelection 。
+message OptionSelection {
+	int32 ID = 1;
+	int32 OptionID = 2;
+	int32 SelectionID = 3;
+	int32 Price = 4;
+}
+
+// selection
+message Selection {
 	int32 ID = 1;
 	string Name = 2;
-}
-
-// ItemSize 。
-message ItemSize {
-	int32 ItemID = 1;
-	int32 SizeID = 2;
-    int32 Price = 3;
-}
-
-// Kind 。
-message Kind {
-	int32 ID = 1;
-	string Name = 2;
-}
-
-// ItemKind 。
-message ItemKind {
-	int32 ItemID = 1;
-	int32 KindID = 2;
-	int32 Price = 3;
-}
-
-
-// response
-message SizePrice {
-	string Size = 1;
-	int32 Price = 2;
-}
-
-message KindPrice {
-	string Kind = 1; 
-	int32 Price = 2;
-}
-
-// MenuItem 。
-message MenuItem {
-	Item Item = 1;
-	repeated SizePrice SizePrice = 2;
-	repeated KindPrice KindPrice = 3;
 }

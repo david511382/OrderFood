@@ -3,8 +3,8 @@ package txt
 import (
 	"orderfood/src/config"
 	"orderfood/src/database/common"
-	"orderfood/src/database/txt/member"
-	"orderfood/src/database/txt/menu"
+	// "orderfood/src/database/txt/member"
+	// "orderfood/src/database/txt/menu"
 	"orderfood/src/database/txt/orm"
 	"orderfood/src/util"
 	"os"
@@ -44,8 +44,8 @@ func NewDb(dbCfg config.DbConfig) (*txtDb, error) {
 	orm.Init(path)
 
 	db := &txtDb{}
-	db.member = &member.MemberDb{}
-	db.menu = &menu.MenuDb{}
+	// db.member = &member.MemberDb{}
+	// db.menu = &menu.MenuDb{}
 
 	//check db
 	if err := orm.CheckDb(); err != nil {

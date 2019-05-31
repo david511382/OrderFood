@@ -115,26 +115,26 @@ func GetItem(c *gin.Context) {
 // @Failure 500 {string} string "内部错误"
 // @Router /shop/item/size [post]
 func AddItemSize(c *gin.Context) {
-	itemIDStr := c.PostForm("item_id")
-	itemID, err := strconv.Atoi(itemIDStr)
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, nil)
-		return
-	}
-	sizeIDStr := c.PostForm("size_id")
-	sizeID, err := strconv.Atoi(sizeIDStr)
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, nil)
-		return
-	}
+	// itemIDStr := c.PostForm("item_id")
+	// itemID, err := strconv.Atoi(itemIDStr)
+	// if err != nil {
+	// 	c.AbortWithError(http.StatusBadRequest, nil)
+	// 	return
+	// }
+	// sizeIDStr := c.PostForm("size_id")
+	// sizeID, err := strconv.Atoi(sizeIDStr)
+	// if err != nil {
+	// 	c.AbortWithError(http.StatusBadRequest, nil)
+	// 	return
+	// }
 
-	data, err := logic.AddItemSize(int32(itemID), int32(sizeID))
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
-		return
-	}
+	// data, err := logic.AddItemSize(int32(itemID), int32(sizeID))
+	// if err != nil {
+	// 	c.AbortWithError(http.StatusBadRequest, err)
+	// 	return
+	// }
 
-	c.JSON(http.StatusOK, data)
+	// c.JSON(http.StatusOK, data)
 }
 
 // AddSize 新增尺寸
@@ -154,17 +154,17 @@ func AddSize(c *gin.Context) {
 		return
 	}
 
-	data, err := logic.AddSize(sizeName)
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
-		return
-	}
+	// data, err := logic.AddSize(sizeName)
+	// if err != nil {
+	// 	c.AbortWithError(http.StatusBadRequest, err)
+	// 	return
+	// }
 
-	response := &resp.Size{
-		ID:   data.GetID(),
-		Size: data.GetName(),
-	}
-	c.JSON(http.StatusOK, response)
+	// response := &resp.Size{
+	// 	ID:   data.GetID(),
+	// 	Size: data.GetName(),
+	// }
+	// c.JSON(http.StatusOK, response)
 }
 
 // GetSize 取得尺寸
@@ -176,20 +176,20 @@ func AddSize(c *gin.Context) {
 // @Failure 500 {string} string "内部错误"
 // @Router /shop/size [get]
 func GetSize(c *gin.Context) {
-	data, err := logic.GetSize()
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
-		return
-	}
+	// data, err := logic.GetSize()
+	// if err != nil {
+	// 	c.AbortWithError(http.StatusBadRequest, err)
+	// 	return
+	// }
 
-	response := make([]*resp.Size, 0)
-	for _, v := range data {
-		response = append(response, &resp.Size{
-			ID:   v.GetID(),
-			Size: v.GetName(),
-		})
-	}
-	c.JSON(http.StatusOK, response)
+	// response := make([]*resp.Size, 0)
+	// for _, v := range data {
+	// 	response = append(response, &resp.Size{
+	// 		ID:   v.GetID(),
+	// 		Size: v.GetName(),
+	// 	})
+	// }
+	// c.JSON(http.StatusOK, response)
 }
 
 // AddKind 新增種類
@@ -203,23 +203,23 @@ func GetSize(c *gin.Context) {
 // @Failure 500 {string} string "内部错误"
 // @Router /shop/kind [post]
 func AddKind(c *gin.Context) {
-	name := c.PostForm("name")
-	if name == "" {
-		c.AbortWithError(http.StatusBadRequest, nil)
-		return
-	}
+	// name := c.PostForm("name")
+	// if name == "" {
+	// 	c.AbortWithError(http.StatusBadRequest, nil)
+	// 	return
+	// }
 
-	data, err := logic.AddKind(name)
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
-		return
-	}
+	// data, err := logic.AddKind(name)
+	// if err != nil {
+	// 	c.AbortWithError(http.StatusBadRequest, err)
+	// 	return
+	// }
 
-	response := &resp.KindOption{
-		ID:   data.GetID(),
-		Name: data.GetName(),
-	}
-	c.JSON(http.StatusOK, response)
+	// response := &resp.KindOption{
+	// 	ID:   data.GetID(),
+	// 	Name: data.GetName(),
+	// }
+	// c.JSON(http.StatusOK, response)
 }
 
 // GetKind 取得種類
@@ -231,18 +231,18 @@ func AddKind(c *gin.Context) {
 // @Failure 500 {string} string "内部错误"
 // @Router /shop/kind [get]
 func GetKind(c *gin.Context) {
-	data, err := logic.GetKind()
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
-		return
-	}
+	// data, err := logic.GetKind()
+	// if err != nil {
+	// 	c.AbortWithError(http.StatusBadRequest, err)
+	// 	return
+	// }
 
-	response := make([]*resp.KindOption, 0)
-	for _, v := range data {
-		response = append(response, &resp.KindOption{
-			ID:   v.GetID(),
-			Name: v.GetName(),
-		})
-	}
-	c.JSON(http.StatusOK, response)
+	// response := make([]*resp.KindOption, 0)
+	// for _, v := range data {
+	// 	response = append(response, &resp.KindOption{
+	// 		ID:   v.GetID(),
+	// 		Name: v.GetName(),
+	// 	})
+	// }
+	// c.JSON(http.StatusOK, response)
 }

@@ -1,10 +1,10 @@
-package mysql
+package member
 
 import (
 	"orderfood/src/database/models"
 )
 
-func (d *mysqlDb) GetMembers() ([]models.Member, error) {
+func (d *MemberDb) GetMembers() ([]models.Member, error) {
 	db, err := d.Connect()
 	if err != nil {
 		return nil, err
@@ -17,10 +17,10 @@ func (d *mysqlDb) GetMembers() ([]models.Member, error) {
 	return members, err
 }
 
-func (d *mysqlDb) AddMembers(*models.Member) error {
+func (d *MemberDb) AddMembers(*models.Member) error {
 	return nil
 }
 
-func (db *mysqlDb) UpdateMembers(member models.Member) error {
+func (db *MemberDb) UpdateMembers(member models.Member) error {
 	return nil
 }

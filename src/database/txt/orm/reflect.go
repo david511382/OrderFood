@@ -47,18 +47,17 @@ func toPromes(m interface{})(pm proto.Message, err error) {
 	switch m.(type) {
 	case *models.Shop:
 		pm = m.(*models.Shop)
-	case *models.ShopItem:
-		pm = m.(*models.ShopItem)
 	case *models.Item:
 		pm = m.(*models.Item)
-	case *models.ItemSize:
-		pm = m.(*models.ItemSize)
-	case *models.Size:
-		pm = m.(*models.Size)
-	case *models.ItemKind:
-		pm = m.(*models.ItemKind)
-	case *models.Kind:
-		pm = m.(*models.Kind)
+	case *models.ItemOption:
+		pm = m.(*models.ItemOption)
+	case *models.Option:
+		pm = m.(*models.Option)
+	case *models.OptionSelection:
+		pm = m.(*models.OptionSelection)
+	case *models.Selection:
+		pm = m.(*models.Selection)
+
 	case *models.Member:
 		pm = m.(*models.Member)
 	default:
@@ -114,28 +113,24 @@ func readLine(line []byte, m interface{}) (proto.Message, error) {
 		model := &models.Shop{}
 		err := proto.Unmarshal(line, model)
 		return model, err
-	case *models.ShopItem:
-		model := &models.ShopItem{}
-		err := proto.Unmarshal(line, model)
-		return model, err
 	case *models.Item:
 		model := &models.Item{}
 		err := proto.Unmarshal(line, model)
 		return model, err
-	case *models.ItemSize:
-		model := &models.ItemSize{}
+	case *models.ItemOption:
+		model := &models.ItemOption{}
 		err := proto.Unmarshal(line, model)
 		return model, err
-	case *models.Size:
-		model := &models.Size{}
+	case *models.Option:
+		model := &models.Option{}
 		err := proto.Unmarshal(line, model)
 		return model, err
-	case *models.ItemKind:
-		model := &models.ItemKind{}
+	case *models.OptionSelection:
+		model := &models.OptionSelection{}
 		err := proto.Unmarshal(line, model)
 		return model, err
-	case *models.Kind:
-		model := &models.Kind{}
+	case *models.Selection:
+		model := &models.Selection{}
 		err := proto.Unmarshal(line, model)
 		return model, err
 	case *models.Member:

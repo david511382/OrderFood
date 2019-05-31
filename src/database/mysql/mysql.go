@@ -3,6 +3,8 @@ package mysql
 import (
 	"orderfood/src/config"
 	"orderfood/src/database/common"
+	"orderfood/src/database/mysql/member"
+	"orderfood/src/database/mysql/menu"
 
 	"orderfood/src/util"
 
@@ -15,11 +17,17 @@ type mysqlDb struct {
 }
 
 func (d *mysqlDb) Member() common.IMember {
-	return d
+	db := &member.MemberDb{
+		Connect: d.Connect,
+	}
+	return db
 }
 
 func (d *mysqlDb) Menu() common.IMenu {
-	return nil
+	db := &menu.MenuDb{
+		Connect: d.Connect,
+	}
+	return db
 }
 
 func (d *mysqlDb) DBM() common.IDBM {

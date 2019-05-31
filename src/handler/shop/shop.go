@@ -1,9 +1,9 @@
 package shop
 
 import (
-	"net/http"
-	"orderfood/src/handler/models/resp"
-	"orderfood/src/logic"
+	//"net/http"
+	//"orderfood/src/handler/models/resp"
+	//"orderfood/src/logic"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,19 +19,19 @@ import (
 // @Failure 500 {string} string "内部错误"
 // @Router /shop/ [post]
 func AddShop(c *gin.Context) {
-	shopName := c.PostForm("name")
-	if shopName == "" {
-		c.AbortWithError(http.StatusBadRequest, nil)
-		return
-	}
+	// shopName := c.PostForm("name")
+	// if shopName == "" {
+	// 	c.AbortWithError(http.StatusBadRequest, nil)
+	// 	return
+	// }
 
-	data, err := logic.AddShop(shopName)
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
-		return
-	}
+	// data, err := logic.AddShop(shopName)
+	// if err != nil {
+	// 	c.AbortWithError(http.StatusBadRequest, err)
+	// 	return
+	// }
 
-	c.JSON(http.StatusOK, data)
+	// c.JSON(http.StatusOK, data)
 }
 
 // GetShop 取得商店
@@ -43,18 +43,18 @@ func AddShop(c *gin.Context) {
 // @Failure 500 {string} string "内部错误"
 // @Router /shop/ [get]
 func GetShop(c *gin.Context) {
-	data, err := logic.GetShop()
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
-		return
-	}
+	// data, err := logic.GetShop()
+	// if err != nil {
+	// 	c.AbortWithError(http.StatusBadRequest, err)
+	// 	return
+	// }
 
-	response := make([]resp.Shop, 0)
-	for _, v := range data {
-		response = append(response, resp.Shop{
-			ID:   v.GetID(),
-			Name: v.GetName(),
-		})
-	}
-	c.JSON(http.StatusOK, response)
+	// response := make([]resp.Shop, 0)
+	// for _, v := range data {
+	// 	response = append(response, resp.Shop{
+	// 		ID:   v.GetID(),
+	// 		Name: v.GetName(),
+	// 	})
+	// }
+	// c.JSON(http.StatusOK, response)
 }

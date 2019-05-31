@@ -11,50 +11,45 @@ var (
 
 	undefinedError error = errors.New("Undefined Error")
 	typeError error = errors.New("Type Error")
-
+	
 	ShopDT *DbTable = &DbTable{
-		Name:  "order_shop.shop.txt",
+		Name:  "orderfood_menu.shop.txt",
 		Model: &models.Shop{},
 	}
-	ShopItemDT *DbTable = &DbTable{
-		Name:  "order_shop.shop_item.txt",
-		Model: &models.ShopItem{},
-	}
 	ItemDT *DbTable = &DbTable{
-		Name:  "order_shop.item.txt",
+		Name:  "orderfood_menu.item.txt",
 		Model: &models.Item{},
 	}
-	ItemSizeDT *DbTable = &DbTable{
-		Name:  "order_shop.item_size.txt",
-		Model: &models.ItemSize{},
+	ItemOptionDT *DbTable = &DbTable{
+		Name:  "orderfood_menu.item_option.txt",
+		Model: &models.ItemOption{},
 	}
-	SizeDT *DbTable = &DbTable{
-		Name:  "order_shop.size.txt",
-		Model: &models.Size{},
+	OptionDT *DbTable = &DbTable{
+		Name:  "orderfood_menu.option.txt",
+		Model: &models.Option{},
 	}
-	ItemKindDT *DbTable = &DbTable{
-		Name:  "order_shop.item_kind.txt",
-		Model: &models.ItemKind{},
+	OptionSelectionDT *DbTable = &DbTable{
+		Name:  "orderfood_menu.option_selection.txt",
+		Model: &models.OptionSelection{},
 	}
-	KindDT *DbTable = &DbTable{
-		Name:  "order_shop.kind.txt",
-		Model: &models.Kind{},
-	}
-
+	SelectionDT *DbTable = &DbTable{
+		Name:  "orderfood_menu.selection.txt",
+		Model: &models.Selection{},
+	}		
+	
 	MemberDT *DbTable = &DbTable{
 		Name:  "order_member.user_info.txt",
 		Model: &models.Member{},
 	}
-
+			
 	allFileNames []string = []string{
 		MemberDT.TableName(),
 		ShopDT.TableName(),
-		ShopItemDT.TableName(),
 		ItemDT.TableName(),
-		ItemSizeDT.TableName(),
-		SizeDT.TableName(),
-		ItemKindDT.TableName(),
-		KindDT.TableName(),
+		ItemOptionDT.TableName(),
+		OptionDT.TableName(),
+		OptionSelectionDT.TableName(),
+		SelectionDT.TableName(),
 	}
 )
 

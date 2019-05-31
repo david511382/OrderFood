@@ -70,57 +70,12 @@ func (m *Shop) GetName() string {
 	return ""
 }
 
-type ShopItem struct {
-	ShopID               int32    `protobuf:"varint,1,opt,name=ShopID,proto3" json:"ShopID,omitempty"`
-	MenuItemID           int32    `protobuf:"varint,2,opt,name=MenuItemID,proto3" json:"MenuItemID,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *ShopItem) Reset()         { *m = ShopItem{} }
-func (m *ShopItem) String() string { return proto.CompactTextString(m) }
-func (*ShopItem) ProtoMessage()    {}
-func (*ShopItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6cc3f7e2ebb06a21, []int{1}
-}
-
-func (m *ShopItem) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ShopItem.Unmarshal(m, b)
-}
-func (m *ShopItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ShopItem.Marshal(b, m, deterministic)
-}
-func (m *ShopItem) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ShopItem.Merge(m, src)
-}
-func (m *ShopItem) XXX_Size() int {
-	return xxx_messageInfo_ShopItem.Size(m)
-}
-func (m *ShopItem) XXX_DiscardUnknown() {
-	xxx_messageInfo_ShopItem.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_ShopItem proto.InternalMessageInfo
-
-func (m *ShopItem) GetShopID() int32 {
-	if m != nil {
-		return m.ShopID
-	}
-	return 0
-}
-
-func (m *ShopItem) GetMenuItemID() int32 {
-	if m != nil {
-		return m.MenuItemID
-	}
-	return 0
-}
-
 // Item 。
 type Item struct {
 	ID                   int32    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
 	Name                 string   `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
+	ShopID               int32    `protobuf:"varint,3,opt,name=ShopID,proto3" json:"ShopID,omitempty"`
+	Price                int32    `protobuf:"varint,4,opt,name=Price,proto3" json:"Price,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -130,7 +85,7 @@ func (m *Item) Reset()         { *m = Item{} }
 func (m *Item) String() string { return proto.CompactTextString(m) }
 func (*Item) ProtoMessage()    {}
 func (*Item) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6cc3f7e2ebb06a21, []int{2}
+	return fileDescriptor_6cc3f7e2ebb06a21, []int{1}
 }
 
 func (m *Item) XXX_Unmarshal(b []byte) error {
@@ -165,112 +120,198 @@ func (m *Item) GetName() string {
 	return ""
 }
 
-// Size 。
-type Size struct {
+func (m *Item) GetShopID() int32 {
+	if m != nil {
+		return m.ShopID
+	}
+	return 0
+}
+
+func (m *Item) GetPrice() int32 {
+	if m != nil {
+		return m.Price
+	}
+	return 0
+}
+
+// ItemOption 。
+type ItemOption struct {
 	ID                   int32    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
-	Name                 string   `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
+	ItemID               int32    `protobuf:"varint,2,opt,name=ItemID,proto3" json:"ItemID,omitempty"`
+	OptionID             int32    `protobuf:"varint,3,opt,name=OptionID,proto3" json:"OptionID,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Size) Reset()         { *m = Size{} }
-func (m *Size) String() string { return proto.CompactTextString(m) }
-func (*Size) ProtoMessage()    {}
-func (*Size) Descriptor() ([]byte, []int) {
+func (m *ItemOption) Reset()         { *m = ItemOption{} }
+func (m *ItemOption) String() string { return proto.CompactTextString(m) }
+func (*ItemOption) ProtoMessage()    {}
+func (*ItemOption) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6cc3f7e2ebb06a21, []int{2}
+}
+
+func (m *ItemOption) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ItemOption.Unmarshal(m, b)
+}
+func (m *ItemOption) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ItemOption.Marshal(b, m, deterministic)
+}
+func (m *ItemOption) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ItemOption.Merge(m, src)
+}
+func (m *ItemOption) XXX_Size() int {
+	return xxx_messageInfo_ItemOption.Size(m)
+}
+func (m *ItemOption) XXX_DiscardUnknown() {
+	xxx_messageInfo_ItemOption.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ItemOption proto.InternalMessageInfo
+
+func (m *ItemOption) GetID() int32 {
+	if m != nil {
+		return m.ID
+	}
+	return 0
+}
+
+func (m *ItemOption) GetItemID() int32 {
+	if m != nil {
+		return m.ItemID
+	}
+	return 0
+}
+
+func (m *ItemOption) GetOptionID() int32 {
+	if m != nil {
+		return m.OptionID
+	}
+	return 0
+}
+
+// Option 。
+type Option struct {
+	ID                   int32    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	IsOptional           bool     `protobuf:"varint,2,opt,name=IsOptional,proto3" json:"IsOptional,omitempty"`
+	SelectNum            int32    `protobuf:"varint,3,opt,name=SelectNum,proto3" json:"SelectNum,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Option) Reset()         { *m = Option{} }
+func (m *Option) String() string { return proto.CompactTextString(m) }
+func (*Option) ProtoMessage()    {}
+func (*Option) Descriptor() ([]byte, []int) {
 	return fileDescriptor_6cc3f7e2ebb06a21, []int{3}
 }
 
-func (m *Size) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Size.Unmarshal(m, b)
+func (m *Option) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Option.Unmarshal(m, b)
 }
-func (m *Size) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Size.Marshal(b, m, deterministic)
+func (m *Option) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Option.Marshal(b, m, deterministic)
 }
-func (m *Size) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Size.Merge(m, src)
+func (m *Option) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Option.Merge(m, src)
 }
-func (m *Size) XXX_Size() int {
-	return xxx_messageInfo_Size.Size(m)
+func (m *Option) XXX_Size() int {
+	return xxx_messageInfo_Option.Size(m)
 }
-func (m *Size) XXX_DiscardUnknown() {
-	xxx_messageInfo_Size.DiscardUnknown(m)
+func (m *Option) XXX_DiscardUnknown() {
+	xxx_messageInfo_Option.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Size proto.InternalMessageInfo
+var xxx_messageInfo_Option proto.InternalMessageInfo
 
-func (m *Size) GetID() int32 {
+func (m *Option) GetID() int32 {
 	if m != nil {
 		return m.ID
 	}
 	return 0
 }
 
-func (m *Size) GetName() string {
+func (m *Option) GetIsOptional() bool {
 	if m != nil {
-		return m.Name
+		return m.IsOptional
 	}
-	return ""
+	return false
 }
 
-// ItemSize 。
-type ItemSize struct {
-	ItemID               int32    `protobuf:"varint,1,opt,name=ItemID,proto3" json:"ItemID,omitempty"`
-	SizeID               int32    `protobuf:"varint,2,opt,name=SizeID,proto3" json:"SizeID,omitempty"`
-	Price                int32    `protobuf:"varint,3,opt,name=Price,proto3" json:"Price,omitempty"`
+func (m *Option) GetSelectNum() int32 {
+	if m != nil {
+		return m.SelectNum
+	}
+	return 0
+}
+
+// OptionSelection 。
+type OptionSelection struct {
+	ID                   int32    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	OptionID             int32    `protobuf:"varint,2,opt,name=OptionID,proto3" json:"OptionID,omitempty"`
+	SelectionID          int32    `protobuf:"varint,3,opt,name=SelectionID,proto3" json:"SelectionID,omitempty"`
+	Price                int32    `protobuf:"varint,4,opt,name=Price,proto3" json:"Price,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ItemSize) Reset()         { *m = ItemSize{} }
-func (m *ItemSize) String() string { return proto.CompactTextString(m) }
-func (*ItemSize) ProtoMessage()    {}
-func (*ItemSize) Descriptor() ([]byte, []int) {
+func (m *OptionSelection) Reset()         { *m = OptionSelection{} }
+func (m *OptionSelection) String() string { return proto.CompactTextString(m) }
+func (*OptionSelection) ProtoMessage()    {}
+func (*OptionSelection) Descriptor() ([]byte, []int) {
 	return fileDescriptor_6cc3f7e2ebb06a21, []int{4}
 }
 
-func (m *ItemSize) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ItemSize.Unmarshal(m, b)
+func (m *OptionSelection) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_OptionSelection.Unmarshal(m, b)
 }
-func (m *ItemSize) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ItemSize.Marshal(b, m, deterministic)
+func (m *OptionSelection) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_OptionSelection.Marshal(b, m, deterministic)
 }
-func (m *ItemSize) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ItemSize.Merge(m, src)
+func (m *OptionSelection) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OptionSelection.Merge(m, src)
 }
-func (m *ItemSize) XXX_Size() int {
-	return xxx_messageInfo_ItemSize.Size(m)
+func (m *OptionSelection) XXX_Size() int {
+	return xxx_messageInfo_OptionSelection.Size(m)
 }
-func (m *ItemSize) XXX_DiscardUnknown() {
-	xxx_messageInfo_ItemSize.DiscardUnknown(m)
+func (m *OptionSelection) XXX_DiscardUnknown() {
+	xxx_messageInfo_OptionSelection.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ItemSize proto.InternalMessageInfo
+var xxx_messageInfo_OptionSelection proto.InternalMessageInfo
 
-func (m *ItemSize) GetItemID() int32 {
+func (m *OptionSelection) GetID() int32 {
 	if m != nil {
-		return m.ItemID
+		return m.ID
 	}
 	return 0
 }
 
-func (m *ItemSize) GetSizeID() int32 {
+func (m *OptionSelection) GetOptionID() int32 {
 	if m != nil {
-		return m.SizeID
+		return m.OptionID
 	}
 	return 0
 }
 
-func (m *ItemSize) GetPrice() int32 {
+func (m *OptionSelection) GetSelectionID() int32 {
+	if m != nil {
+		return m.SelectionID
+	}
+	return 0
+}
+
+func (m *OptionSelection) GetPrice() int32 {
 	if m != nil {
 		return m.Price
 	}
 	return 0
 }
 
-// Kind 。
-type Kind struct {
+// selection
+type Selection struct {
 	ID                   int32    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
 	Name                 string   `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -278,285 +319,72 @@ type Kind struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Kind) Reset()         { *m = Kind{} }
-func (m *Kind) String() string { return proto.CompactTextString(m) }
-func (*Kind) ProtoMessage()    {}
-func (*Kind) Descriptor() ([]byte, []int) {
+func (m *Selection) Reset()         { *m = Selection{} }
+func (m *Selection) String() string { return proto.CompactTextString(m) }
+func (*Selection) ProtoMessage()    {}
+func (*Selection) Descriptor() ([]byte, []int) {
 	return fileDescriptor_6cc3f7e2ebb06a21, []int{5}
 }
 
-func (m *Kind) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Kind.Unmarshal(m, b)
+func (m *Selection) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Selection.Unmarshal(m, b)
 }
-func (m *Kind) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Kind.Marshal(b, m, deterministic)
+func (m *Selection) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Selection.Marshal(b, m, deterministic)
 }
-func (m *Kind) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Kind.Merge(m, src)
+func (m *Selection) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Selection.Merge(m, src)
 }
-func (m *Kind) XXX_Size() int {
-	return xxx_messageInfo_Kind.Size(m)
+func (m *Selection) XXX_Size() int {
+	return xxx_messageInfo_Selection.Size(m)
 }
-func (m *Kind) XXX_DiscardUnknown() {
-	xxx_messageInfo_Kind.DiscardUnknown(m)
+func (m *Selection) XXX_DiscardUnknown() {
+	xxx_messageInfo_Selection.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Kind proto.InternalMessageInfo
+var xxx_messageInfo_Selection proto.InternalMessageInfo
 
-func (m *Kind) GetID() int32 {
+func (m *Selection) GetID() int32 {
 	if m != nil {
 		return m.ID
 	}
 	return 0
 }
 
-func (m *Kind) GetName() string {
+func (m *Selection) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
-}
-
-// ItemKind 。
-type ItemKind struct {
-	ItemID               int32    `protobuf:"varint,1,opt,name=ItemID,proto3" json:"ItemID,omitempty"`
-	KindID               int32    `protobuf:"varint,2,opt,name=KindID,proto3" json:"KindID,omitempty"`
-	Price                int32    `protobuf:"varint,3,opt,name=Price,proto3" json:"Price,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *ItemKind) Reset()         { *m = ItemKind{} }
-func (m *ItemKind) String() string { return proto.CompactTextString(m) }
-func (*ItemKind) ProtoMessage()    {}
-func (*ItemKind) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6cc3f7e2ebb06a21, []int{6}
-}
-
-func (m *ItemKind) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ItemKind.Unmarshal(m, b)
-}
-func (m *ItemKind) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ItemKind.Marshal(b, m, deterministic)
-}
-func (m *ItemKind) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ItemKind.Merge(m, src)
-}
-func (m *ItemKind) XXX_Size() int {
-	return xxx_messageInfo_ItemKind.Size(m)
-}
-func (m *ItemKind) XXX_DiscardUnknown() {
-	xxx_messageInfo_ItemKind.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_ItemKind proto.InternalMessageInfo
-
-func (m *ItemKind) GetItemID() int32 {
-	if m != nil {
-		return m.ItemID
-	}
-	return 0
-}
-
-func (m *ItemKind) GetKindID() int32 {
-	if m != nil {
-		return m.KindID
-	}
-	return 0
-}
-
-func (m *ItemKind) GetPrice() int32 {
-	if m != nil {
-		return m.Price
-	}
-	return 0
-}
-
-type SizePrice struct {
-	Size                 string   `protobuf:"bytes,1,opt,name=Size,proto3" json:"Size,omitempty"`
-	Price                int32    `protobuf:"varint,2,opt,name=Price,proto3" json:"Price,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *SizePrice) Reset()         { *m = SizePrice{} }
-func (m *SizePrice) String() string { return proto.CompactTextString(m) }
-func (*SizePrice) ProtoMessage()    {}
-func (*SizePrice) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6cc3f7e2ebb06a21, []int{7}
-}
-
-func (m *SizePrice) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_SizePrice.Unmarshal(m, b)
-}
-func (m *SizePrice) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_SizePrice.Marshal(b, m, deterministic)
-}
-func (m *SizePrice) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SizePrice.Merge(m, src)
-}
-func (m *SizePrice) XXX_Size() int {
-	return xxx_messageInfo_SizePrice.Size(m)
-}
-func (m *SizePrice) XXX_DiscardUnknown() {
-	xxx_messageInfo_SizePrice.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_SizePrice proto.InternalMessageInfo
-
-func (m *SizePrice) GetSize() string {
-	if m != nil {
-		return m.Size
-	}
-	return ""
-}
-
-func (m *SizePrice) GetPrice() int32 {
-	if m != nil {
-		return m.Price
-	}
-	return 0
-}
-
-type KindPrice struct {
-	Kind                 string   `protobuf:"bytes,1,opt,name=Kind,proto3" json:"Kind,omitempty"`
-	Price                int32    `protobuf:"varint,2,opt,name=Price,proto3" json:"Price,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *KindPrice) Reset()         { *m = KindPrice{} }
-func (m *KindPrice) String() string { return proto.CompactTextString(m) }
-func (*KindPrice) ProtoMessage()    {}
-func (*KindPrice) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6cc3f7e2ebb06a21, []int{8}
-}
-
-func (m *KindPrice) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_KindPrice.Unmarshal(m, b)
-}
-func (m *KindPrice) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_KindPrice.Marshal(b, m, deterministic)
-}
-func (m *KindPrice) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_KindPrice.Merge(m, src)
-}
-func (m *KindPrice) XXX_Size() int {
-	return xxx_messageInfo_KindPrice.Size(m)
-}
-func (m *KindPrice) XXX_DiscardUnknown() {
-	xxx_messageInfo_KindPrice.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_KindPrice proto.InternalMessageInfo
-
-func (m *KindPrice) GetKind() string {
-	if m != nil {
-		return m.Kind
-	}
-	return ""
-}
-
-func (m *KindPrice) GetPrice() int32 {
-	if m != nil {
-		return m.Price
-	}
-	return 0
-}
-
-// MenuItem 。
-type MenuItem struct {
-	Item                 *Item        `protobuf:"bytes,1,opt,name=Item,proto3" json:"Item,omitempty"`
-	SizePrice            []*SizePrice `protobuf:"bytes,2,rep,name=SizePrice,proto3" json:"SizePrice,omitempty"`
-	KindPrice            []*KindPrice `protobuf:"bytes,3,rep,name=KindPrice,proto3" json:"KindPrice,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
-}
-
-func (m *MenuItem) Reset()         { *m = MenuItem{} }
-func (m *MenuItem) String() string { return proto.CompactTextString(m) }
-func (*MenuItem) ProtoMessage()    {}
-func (*MenuItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6cc3f7e2ebb06a21, []int{9}
-}
-
-func (m *MenuItem) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_MenuItem.Unmarshal(m, b)
-}
-func (m *MenuItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_MenuItem.Marshal(b, m, deterministic)
-}
-func (m *MenuItem) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MenuItem.Merge(m, src)
-}
-func (m *MenuItem) XXX_Size() int {
-	return xxx_messageInfo_MenuItem.Size(m)
-}
-func (m *MenuItem) XXX_DiscardUnknown() {
-	xxx_messageInfo_MenuItem.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MenuItem proto.InternalMessageInfo
-
-func (m *MenuItem) GetItem() *Item {
-	if m != nil {
-		return m.Item
-	}
-	return nil
-}
-
-func (m *MenuItem) GetSizePrice() []*SizePrice {
-	if m != nil {
-		return m.SizePrice
-	}
-	return nil
-}
-
-func (m *MenuItem) GetKindPrice() []*KindPrice {
-	if m != nil {
-		return m.KindPrice
-	}
-	return nil
 }
 
 func init() {
 	proto.RegisterType((*Shop)(nil), "models.Shop")
-	proto.RegisterType((*ShopItem)(nil), "models.ShopItem")
 	proto.RegisterType((*Item)(nil), "models.Item")
-	proto.RegisterType((*Size)(nil), "models.Size")
-	proto.RegisterType((*ItemSize)(nil), "models.ItemSize")
-	proto.RegisterType((*Kind)(nil), "models.Kind")
-	proto.RegisterType((*ItemKind)(nil), "models.ItemKind")
-	proto.RegisterType((*SizePrice)(nil), "models.SizePrice")
-	proto.RegisterType((*KindPrice)(nil), "models.KindPrice")
-	proto.RegisterType((*MenuItem)(nil), "models.MenuItem")
+	proto.RegisterType((*ItemOption)(nil), "models.ItemOption")
+	proto.RegisterType((*Option)(nil), "models.Option")
+	proto.RegisterType((*OptionSelection)(nil), "models.OptionSelection")
+	proto.RegisterType((*Selection)(nil), "models.Selection")
 }
 
 func init() { proto.RegisterFile("src/database/models/menu.proto", fileDescriptor_6cc3f7e2ebb06a21) }
 
 var fileDescriptor_6cc3f7e2ebb06a21 = []byte{
-	// 300 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x52, 0xc1, 0x6a, 0x83, 0x40,
-	0x10, 0xc5, 0x35, 0x8a, 0x4e, 0x4a, 0xa1, 0x4b, 0x09, 0x7b, 0x0a, 0x92, 0x93, 0xf4, 0xe0, 0x42,
-	0x4a, 0x7f, 0xa0, 0x78, 0x91, 0xd2, 0x12, 0xb6, 0x5f, 0x60, 0xe2, 0x42, 0x85, 0xaa, 0x41, 0xcd,
-	0x25, 0x1f, 0xd1, 0x6f, 0x2e, 0x33, 0xab, 0x1b, 0x5b, 0xda, 0x62, 0x6f, 0xfb, 0x66, 0xde, 0x9b,
-	0xf7, 0x74, 0x06, 0xd6, 0x5d, 0x7b, 0x90, 0x45, 0xde, 0xe7, 0xfb, 0xbc, 0xd3, 0xb2, 0x6a, 0x0a,
-	0xfd, 0xde, 0xc9, 0x4a, 0xd7, 0xa7, 0xe4, 0xd8, 0x36, 0x7d, 0xc3, 0x7d, 0x53, 0xda, 0xdc, 0xc1,
-	0xe2, 0xf5, 0xad, 0x39, 0xf2, 0x6b, 0x60, 0x59, 0x2a, 0x9c, 0xc8, 0x89, 0x3d, 0xc5, 0xb2, 0x94,
-	0x73, 0x58, 0xbc, 0xe4, 0x95, 0x16, 0x2c, 0x72, 0xe2, 0x50, 0xd1, 0x7b, 0xf3, 0x08, 0x01, 0x72,
-	0xb3, 0x5e, 0x57, 0x7c, 0x05, 0x3e, 0xbd, 0x47, 0xcd, 0x80, 0xf8, 0x1a, 0xe0, 0x59, 0xd7, 0x27,
-	0xe4, 0x64, 0x29, 0xa9, 0x3d, 0x35, 0xa9, 0xa0, 0x1f, 0xe9, 0xe7, 0xf8, 0x61, 0xb6, 0xf2, 0xac,
-	0x67, 0x71, 0x77, 0x10, 0xe0, 0x5c, 0xe2, 0xaf, 0xc0, 0x1f, 0xfc, 0x87, 0x6c, 0x06, 0x51, 0xe6,
-	0xf2, 0xac, 0x6d, 0xae, 0x01, 0xf1, 0x5b, 0xf0, 0x76, 0x6d, 0x79, 0xd0, 0xc2, 0xa5, 0xb2, 0x01,
-	0xe8, 0xfe, 0x54, 0xd6, 0xc5, 0x7f, 0xdc, 0x89, 0xff, 0x87, 0x3b, 0xf6, 0x2f, 0xee, 0x06, 0xfd,
-	0xe2, 0xfe, 0x00, 0x21, 0xa6, 0x23, 0x80, 0x96, 0x08, 0x68, 0x60, 0xa8, 0xcc, 0x4f, 0xb1, 0x32,
-	0xf6, 0x4d, 0x86, 0x63, 0xad, 0x0c, 0xc1, 0x28, 0xa3, 0x74, 0x3f, 0xcb, 0x3e, 0x1c, 0x08, 0xc6,
-	0x25, 0xf1, 0xc8, 0xac, 0x88, 0x64, 0xcb, 0xed, 0x55, 0x62, 0x2e, 0x25, 0xc1, 0x9a, 0x32, 0xcb,
-	0x93, 0x93, 0x70, 0x82, 0x45, 0x6e, 0xbc, 0xdc, 0xde, 0x8c, 0x34, 0xdb, 0x50, 0x93, 0x0f, 0x90,
-	0x93, 0x58, 0xc2, 0xfd, 0x2a, 0xb0, 0x0d, 0x75, 0xe1, 0xec, 0x7d, 0xba, 0xd2, 0xfb, 0xcf, 0x00,
-	0x00, 0x00, 0xff, 0xff, 0xdf, 0x0d, 0xe0, 0x3e, 0xc7, 0x02, 0x00, 0x00,
+	// 250 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x51, 0xc1, 0x6a, 0x83, 0x40,
+	0x14, 0x44, 0xab, 0x4b, 0x32, 0x85, 0x16, 0x1e, 0x25, 0x48, 0x29, 0x41, 0xf6, 0x14, 0x7a, 0xa8,
+	0x87, 0xfe, 0x82, 0x97, 0xbd, 0xa4, 0xc1, 0x40, 0xe9, 0x75, 0x63, 0x16, 0x1a, 0x70, 0xb3, 0xa2,
+	0xeb, 0xff, 0x17, 0x77, 0xad, 0xb5, 0x54, 0xa1, 0xb7, 0x9d, 0x79, 0xf3, 0x66, 0x86, 0xb7, 0xd8,
+	0xb6, 0x4d, 0x99, 0x9d, 0xa5, 0x95, 0x27, 0xd9, 0xaa, 0x4c, 0x9b, 0xb3, 0xaa, 0xda, 0x4c, 0xab,
+	0x6b, 0xf7, 0x52, 0x37, 0xc6, 0x1a, 0x62, 0x9e, 0xe2, 0xcf, 0x88, 0x8e, 0x9f, 0xa6, 0xa6, 0x3b,
+	0x84, 0x22, 0x4f, 0x82, 0x34, 0xd8, 0xc5, 0x45, 0x28, 0x72, 0x22, 0x44, 0x7b, 0xa9, 0x55, 0x12,
+	0xa6, 0xc1, 0x6e, 0x5d, 0xb8, 0x37, 0xff, 0x40, 0x24, 0xac, 0xd2, 0xff, 0xd1, 0xd2, 0x06, 0xac,
+	0xf7, 0x15, 0x79, 0x72, 0xe3, 0x74, 0x03, 0xa2, 0x07, 0xc4, 0x87, 0xe6, 0x52, 0xaa, 0x24, 0x72,
+	0xb4, 0x07, 0xfc, 0x00, 0xf4, 0xce, 0x6f, 0xb5, 0xbd, 0x98, 0xeb, 0x1f, 0xff, 0x0d, 0x58, 0x3f,
+	0x15, 0xb9, 0x4b, 0x88, 0x8b, 0x01, 0xd1, 0x23, 0x56, 0x7e, 0x63, 0x4c, 0x19, 0x31, 0x7f, 0x07,
+	0x5b, 0x70, 0xdb, 0x02, 0xa2, 0xf5, 0x33, 0x59, 0x39, 0xc7, 0x55, 0x31, 0x61, 0xe8, 0x09, 0xeb,
+	0xa3, 0xaa, 0x54, 0x69, 0xf7, 0x9d, 0x1e, 0x6c, 0x7f, 0x08, 0xde, 0xe1, 0xde, 0x2b, 0x3d, 0x35,
+	0x17, 0x30, 0xad, 0x15, 0xfe, 0xae, 0x45, 0x29, 0x6e, 0xc7, 0xc5, 0xb1, 0xf5, 0x94, 0x5a, 0x38,
+	0x50, 0xf6, 0x5d, 0x6a, 0x2e, 0x70, 0xe6, 0xfe, 0x27, 0xe6, 0xbe, 0xf9, 0xf5, 0x2b, 0x00, 0x00,
+	0xff, 0xff, 0xb2, 0x9f, 0x6b, 0xd5, 0x08, 0x02, 0x00, 0x00,
 }
