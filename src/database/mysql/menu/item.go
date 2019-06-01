@@ -5,15 +5,15 @@ import (
 )
 
 // Item 。
-func (d *MenuDb) GetItem() ([]*models.Item, error) {
+func (d *MenuDb) GetItem(*models.Item) ([]*models.Item, error) {
 	return nil, nil
 }
-func (d *MenuDb) AddItem() (*models.Item, error) {
+func (d *MenuDb) AddItem(*models.Item) (*models.Item, error) {
 	return nil, nil
 }
-func (d *MenuDb) DeleteItem() error {
+func (d *MenuDb) DeleteItem(*models.Item) error {
 	return nil
 }
-func (d *MenuDb) UpdateItem() (*models.Item, error) {
+func (d *MenuDb) UpdateItem(*models.Item) (*models.Item, error) {
 	return nil, nil
 }

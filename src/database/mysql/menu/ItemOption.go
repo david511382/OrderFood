@@ -5,15 +5,15 @@ import (
 )
 
 // ItemOption 。
-func (d *MenuDb) GetItemOption() ([]*models.ItemOption, error) {
+func (d *MenuDb) GetItemOption(*models.ItemOption) ([]*models.ItemOption, error) {
 	return nil, nil
 }
-func (d *MenuDb) AddItemOption() (*models.ItemOption, error) {
+func (d *MenuDb) AddItemOption(*models.ItemOption) (*models.ItemOption, error) {
 	return nil, nil
 }
-func (d *MenuDb) DeleteItemOption() error {
+func (d *MenuDb) DeleteItemOption(*models.ItemOption) error {
 	return nil
 }
-func (d *MenuDb) UpdateItemOption() (*models.ItemOption, error) {
+func (d *MenuDb) UpdateItemOption(*models.ItemOption) (*models.ItemOption, error) {
 	return nil, nil
 }

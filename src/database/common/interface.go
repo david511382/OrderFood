@@ -15,45 +15,46 @@ type IDBM interface {
 }
 
 type IMember interface {
-	GetMembers() ([]models.Member, error)
-	AddMembers(*models.Member) error
-	UpdateMembers(models.Member) error
+	GetMember(*models.Member) ([]models.Member, error)
+	AddMember(*models.Member) (*models.Member, error)
+	UpdateMember(*models.Member) (*models.Member, error)
+	DeleteMember(*models.Member) error
 }
 
 type IMenu interface {
 	// Shop 。
-	GetShop() ([]*models.Shop, error)
-	AddShop() (*models.Shop, error)
-	DeleteShop() error
-	UpdateShop() (*models.Shop, error)
+	GetShop(*models.Shop) ([]*models.Shop, error)
+	AddShop(*models.Shop) (*models.Shop, error)
+	DeleteShop(*models.Shop) error
+	UpdateShop(*models.Shop) (*models.Shop, error)
 
 	// Item 。
-	GetItem() ([]*models.Item, error)
-	AddItem() (*models.Item, error)
-	DeleteItem() error
-	UpdateItem() (*models.Item, error)
+	GetItem(*models.Item) ([]*models.Item, error)
+	AddItem(*models.Item) (*models.Item, error)
+	DeleteItem(*models.Item) error
+	UpdateItem(*models.Item) (*models.Item, error)
 
 	// ItemOption 。
-	GetItemOption() ([]*models.ItemOption, error)
-	AddItemOption() (*models.ItemOption, error)
-	DeleteItemOption() error
-	UpdateItemOption() (*models.ItemOption, error)
+	GetItemOption(*models.ItemOption) ([]*models.ItemOption, error)
+	AddItemOption(*models.ItemOption) (*models.ItemOption, error)
+	DeleteItemOption(*models.ItemOption) error
+	UpdateItemOption(*models.ItemOption) (*models.ItemOption, error)
 
 	// Option 。
-	GetOption() ([]*models.Option, error)
-	AddOption() (*models.Option, error)
-	DeleteOption() error
-	UpdateOption() (*models.Option, error)
+	GetOption(*models.Option) ([]*models.Option, error)
+	AddOption(*models.Option) (*models.Option, error)
+	DeleteOption(*models.Option) error
+	UpdateOption(*models.Option) (*models.Option, error)
 
 	// OptionSelection 。
-	GetOptionSelection() ([]*models.OptionSelection, error)
-	AddOptionSelection() (*models.OptionSelection, error)
-	DeleteOptionSelection() error
-	UpdateOptionSelection() (*models.OptionSelection, error)
+	GetOptionSelection(*models.OptionSelection) ([]*models.OptionSelection, error)
+	AddOptionSelection(*models.OptionSelection) (*models.OptionSelection, error)
+	DeleteOptionSelection(*models.OptionSelection) error
+	UpdateOptionSelection(*models.OptionSelection) (*models.OptionSelection, error)
 
 	// selection
-	GetSelection() ([]*models.Selection, error)
-	AddSelection() (*models.Selection, error)
-	DeleteSelection() error
-	UpdateSelection() (*models.Selection, error)
+	GetSelection(*models.Selection) ([]*models.Selection, error)
+	AddSelection(*models.Selection) (*models.Selection, error)
+	DeleteSelection(*models.Selection) error
+	UpdateSelection(*models.Selection) (*models.Selection, error)
 }

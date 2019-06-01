@@ -17,7 +17,7 @@ func Register(member *models.Member) error {
 		return ExisitErr
 	}
 
-	err := database.Db.Member().AddMembers(member)
+	_, err := database.Db.Member().AddMember(member)
 
 	return err
 }
