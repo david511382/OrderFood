@@ -13,29 +13,29 @@ message Shop {
 message Item {
 	int32 ID = 1; 
 	string Name = 2;
-	int32 ShopID = 3; 
+	int32 Shop_ID = 3; 
 	int32 Price = 4;
 }
 
 // ItemOption 。
 message ItemOption {
 	int32 ID = 1;
-	int32 ItemID = 2;
-	int32 OptionID = 3;
+	int32 Item_ID = 2;
+	int32 Option_ID = 3;
 }
 
 // Option 。
 message Option {
 	int32 ID = 1;
-	bool IsOptional = 2;
-	int32 SelectNum = 3;
+	bool Is_Optional = 2;
+	int32 Select_Num = 3;
 }
 
 // OptionSelection 。
 message OptionSelection {
 	int32 ID = 1;
-	int32 OptionID = 2;
-	int32 SelectionID = 3;
+	int32 Option_ID = 2;
+	int32 Selection_ID = 3;
 	int32 Price = 4;
 }
 

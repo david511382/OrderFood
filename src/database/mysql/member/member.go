@@ -1,7 +1,10 @@
 package member
 
 import (
+	"fmt"
 	"orderfood/src/database/models"
+
+	"orderfood/src/database/common"
 )
 
 func (d *MemberDb) GetMembers() ([]models.Member, error) {
@@ -11,8 +14,15 @@ func (d *MemberDb) GetMembers() ([]models.Member, error) {
 	}
 	defer db.Close()
 
+	sqlStr := `
+		SELECT
+			*
+		FROM
+			%s`
+	sqlStr = fmt.Sprintf(sqlStr, common.MemberDt.Name())
+
 	members := make([]models.Member, 0)
-	err = db.Select(&members, "SELECT * FROM user_info")
+	err = db.Select(&members, sqlStr)
 
 	return members, err
 }
