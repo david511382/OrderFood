@@ -44,9 +44,12 @@ func (d *MemberDb) GetMember(member *models.Member) ([]models.Member, error) {
 	whereStr := strings.Join(wheres, " AND ")
 	sqlStr = fmt.Sprintf(sqlStr, whereStr)
 
-	sqlStr, args, err := sqlx.Named(sqlStr, member)
-	if err != nil {
-		return nil, err
+	args := make([]interface{}, 0)
+	if member != nil {
+		sqlStr, args, err = sqlx.Named(sqlStr, member)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	members := make([]models.Member, 0)
@@ -56,6 +59,10 @@ func (d *MemberDb) GetMember(member *models.Member) ([]models.Member, error) {
 }
 
 func (d *MemberDb) AddMember(member *models.Member) (*models.Member, error) {
+	if member == nil {
+		return nil, common.DbDataError
+	}
+
 	db, err := d.Connect()
 	if err != nil {
 		return nil, err
