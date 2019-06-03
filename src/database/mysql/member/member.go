@@ -1,80 +1,67 @@
 package member
 
 import (
-	"fmt"
 	"orderfood/src/database/common"
 	"orderfood/src/database/models"
-	"strconv"
-	"strings"
 
 	"github.com/jmoiron/sqlx"
 )
 
 func (d *MemberDb) GetMember(member *models.Member) ([]models.Member, error) {
+	condictionCols := make([]string, 0)
+	if member != nil {
+		if member.GetID() != 0 {
+			condictionCols = append(condictionCols, "id")
+		}
+		if member.GetName() != "" {
+			condictionCols = append(condictionCols, "name")
+		}
+		if member.GetUsername() != "" {
+			condictionCols = append(condictionCols, "username")
+		}
+		if member.GetPassword() != "" {
+			condictionCols = append(condictionCols, "password")
+		}
+	}
+
+	sqlStr := common.MemberDt.SelectSQL(nil, condictionCols)
+
+	args := make([]interface{}, 0)
+	var err error
+	if member != nil {
+		sqlStr, args, err = sqlx.Named(sqlStr, member)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	members := make([]models.Member, 0)
 	db, err := d.Connect()
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
-
-	sqlStr := `
-		SELECT
-			*
-		FROM
-			%s
-		%%s`
-	sqlStr = fmt.Sprintf(sqlStr, common.MemberDt.Name())
-
-	wheres := make([]string, 0)
-	if member != nil {
-		if member.GetID() != 0 {
-			wheres = append(wheres, strconv.Itoa(int(member.GetID())))
-		}
-		if member.GetName() != "" {
-			wheres = append(wheres, member.GetName())
-		}
-		if member.GetUsername() != "" {
-			wheres = append(wheres, member.GetUsername())
-		}
-		if member.GetPassword() != "" {
-			wheres = append(wheres, member.GetPassword())
-		}
-	}
-
-	whereStr := strings.Join(wheres, " AND ")
-	sqlStr = fmt.Sprintf(sqlStr, whereStr)
-
-	sqlStr, args, err := sqlx.Named(sqlStr, member)
-	if err != nil {
-		return nil, err
-	}
-
-	members := make([]models.Member, 0)
 	err = db.Select(&members, sqlStr, args...)
 
 	return members, err
 }
 
 func (d *MemberDb) AddMember(member *models.Member) (*models.Member, error) {
-	db, err := d.Connect()
-	if err != nil {
-		return nil, err
+	if member == nil {
+		return nil, common.DbDataError
 	}
-	defer db.Close()
-
-	sqlStr := `
-		INSERT INTO
-			%s
-			(id, name, username, password)
-		VALUES
-			(:id, :name, :username, :password)`
-	sqlStr = fmt.Sprintf(sqlStr, common.MemberDt.Name())
+	sqlStr := common.MemberDt.InsertSQL([]string{"id", "name", "username", "password"})
 
 	sqlStr, args, err := sqlx.Named(sqlStr, member)
 	if err != nil {
 		return nil, err
 	}
 
+	db, err := d.Connect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
 	dbRes, err := db.Exec(sqlStr, args...)
 	if err != nil {
 		return nil, err
@@ -89,10 +76,92 @@ func (d *MemberDb) AddMember(member *models.Member) (*models.Member, error) {
 	return member, err
 }
 
-func (db *MemberDb) UpdateMember(member *models.Member) (*models.Member, error) {
-	return nil, nil
+func (d *MemberDb) UpdateMember(member *models.Member) (*models.Member, error) {
+	if member == nil {
+		return nil, common.DbDataError
+	}
+
+	cols := []string{"name", "username", "password"}
+	
+	condictionCols := make([]string, 0)
+	if member.GetID() != 0 {
+		condictionCols = append(condictionCols, "id")
+	}
+	if member.GetName() != "" {
+		condictionCols = append(condictionCols, "name")
+	}
+	if member.GetUsername() != "" {
+		condictionCols = append(condictionCols, "username")
+	}
+	if member.GetPassword() != "" {
+		condictionCols = append(condictionCols, "password")
+	}
+
+	sqlStr := common.MemberDt.UpdateSQL(cols, condictionCols)
+
+	args := make([]interface{}, 0)
+	var err error
+	if member != nil {
+		sqlStr, args, err = sqlx.Named(sqlStr, member)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	db, err := d.Connect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	_, err = db.Exec(sqlStr, args...)
+
+	return member, err
 }
 
-func (db *MemberDb) DeleteMember(member *models.Member) error {
+func (d *MemberDb) DeleteMember(member *models.Member) error {
+	if member == nil {
+		return common.DbDataError
+	}
+
+	condictionCols := make([]string, 0)
+	if member.GetID() != 0 {
+		condictionCols = append(condictionCols, "id")
+	}
+	if member.GetName() != "" {
+		condictionCols = append(condictionCols, "name")
+	}
+	if member.GetUsername() != "" {
+		condictionCols = append(condictionCols, "username")
+	}
+	if member.GetPassword() != "" {
+		condictionCols = append(condictionCols, "password")
+	}
+
+	sqlStr := common.MemberDt.DeleteSQL(condictionCols)
+
+	args := make([]interface{}, 0)
+	var err error
+	if member != nil {
+		sqlStr, args, err = sqlx.Named(sqlStr, member)
+		if err != nil {
+			return err
+		}
+	}
+
+	db, err := d.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	r, err := db.Exec(sqlStr, args...)
+	if err != nil {
+		return err
+	}
+	if id, err := r.RowsAffected(); id != 1 {
+		return common.DbDataError
+	} else if err != nil {
+		return err
+	}
+
 	return nil
 }
