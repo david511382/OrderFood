@@ -25,13 +25,14 @@ var (
 
 func InitConfig() (*config.Config, bool) {
 	initConfig()
+	flagParse()
+
 	err := config.ReadConfig(configPath)
 	if err != nil {
 		panic(err)
 	}
 	cfg = config.Get()
 
-	flagParse()
 
 	return cfg, isReleaseMode
 }
@@ -42,7 +43,7 @@ func Run(router *gin.Engine, addr string) {
 
 func flagParse() {
 	//flag.BoolVar(&isManualListenIP, "ip", false, "is manual set ip")
-
+	flag.StringVar(&configPath, "c", configPath, "set config path")
 	flag.Parse()
 }
 
