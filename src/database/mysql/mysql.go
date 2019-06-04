@@ -17,7 +17,7 @@ type mysqlDb struct {
 }
 
 func NewMemberDb(dbCfg config.DbConfig) common.IMember {
-	d := NewDb(dbCfg)
+	d := newDb(dbCfg)
 	db := &member.MemberDb{
 		Connect: d.Connect,
 	}
@@ -25,7 +25,7 @@ func NewMemberDb(dbCfg config.DbConfig) common.IMember {
 }
 
 func NewMenuDb(dbCfg config.DbConfig) common.IMenu {
-	d := NewDb(dbCfg)
+	d := newDb(dbCfg)
 	db := &menu.MenuDb{
 		Connect: d.Connect,
 	}
@@ -33,11 +33,11 @@ func NewMenuDb(dbCfg config.DbConfig) common.IMenu {
 }
 
 func NewDBMdb(dbCfg config.DbConfig) common.IDBM {
-	d := NewDb(dbCfg)
+	d := newDb(dbCfg)
 	return d
 }
 
-func NewDb(dbCfg config.DbConfig) *mysqlDb {
+func newDb(dbCfg config.DbConfig) *mysqlDb {
 	d := &mysqlDb{Connect: func() (*sqlx.DB, error) {
 		db, err := sqlx.Open("mysql", dbCfg.MysqlURL())
 		return db, err
