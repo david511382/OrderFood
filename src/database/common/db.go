@@ -9,7 +9,6 @@ type schema string
 type table string
 
 type DbTable struct {
-	DbName    schema
 	TableName table
 	selectSQL string
 	insertSQL string
@@ -18,8 +17,6 @@ type DbTable struct {
 }
 
 const (
-	dbName schema = "orderfood_member"
-
 	memberTableName table = "member"
 )
 
@@ -56,17 +53,12 @@ func init() {
 	)
 
 	MemberDt = DbTable{
-		DbName:    dbName,
 		TableName: memberTableName,
+		selectSQL: fmt.Sprintf(selectSQLStr, memberTableName),
+		insertSQL: fmt.Sprintf(insertSQLStr, memberTableName),
+		updateSQL: fmt.Sprintf(selectSQLStr, memberTableName),
+		deleteSQL: fmt.Sprintf(selectSQLStr, memberTableName),
 	}
-	MemberDt.selectSQL = fmt.Sprintf(selectSQLStr, MemberDt.name())
-	MemberDt.insertSQL = fmt.Sprintf(insertSQLStr, MemberDt.name())
-	MemberDt.updateSQL = fmt.Sprintf(selectSQLStr, MemberDt.name())
-	MemberDt.deleteSQL = fmt.Sprintf(selectSQLStr, MemberDt.name())
-}
-
-func (dt DbTable) name() string {
-	return string(dt.DbName) + "." + string(dt.TableName)
 }
 
 //SelectSQL cols = {id,name}
@@ -138,10 +130,10 @@ func colSQLStr(cols []string) string {
 func whereSQLStr(conditionCols []string) string {
 	kv := make([]string, 0)
 	//if conditionCols == nil {
-		for _, col := range conditionCols {
-			col = col + "=:" + col
-			kv = append(kv, col)
-		}
+	for _, col := range conditionCols {
+		col = col + "=:" + col
+		kv = append(kv, col)
+	}
 	//}
 
 	return "WHERE " + strings.Join(kv, " AND ")
