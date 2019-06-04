@@ -46,43 +46,43 @@ func (d *MemberDb) GetMember(member *models.Member) ([]models.Member, error) {
 	return members, err
 }
 
-func (d *MemberDb) AddMember(member *models.Member) (*models.Member, error) {
+func (d *MemberDb) AddMember(member *models.Member) error {
 	if member == nil {
-		return nil, common.DbDataError
+		return common.DbDataError
 	}
 	sqlStr := common.MemberDt.InsertSQL([]string{"id", "name", "username", "password"})
 
 	sqlStr, args, err := sqlx.Named(sqlStr, member)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	db, err := d.Connect()
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer db.Close()
 	dbRes, err := db.Exec(sqlStr, args...)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	id, err := dbRes.LastInsertId()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	member.ID = int32(id)
-	return member, err
+	return nil
 }
 
-func (d *MemberDb) UpdateMember(member *models.Member) (*models.Member, error) {
+func (d *MemberDb) UpdateMember(member *models.Member) error {
 	if member == nil {
-		return nil, common.DbDataError
+		return common.DbDataError
 	}
 
 	cols := []string{"name", "username", "password"}
-	
+
 	condictionCols := make([]string, 0)
 	if member.GetID() != 0 {
 		condictionCols = append(condictionCols, "id")
@@ -104,18 +104,18 @@ func (d *MemberDb) UpdateMember(member *models.Member) (*models.Member, error) {
 	if member != nil {
 		sqlStr, args, err = sqlx.Named(sqlStr, member)
 		if err != nil {
-			return nil, err
+			return err
 		}
 	}
 
 	db, err := d.Connect()
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer db.Close()
 	_, err = db.Exec(sqlStr, args...)
 
-	return member, err
+	return err
 }
 
 func (d *MemberDb) DeleteMember(member *models.Member) error {
