@@ -23,8 +23,12 @@ var (
 	isManualListenIP bool
 )
 
-func InitConfig() (*config.Config, bool) {
-	initConfig()
+func InitConfig(configfile string) (*config.Config, bool) {
+	if configfile == "" {
+		initConfig()
+	} else {
+		configPath = configfile
+	}
 	flagParse()
 
 	err := config.ReadConfig(configPath)
@@ -32,7 +36,6 @@ func InitConfig() (*config.Config, bool) {
 		panic(err)
 	}
 	cfg = config.Get()
-
 
 	return cfg, isReleaseMode
 }
