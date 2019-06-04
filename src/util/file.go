@@ -17,12 +17,29 @@ func GetFilePath(filename string) (string, error) {
 
 		filename = strings.Replace(filename, "~", u.HomeDir, 1)
 	} else {
-		fn, err := filepath.Abs(filename)
+		base, err := filepath.Abs("")
 		if err != nil {
 			return filename, err
 		}
 
-		filename = fn
+		sep := "/"
+		base = strings.ReplaceAll(base, "\\", sep)
+		filename = strings.ReplaceAll(filename, "\\", sep)
+
+		dirs := strings.Split(filename, sep)
+		for i := 0; i < len(dirs); i++ {
+			if dirs[i] != ".." {
+				filename = sep + strings.Join(dirs[i:], sep)
+				break
+			}
+
+			base = filepath.Dir(base)
+		}
+
+		filename, err = filepath.Abs(base + filename)
+		if err != nil {
+			return "", err
+		}
 	}
 
 	return filename, nil
