@@ -1,0 +1,29 @@
+server:
+  host: ""
+  port: 5487
+
+mysql_dbm:
+  domain: "localhost:3306"
+  username: "root"
+  password: "root"
+  database: ""
+  param: "charset=utf8mb4&parseTime=true"
+mysql_member:
+  domain: "localhost:3306"
+  username: "root"
+  password: "root"
+  database: "orderfood_test_member"
+  param: "charset=utf8mb4&parseTime=true"
+mysql_menu:
+  domain: "localhost:3306"
+  username: "root"
+  password: "root"
+  database: "orderfood_test_menu"
+  param: "charset=utf8mb4&parseTime=true"
+
+txt:
+  domain: "./data"
+  username: ""
+  password: ""
+  database: "order_member"
+  param: ""
