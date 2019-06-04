@@ -11,6 +11,7 @@ type IDb interface {
 }
 
 type IDBM interface {
+	CheckDb() error
 	RebuildDb() error
 }
 

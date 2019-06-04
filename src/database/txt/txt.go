@@ -24,7 +24,7 @@ func (d *txtDb) Menu() common.IMenu {
 }
 
 func (d *txtDb) DBM() common.IDBM {
-	return d
+	return nil
 }
 
 func (db *txtDb) Connect(filename string) (*os.File, error) {

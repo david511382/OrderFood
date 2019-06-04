@@ -19,7 +19,7 @@ var (
 )
 
 func Init(cfg *config.Config) {
-	err := initMySQL(cfg.MySQL)
+	err := initMySQL(cfg)
 	if err != nil {
 		initTxt(cfg.Txt)
 	}
@@ -34,8 +34,8 @@ func initTxt(dbCfg config.DbConfig) {
 	}
 }
 
-func initMySQL(dbCfg config.DbConfig) error {
-	err := database.InitMysql(dbCfg)
+func initMySQL(Cfg *config.Config) error {
+	err := database.InitMysql(Cfg)
 	if err != nil {
 		return err
 	}

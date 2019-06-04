@@ -16,7 +16,7 @@ import (
 // @in header
 // @name Authorization
 func main() {
-	cfg, isReleaseMode := tags.InitConfig()
+	cfg, isReleaseMode := tags.InitConfig("")
 
 	logic.Init(cfg)
 

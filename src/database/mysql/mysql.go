@@ -16,21 +16,24 @@ type mysqlDb struct {
 	Connect func() (*sqlx.DB, error)
 }
 
-func (d *mysqlDb) Member() common.IMember {
+func NewMemberDb(dbCfg config.DbConfig) common.IMember {
+	d := NewDb(dbCfg)
 	db := &member.MemberDb{
 		Connect: d.Connect,
 	}
 	return db
 }
 
-func (d *mysqlDb) Menu() common.IMenu {
+func NewMenuDb(dbCfg config.DbConfig) common.IMenu {
+	d := NewDb(dbCfg)
 	db := &menu.MenuDb{
 		Connect: d.Connect,
 	}
 	return db
 }
 
-func (d *mysqlDb) DBM() common.IDBM {
+func NewDBMdb(dbCfg config.DbConfig) common.IDBM {
+	d := NewDb(dbCfg)
 	return d
 }
 

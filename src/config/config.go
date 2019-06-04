@@ -6,9 +6,11 @@ import (
 )
 
 type Config struct {
-	Server `yaml:"server"`
-	MySQL  DbConfig `yaml:"mysql"`
-	Txt    DbConfig `yaml:"txt"`
+	Server      `yaml:"server"`
+	MySQLdbm    DbConfig `yaml:"mysql_dbm"`
+	MySQLMember DbConfig `yaml:"mysql_member"`
+	MySQLMenu   DbConfig `yaml:"mysql_menu"`
+	Txt         DbConfig `yaml:"txt"`
 }
 
 type Server struct {
