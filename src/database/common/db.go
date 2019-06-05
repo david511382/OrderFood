@@ -2,6 +2,7 @@ package common
 
 import (
 	"fmt"
+	"orderfood/src/database/models"
 	"strings"
 )
 
@@ -27,6 +28,11 @@ var (
 )
 
 func init() {
+	MemberDt = newDt(memberTableName, &models.Member{})
+	ItemDt = newDt(itemTableName, &models.Item{})
+}
+
+func newDt(tableName table, m interface{}) DbTable {
 	const (
 		selectSQLStr string = `
 		SELECT
@@ -54,20 +60,12 @@ func init() {
 		%%s`
 	)
 
-	MemberDt = DbTable{
-		TableName: memberTableName,
-		selectSQL: fmt.Sprintf(selectSQLStr, memberTableName),
-		insertSQL: fmt.Sprintf(insertSQLStr, memberTableName),
-		updateSQL: fmt.Sprintf(updateaSQLStr, memberTableName),
-		deleteSQL: fmt.Sprintf(deleteSQLStr, memberTableName),
-	}
-
-	ItemDt = DbTable{
-		TableName: itemTableName,
-		selectSQL: fmt.Sprintf(selectSQLStr, itemTableName),
-		insertSQL: fmt.Sprintf(insertSQLStr, itemTableName),
-		updateSQL: fmt.Sprintf(updateaSQLStr, itemTableName),
-		deleteSQL: fmt.Sprintf(deleteSQLStr, itemTableName),
+	return DbTable{
+		TableName: tableName,
+		selectSQL: fmt.Sprintf(selectSQLStr, tableName),
+		insertSQL: fmt.Sprintf(insertSQLStr, tableName),
+		updateSQL: fmt.Sprintf(updateaSQLStr, tableName),
+		deleteSQL: fmt.Sprintf(deleteSQLStr, tableName),
 	}
 }
 
