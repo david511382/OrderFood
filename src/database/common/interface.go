@@ -16,7 +16,7 @@ type IDBM interface {
 }
 
 type IMember interface {
-	GetMember(*models.Member) ([]models.Member, error)
+	GetMember(*models.Member) ([]*models.Member, error)
 	AddMember(*models.Member) error
 	UpdateMember(*models.Member) (int64, error)
 	DeleteMember(*models.Member) (int64, error)

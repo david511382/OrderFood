@@ -59,7 +59,7 @@ func TestGetMember(t *testing.T) {
 		name   string
 		input  *models.Member
 		err    error
-		output []models.Member
+		output []*models.Member
 	}{
 		{
 			name: "get 1 id",
@@ -67,8 +67,8 @@ func TestGetMember(t *testing.T) {
 				ID: dbMember.GetID(),
 			},
 			err: nil,
-			output: []models.Member{
-				dbMember,
+			output: []*models.Member{
+				&dbMember,
 			},
 		},
 		{
@@ -77,8 +77,8 @@ func TestGetMember(t *testing.T) {
 				Name: dbMember.GetName(),
 			},
 			err: nil,
-			output: []models.Member{
-				dbMember,
+			output: []*models.Member{
+				&dbMember,
 			},
 		},
 		{
@@ -87,8 +87,8 @@ func TestGetMember(t *testing.T) {
 				Username: dbMember.GetUsername(),
 			},
 			err: nil,
-			output: []models.Member{
-				dbMember,
+			output: []*models.Member{
+				&dbMember,
 			},
 		},
 		{
@@ -97,8 +97,8 @@ func TestGetMember(t *testing.T) {
 				Password: dbMember.GetPassword(),
 			},
 			err: nil,
-			output: []models.Member{
-				dbMember,
+			output: []*models.Member{
+				&dbMember,
 			},
 		},
 	}

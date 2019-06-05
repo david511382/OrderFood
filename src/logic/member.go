@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	Members = make([]models.Member, 0)
+	Members = make([]*models.Member, 0)
 )
 
 func LoadMembers() {
@@ -21,7 +21,7 @@ func LoadMembers() {
 func GetMember(username string) *models.Member {
 	for _, v := range Members {
 		if v.GetUsername() == username {
-			return &v
+			return v
 		}
 	}
 	return nil

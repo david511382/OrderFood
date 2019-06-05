@@ -7,21 +7,10 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func (d *MemberDb) GetMember(member *models.Member) ([]models.Member, error) {
+func (d *MemberDb) GetMember(member *models.Member) ([]*models.Member, error) {
 	condictionCols := make([]string, 0)
 	if member != nil {
-		if member.GetID() != 0 {
-			condictionCols = append(condictionCols, "id")
-		}
-		if member.GetName() != "" {
-			condictionCols = append(condictionCols, "name")
-		}
-		if member.GetUsername() != "" {
-			condictionCols = append(condictionCols, "username")
-		}
-		if member.GetPassword() != "" {
-			condictionCols = append(condictionCols, "password")
-		}
+		condictionCols = memberCondiction(member)
 	}
 
 	sqlStr := common.MemberDt.SelectSQL(nil, condictionCols)
@@ -35,7 +24,7 @@ func (d *MemberDb) GetMember(member *models.Member) ([]models.Member, error) {
 		}
 	}
 
-	members := make([]models.Member, 0)
+	members := make([]*models.Member, 0)
 	db, err := d.Connect()
 	if err != nil {
 		return nil, err
@@ -122,20 +111,7 @@ func (d *MemberDb) DeleteMember(member *models.Member) (int64, error) {
 		return 0, common.DbDataError
 	}
 
-	condictionCols := make([]string, 0)
-	if member.GetID() != 0 {
-		condictionCols = append(condictionCols, "id")
-	}
-	if member.GetName() != "" {
-		condictionCols = append(condictionCols, "name")
-	}
-	if member.GetUsername() != "" {
-		condictionCols = append(condictionCols, "username")
-	}
-	if member.GetPassword() != "" {
-		condictionCols = append(condictionCols, "password")
-	}
-
+	condictionCols := memberCondiction(member)
 	sqlStr := common.MemberDt.DeleteSQL(condictionCols)
 
 	args := make([]interface{}, 0)
@@ -160,4 +136,21 @@ func (d *MemberDb) DeleteMember(member *models.Member) (int64, error) {
 
 	count, err := r.RowsAffected()
 	return count, err
+}
+
+func memberCondiction(member *models.Member) []string {
+	condictionCols := make([]string, 0)
+	if member.GetID() != 0 {
+		condictionCols = append(condictionCols, "id")
+	}
+	if member.GetName() != "" {
+		condictionCols = append(condictionCols, "name")
+	}
+	if member.GetUsername() != "" {
+		condictionCols = append(condictionCols, "username")
+	}
+	if member.GetPassword() != "" {
+		condictionCols = append(condictionCols, "password")
+	}
+	return condictionCols
 }
