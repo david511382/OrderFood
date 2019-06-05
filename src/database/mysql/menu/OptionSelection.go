@@ -9,11 +9,11 @@ func (d *MenuDb) GetOptionSelection(*models.OptionSelection) ([]*models.OptionSe
 	return nil, nil
 }
 func (d *MenuDb) AddOptionSelection(*models.OptionSelection) error {
-	return  nil
-}
-func (d *MenuDb) DeleteOptionSelection(*models.OptionSelection) error {
 	return nil
 }
-func (d *MenuDb) UpdateOptionSelection(*models.OptionSelection) error {
-	return  nil
+func (d *MenuDb) DeleteOptionSelection(*models.OptionSelection) (int64, error) {
+	return 0, nil
+}
+func (d *MenuDb) UpdateOptionSelection(*models.OptionSelection) (int64, error) {
+	return 0, nil
 }

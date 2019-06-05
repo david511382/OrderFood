@@ -76,51 +76,50 @@ func (d *MemberDb) AddMember(member *models.Member) error {
 	return nil
 }
 
-func (d *MemberDb) UpdateMember(member *models.Member) error {
+func (d *MemberDb) UpdateMember(member *models.Member) (int64, error) {
 	if member == nil {
-		return common.DbDataError
+		return 0, common.DbDataError
 	}
 
-	cols := []string{"name", "username", "password"}
-
-	condictionCols := make([]string, 0)
-	if member.GetID() != 0 {
-		condictionCols = append(condictionCols, "id")
-	}
+	cols := make([]string, 0)
 	if member.GetName() != "" {
-		condictionCols = append(condictionCols, "name")
+		cols = append(cols, "name")
 	}
 	if member.GetUsername() != "" {
-		condictionCols = append(condictionCols, "username")
+		cols = append(cols, "username")
 	}
 	if member.GetPassword() != "" {
-		condictionCols = append(condictionCols, "password")
+		cols = append(cols, "password")
 	}
 
-	sqlStr := common.MemberDt.UpdateSQL(cols, condictionCols)
+	sqlStr := common.MemberDt.UpdateSQL(cols)
 
 	args := make([]interface{}, 0)
 	var err error
 	if member != nil {
 		sqlStr, args, err = sqlx.Named(sqlStr, member)
 		if err != nil {
-			return err
+			return 0, err
 		}
 	}
 
 	db, err := d.Connect()
 	if err != nil {
-		return err
+		return 0, err
 	}
 	defer db.Close()
-	_, err = db.Exec(sqlStr, args...)
+	r, err := db.Exec(sqlStr, args...)
+	if err != nil {
+		return 0, err
+	}
 
-	return err
+	count, err := r.RowsAffected()
+	return count, err
 }
 
-func (d *MemberDb) DeleteMember(member *models.Member) error {
+func (d *MemberDb) DeleteMember(member *models.Member) (int64, error) {
 	if member == nil {
-		return common.DbDataError
+		return 0, common.DbDataError
 	}
 
 	condictionCols := make([]string, 0)
@@ -144,24 +143,21 @@ func (d *MemberDb) DeleteMember(member *models.Member) error {
 	if member != nil {
 		sqlStr, args, err = sqlx.Named(sqlStr, member)
 		if err != nil {
-			return err
+			return 0, err
 		}
 	}
 
 	db, err := d.Connect()
 	if err != nil {
-		return err
+		return 0, err
 	}
 	defer db.Close()
+
 	r, err := db.Exec(sqlStr, args...)
 	if err != nil {
-		return err
-	}
-	if id, err := r.RowsAffected(); id != 1 {
-		return common.DbDataError
-	} else if err != nil {
-		return err
+		return 0, err
 	}
 
-	return nil
+	count, err := r.RowsAffected()
+	return count, err
 }

@@ -17,45 +17,45 @@ type IDBM interface {
 
 type IMember interface {
 	GetMember(*models.Member) ([]models.Member, error)
-	AddMember(*models.Member)  error
-	UpdateMember(*models.Member)  error
-	DeleteMember(*models.Member) error
+	AddMember(*models.Member) error
+	UpdateMember(*models.Member) (int64, error)
+	DeleteMember(*models.Member) (int64, error)
 }
 
 type IMenu interface {
 	// Shop 。
 	GetShop(*models.Shop) ([]*models.Shop, error)
-	AddShop(*models.Shop)  error
-	DeleteShop(*models.Shop) error
-	UpdateShop(*models.Shop)  error
+	AddShop(*models.Shop) error
+	DeleteShop(*models.Shop) (int64, error)
+	UpdateShop(*models.Shop) (int64, error)
 
 	// Item 。
 	GetItem(*models.Item) ([]*models.Item, error)
-	AddItem(*models.Item)  error
-	DeleteItem(*models.Item) error
-	UpdateItem(*models.Item)  error
+	AddItem(*models.Item) error
+	DeleteItem(*models.Item) (int64, error)
+	UpdateItem(*models.Item) (int64, error)
 
 	// ItemOption 。
 	GetItemOption(*models.ItemOption) ([]*models.ItemOption, error)
-	AddItemOption(*models.ItemOption)  error
-	DeleteItemOption(*models.ItemOption) error
-	UpdateItemOption(*models.ItemOption)  error
+	AddItemOption(*models.ItemOption) error
+	DeleteItemOption(*models.ItemOption) (int64, error)
+	UpdateItemOption(*models.ItemOption) (int64, error)
 
 	// Option 。
 	GetOption(*models.Option) ([]*models.Option, error)
-	AddOption(*models.Option)  error
-	DeleteOption(*models.Option) error
-	UpdateOption(*models.Option)  error
+	AddOption(*models.Option) error
+	DeleteOption(*models.Option) (int64, error)
+	UpdateOption(*models.Option) (int64, error)
 
 	// OptionSelection 。
 	GetOptionSelection(*models.OptionSelection) ([]*models.OptionSelection, error)
-	AddOptionSelection(*models.OptionSelection)  error
-	DeleteOptionSelection(*models.OptionSelection) error
-	UpdateOptionSelection(*models.OptionSelection)  error
+	AddOptionSelection(*models.OptionSelection) error
+	DeleteOptionSelection(*models.OptionSelection) (int64, error)
+	UpdateOptionSelection(*models.OptionSelection) (int64, error)
 
 	// selection
 	GetSelection(*models.Selection) ([]*models.Selection, error)
-	AddSelection(*models.Selection)  error
-	DeleteSelection(*models.Selection) error
-	UpdateSelection(*models.Selection)  error
+	AddSelection(*models.Selection) error
+	DeleteSelection(*models.Selection) (int64, error)
+	UpdateSelection(*models.Selection) (int64, error)
 }

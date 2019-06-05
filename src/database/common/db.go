@@ -56,8 +56,8 @@ func init() {
 		TableName: memberTableName,
 		selectSQL: fmt.Sprintf(selectSQLStr, memberTableName),
 		insertSQL: fmt.Sprintf(insertSQLStr, memberTableName),
-		updateSQL: fmt.Sprintf(selectSQLStr, memberTableName),
-		deleteSQL: fmt.Sprintf(selectSQLStr, memberTableName),
+		updateSQL: fmt.Sprintf(updateaSQLStr, memberTableName),
+		deleteSQL: fmt.Sprintf(deleteSQLStr, memberTableName),
 	}
 }
 
@@ -93,7 +93,7 @@ func (dt DbTable) InsertSQL(cols []string) string {
 
 //UpdateSQL cols = {id,name}
 //must have condition
-func (dt DbTable) UpdateSQL(cols, conditionCols []string) string {
+func (dt DbTable) UpdateSQL(cols []string) string {
 	kv := make([]string, 0)
 	for _, col := range cols {
 		col = col + "=:" + col
@@ -101,7 +101,7 @@ func (dt DbTable) UpdateSQL(cols, conditionCols []string) string {
 	}
 	colStr := "SET " + strings.Join(kv, " , ")
 
-	whereStr := whereSQLStr(conditionCols)
+	whereStr := whereSQLStr([]string{"id"})
 
 	sqlStr := dt.updateSQL
 	sqlStr = fmt.Sprintf(sqlStr, colStr, whereStr)
@@ -113,7 +113,7 @@ func (dt DbTable) UpdateSQL(cols, conditionCols []string) string {
 func (dt DbTable) DeleteSQL(conditionCols []string) string {
 	whereStr := whereSQLStr(conditionCols)
 
-	sqlStr := dt.selectSQL
+	sqlStr := dt.deleteSQL
 	sqlStr = fmt.Sprintf(sqlStr, whereStr)
 
 	return sqlStr
@@ -129,12 +129,10 @@ func colSQLStr(cols []string) string {
 
 func whereSQLStr(conditionCols []string) string {
 	kv := make([]string, 0)
-	//if conditionCols == nil {
 	for _, col := range conditionCols {
 		col = col + "=:" + col
 		kv = append(kv, col)
 	}
-	//}
 
 	return "WHERE " + strings.Join(kv, " AND ")
 }
