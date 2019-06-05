@@ -16,6 +16,7 @@ type testDBM struct {
 
 var (
 	memberDb common.IMember
+	menuDb   common.IMenu
 )
 
 func TestMain(m *testing.M) {
@@ -33,6 +34,7 @@ func TestMain(m *testing.M) {
 	dbm.cleanDb()
 
 	memberDb = NewMemberDb(cfg.MySQLMember)
+	menuDb = NewMenuDb(cfg.MySQLMenu)
 
 	m.Run()
 }

@@ -18,10 +18,12 @@ type DbTable struct {
 
 const (
 	memberTableName table = "member"
+	itemTableName   table = "item"
 )
 
 var (
 	MemberDt DbTable
+	ItemDt   DbTable
 )
 
 func init() {
@@ -58,6 +60,14 @@ func init() {
 		insertSQL: fmt.Sprintf(insertSQLStr, memberTableName),
 		updateSQL: fmt.Sprintf(updateaSQLStr, memberTableName),
 		deleteSQL: fmt.Sprintf(deleteSQLStr, memberTableName),
+	}
+
+	ItemDt = DbTable{
+		TableName: itemTableName,
+		selectSQL: fmt.Sprintf(selectSQLStr, itemTableName),
+		insertSQL: fmt.Sprintf(insertSQLStr, itemTableName),
+		updateSQL: fmt.Sprintf(updateaSQLStr, itemTableName),
+		deleteSQL: fmt.Sprintf(deleteSQLStr, itemTableName),
 	}
 }
 
