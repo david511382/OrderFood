@@ -112,7 +112,7 @@ func (d *MenuDb) DeleteItem(item *models.Item) (int64, error) {
 	}
 
 	condictionCols := itemCondiction(item)
-	sqlStr := common.MemberDt.DeleteSQL(condictionCols)
+	sqlStr := common.ItemDt.DeleteSQL(condictionCols)
 
 	args := make([]interface{}, 0)
 	var err error

@@ -8,23 +8,13 @@ import (
 	"orderfood/src/database/models"
 )
 
-var (
-	dbItem = models.Item{
-		ID:      1,
-		Name:    "test name",
-		Price:   100,
-		Shop_ID: 123,
-	}
-	itemInput = models.Item{
-		Name:    dbItem.GetName(),
-		Price:   dbItem.GetPrice(),
-		Shop_ID: dbItem.GetShop_ID(),
-	}
-)
-
 func TestAddItem(t *testing.T) {
-	output1 := dbItem
-	item := itemInput
+	const (
+		i  int32  = 6
+		n  string = "fjdsakl;tg"
+		si int32  = 5
+		p  int32  = 15315
+	)
 
 	flagtests := []struct {
 		name   string
@@ -33,10 +23,19 @@ func TestAddItem(t *testing.T) {
 		output *models.Item
 	}{
 		{
-			name:   "add 1",
-			input:  &item,
-			err:    nil,
-			output: &output1,
+			name: "add 6",
+			input: &models.Item{
+				Name:    n,
+				Shop_ID: si,
+				Price:   p,
+			},
+			err: nil,
+			output: &models.Item{
+				ID:      i,
+				Name:    n,
+				Shop_ID: si,
+				Price:   p,
+			},
 		},
 	}
 
@@ -51,10 +50,6 @@ func TestAddItem(t *testing.T) {
 	}
 }
 func TestGetItem(t *testing.T) {
-	item := itemInput
-	err := menuDb.AddItem(&item)
-	assert.Nil(t, err)
-
 	flagtests := []struct {
 		name   string
 		input  *models.Item
@@ -64,41 +59,41 @@ func TestGetItem(t *testing.T) {
 		{
 			name: "get 1 id",
 			input: &models.Item{
-				ID: dbItem.GetID(),
+				ID: menuDbItems[0].GetID(),
 			},
 			err: nil,
 			output: []*models.Item{
-				&dbItem,
+				&(menuDbItems[0]),
 			},
 		},
 		{
-			name: "get 1 name",
+			name: "get 2 name",
 			input: &models.Item{
-				Name: dbItem.GetName(),
+				Name: menuDbItems[1].GetName(),
 			},
 			err: nil,
 			output: []*models.Item{
-				&dbItem,
+				&(menuDbItems[1]),
 			},
 		},
 		{
-			name: "get 1 price",
+			name: "get 3 shop_id",
 			input: &models.Item{
-				Price: dbItem.GetPrice(),
+				Shop_ID: menuDbItems[2].GetShop_ID(),
 			},
 			err: nil,
 			output: []*models.Item{
-				&dbItem,
+				&(menuDbItems[2]),
 			},
 		},
 		{
-			name: "get 1 shop_id",
+			name: "get 4 price",
 			input: &models.Item{
-				Shop_ID: dbItem.GetShop_ID(),
+				Price: menuDbItems[3].GetPrice(),
 			},
 			err: nil,
 			output: []*models.Item{
-				&dbItem,
+				&(menuDbItems[3]),
 			},
 		},
 	}
@@ -113,16 +108,11 @@ func TestGetItem(t *testing.T) {
 	}
 }
 func TestUpdateItem(t *testing.T) {
-	item := itemInput
-	err := menuDb.AddItem(&item)
-	assert.Nil(t, err)
-
-	newItem := &models.Item{
-		ID:      dbItem.GetID(),
-		Name:    "new name",
-		Price:   1531,
-		Shop_ID: 15234,
-	}
+	const (
+		new   string = "new"
+		newI  int32  = 5465347
+		newSI int32  = 5
+	)
 
 	flagtests := []struct {
 		name   string
@@ -133,35 +123,46 @@ func TestUpdateItem(t *testing.T) {
 		{
 			name: "update 1 name",
 			input: models.Item{
-				ID:   dbItem.GetID(),
-				Name: newItem.GetName(),
+				ID:   menuDbItems[0].GetID(),
+				Name: new,
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "update 1 price",
+			name: "update 2 shop_id",
 			input: models.Item{
-				ID:    dbItem.GetID(),
-				Price: newItem.GetPrice(),
+				ID:      menuDbItems[1].GetID(),
+				Shop_ID: newSI,
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "update 1 shop_id",
+			name: "update 3 price",
 			input: models.Item{
-				ID:      dbItem.GetID(),
-				Shop_ID: newItem.GetShop_ID(),
+				ID:    menuDbItems[2].GetID(),
+				Price: newI,
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name:   "update 1",
-			input:  item,
+			name: "update 4",
+			input: models.Item{
+				ID:      menuDbItems[3].GetID(),
+				Name:    new,
+				Shop_ID: newSI,
+				Price:   newI,
+			},
 			err:    nil,
 			output: 1,
+		},
+		{
+			name:   "update 5",
+			input:  menuDbItems[4],
+			err:    nil,
+			output: 0,
 		},
 	}
 
@@ -176,8 +177,6 @@ func TestUpdateItem(t *testing.T) {
 	}
 }
 func TestDeleteItem(t *testing.T) {
-	item := itemInput
-
 	flagtests := []struct {
 		name   string
 		input  models.Item
@@ -185,50 +184,55 @@ func TestDeleteItem(t *testing.T) {
 		output int64
 	}{
 		{
-			name: "delete 1 id",
-			input: models.Item{
-				ID: dbItem.GetID(),
-			},
-			err:    nil,
-			output: 1,
-		},
-		{
-			name: "delete 1 name",
-			input: models.Item{
-				Name: dbItem.GetName(),
-			},
-			err:    nil,
-			output: 1,
-		},
-		{
-			name: "delete 1 price",
-			input: models.Item{
-				Price: dbItem.GetPrice(),
-			},
-			err:    nil,
-			output: 1,
-		},
-		{
 			name: "delete 1 shop_id",
 			input: models.Item{
-				Shop_ID: dbItem.GetShop_ID(),
+				Shop_ID: menuDbItems[0].GetShop_ID(),
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name:   "delete 1",
-			input:  dbItem,
+			name: "delete 2 price",
+			input: models.Item{
+				Price: menuDbItems[1].GetPrice(),
+			},
 			err:    nil,
 			output: 1,
+		},
+		{
+			name: "delete 3 name",
+			input: models.Item{
+				Name: menuDbItems[2].GetName(),
+			},
+			err:    nil,
+			output: 1,
+		},
+		{
+			name: "delete 4 id",
+			input: models.Item{
+				ID: menuDbItems[3].GetID(),
+			},
+			err:    nil,
+			output: 1,
+		},
+		{
+			name:   "delete 5",
+			input:  menuDbItems[4],
+			err:    nil,
+			output: 1,
+		},
+		{
+			name: "delete 7",
+			input: models.Item{
+				ID: 7,
+			},
+			err:    nil,
+			output: 0,
 		},
 	}
 
 	for _, flag := range flagtests {
 		t.Run(flag.name, func(t *testing.T) {
-			err := menuDb.AddItem(&item)
-			assert.Nil(t, err)
-
 			input := flag.input
 			inputp := &input
 			output, err := menuDb.DeleteItem(inputp)

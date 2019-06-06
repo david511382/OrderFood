@@ -8,23 +8,13 @@ import (
 	"orderfood/src/database/models"
 )
 
-var (
-	dbMember = models.Member{
-		ID:       1,
-		Name:     "test name",
-		Username: "test username",
-		Password: "test password",
-	}
-	memberInput = models.Member{
-		Name:     dbMember.GetName(),
-		Username: dbMember.GetUsername(),
-		Password: dbMember.GetPassword(),
-	}
-)
-
 func TestAddMember(t *testing.T) {
-	output1 := dbMember
-	member := memberInput
+	const (
+		i  int32  = 6
+		n  string = "fjdsakl;tg"
+		un string = "fjdsakl;ffjslfjkla"
+		p  string = "fdsagewgege"
+	)
 
 	flagtests := []struct {
 		name   string
@@ -33,10 +23,19 @@ func TestAddMember(t *testing.T) {
 		output *models.Member
 	}{
 		{
-			name:   "add 1",
-			input:  &member,
-			err:    nil,
-			output: &output1,
+			name: "add 6",
+			input: &models.Member{
+				Name:     n,
+				Username: un,
+				Password: p,
+			},
+			err: nil,
+			output: &models.Member{
+				ID:       i,
+				Name:     n,
+				Username: un,
+				Password: p,
+			},
 		},
 	}
 
@@ -51,10 +50,6 @@ func TestAddMember(t *testing.T) {
 	}
 }
 func TestGetMember(t *testing.T) {
-	member := memberInput
-	err := memberDb.AddMember(&member)
-	assert.Nil(t, err)
-
 	flagtests := []struct {
 		name   string
 		input  *models.Member
@@ -64,41 +59,41 @@ func TestGetMember(t *testing.T) {
 		{
 			name: "get 1 id",
 			input: &models.Member{
-				ID: dbMember.GetID(),
+				ID: memberDbMembers[0].GetID(),
 			},
 			err: nil,
 			output: []*models.Member{
-				&dbMember,
+				&(memberDbMembers[0]),
 			},
 		},
 		{
-			name: "get 1 name",
+			name: "get 2 name",
 			input: &models.Member{
-				Name: dbMember.GetName(),
+				Name: memberDbMembers[1].GetName(),
 			},
 			err: nil,
 			output: []*models.Member{
-				&dbMember,
+				&(memberDbMembers[1]),
 			},
 		},
 		{
-			name: "get 1 username",
+			name: "get 3 username",
 			input: &models.Member{
-				Username: dbMember.GetUsername(),
+				Username: memberDbMembers[2].GetUsername(),
 			},
 			err: nil,
 			output: []*models.Member{
-				&dbMember,
+				&(memberDbMembers[2]),
 			},
 		},
 		{
-			name: "get 1 password",
+			name: "get 4 password",
 			input: &models.Member{
-				Password: dbMember.GetPassword(),
+				Password: memberDbMembers[3].GetPassword(),
 			},
 			err: nil,
 			output: []*models.Member{
-				&dbMember,
+				&(memberDbMembers[3]),
 			},
 		},
 	}
@@ -113,17 +108,7 @@ func TestGetMember(t *testing.T) {
 	}
 }
 func TestUpdateMember(t *testing.T) {
-	member := memberInput
-	err := memberDb.AddMember(&member)
-	assert.Nil(t, err)
-
-	newMember := &models.Member{
-		ID:       dbMember.GetID(),
-		Name:     "new name",
-		Username: "new username",
-		Password: "new password",
-	}
-
+	const new = "new"
 	flagtests := []struct {
 		name   string
 		input  models.Member
@@ -133,35 +118,46 @@ func TestUpdateMember(t *testing.T) {
 		{
 			name: "update 1 name",
 			input: models.Member{
-				ID:   dbMember.GetID(),
-				Name: newMember.GetName(),
+				ID:   memberDbMembers[0].GetID(),
+				Name: new,
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "update 1 username",
+			name: "update 2 username",
 			input: models.Member{
-				ID:       dbMember.GetID(),
-				Username: newMember.GetUsername(),
+				ID:       memberDbMembers[1].GetID(),
+				Username: new,
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "update 1 password",
+			name: "update 3 password",
 			input: models.Member{
-				ID:       dbMember.GetID(),
-				Password: newMember.GetPassword(),
+				ID:       memberDbMembers[2].GetID(),
+				Password: new,
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name:   "update 1",
-			input:  member,
+			name: "update 4",
+			input: models.Member{
+				ID:       memberDbMembers[3].GetID(),
+				Name:     new,
+				Username: new,
+				Password: new,
+			},
 			err:    nil,
 			output: 1,
+		},
+		{
+			name:   "update 5",
+			input:  memberDbMembers[4],
+			err:    nil,
+			output: 0,
 		},
 	}
 
@@ -176,8 +172,6 @@ func TestUpdateMember(t *testing.T) {
 	}
 }
 func TestDeleteMember(t *testing.T) {
-	member := memberInput
-
 	flagtests := []struct {
 		name   string
 		input  models.Member
@@ -185,50 +179,55 @@ func TestDeleteMember(t *testing.T) {
 		output int64
 	}{
 		{
-			name: "delete 1 id",
-			input: models.Member{
-				ID:       dbMember.GetID(),
-			},
-			err:    nil,
-			output: 1,
-		},
-		{
-			name: "delete 1 name",
-			input: models.Member{
-				Name: dbMember.GetName(),
-			},
-			err:    nil,
-			output: 1,
-		},
-		{
 			name: "delete 1 username",
 			input: models.Member{
-				Username: dbMember.GetUsername(),
+				Username: memberDbMembers[0].GetUsername(),
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "delete 1 password",
+			name: "delete 2 password",
 			input: models.Member{
-				Password: dbMember.GetPassword(),
+				Password: memberDbMembers[1].GetPassword(),
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name:   "delete 1",
-			input:  dbMember,
+			name: "delete 3 name",
+			input: models.Member{
+				Name: memberDbMembers[2].GetName(),
+			},
 			err:    nil,
 			output: 1,
+		},
+		{
+			name: "delete 4 id",
+			input: models.Member{
+				ID: memberDbMembers[3].GetID(),
+			},
+			err:    nil,
+			output: 1,
+		},
+		{
+			name:   "delete 5",
+			input:  memberDbMembers[4],
+			err:    nil,
+			output: 1,
+		},
+		{
+			name: "delete 7",
+			input: models.Member{
+				ID: 7,
+			},
+			err:    nil,
+			output: 0,
 		},
 	}
 
 	for _, flag := range flagtests {
 		t.Run(flag.name, func(t *testing.T) {
-			err := memberDb.AddMember(&member)
-			assert.Nil(t, err)
-
 			input := flag.input
 			inputp := &input
 			output, err := memberDb.DeleteMember(inputp)
