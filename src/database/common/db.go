@@ -20,18 +20,21 @@ const (
 	memberTableName table = "member"
 	itemTableName   table = "item"
 	shopTableName   table = "shop"
+	itemOptionTableName   table = "item_option"
 )
 
 var (
 	MemberDt DbTable
 	ItemDt   DbTable
 	ShopDt   DbTable
+	ItemOptionDt   DbTable
 )
 
 func init() {
 	MemberDt = newDt(memberTableName)
 	ItemDt = newDt(itemTableName)
 	ShopDt = newDt(shopTableName)
+	ItemOptionDt = newDt(itemOptionTableName)
 }
 
 func newDt(tableName table) DbTable {

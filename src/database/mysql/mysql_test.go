@@ -27,6 +27,9 @@ const (
 	s3 string = "3"
 	s4 string = "4"
 	s5 string = "5"
+
+	b1 bool = false
+	b2 bool = true
 )
 
 var (
@@ -120,6 +123,51 @@ var (
 			Price:   i5,
 		},
 	}
+	menuDbItemOptions = []models.ItemOption{
+		models.ItemOption{
+			ID:        i1,
+			Item_ID:   i1,
+			Option_ID: i1,
+		},
+		models.ItemOption{
+			ID:        i2,
+			Item_ID:   i2,
+			Option_ID: i2,
+		},
+		models.ItemOption{
+			ID:        i3,
+			Item_ID:   i3,
+			Option_ID: i3,
+		},
+		models.ItemOption{
+			ID:        i4,
+			Item_ID:   i4,
+			Option_ID: i4,
+		},
+	}
+
+	menuDbOptions = []models.Option{
+		models.Option{
+			ID:          i1,
+			Is_Optional: b1,
+			Select_Num:  i1,
+		},
+		models.Option{
+			ID:          i2,
+			Is_Optional: b1,
+			Select_Num:  i1,
+		},
+		models.Option{
+			ID:          i3,
+			Is_Optional: b1,
+			Select_Num:  i3,
+		},
+		models.Option{
+			ID:          i4,
+			Is_Optional: b1,
+			Select_Num:  i1,
+		},
+	}
 )
 
 func TestMain(m *testing.M) {
@@ -189,7 +237,7 @@ func (db *testDBM) initDb() {
 				VALUES
 				(?,?)
 				`
-				sqlStr = fmt.Sprintf(sqlStr, menuSchema+".Shop")
+				sqlStr = fmt.Sprintf(sqlStr, menuSchema+"."+common.ShopDt.TableName)
 				for _, shop := range menuDbShops {
 					r, err := d.Exec(sqlStr, []interface{}{
 						shop.GetID(),
@@ -215,6 +263,46 @@ func (db *testDBM) initDb() {
 						item.GetName(),
 						item.GetShop_ID(),
 						item.GetPrice(),
+					}...)
+					if err != nil {
+						panic(err)
+					} else if count, err := r.RowsAffected(); count != 1 || err != nil {
+						panic("insert fail")
+					}
+				}
+
+				sqlStr = `
+				INSERT INTO %s
+				(id,is_optional,select_num)				
+				VALUES
+				(?,?,?)
+				`
+				sqlStr = fmt.Sprintf(sqlStr, menuSchema+".Option")
+				for _, option := range menuDbOptions {
+					r, err := d.Exec(sqlStr, []interface{}{
+						option.GetID(),
+						option.GetIs_Optional(),
+						option.GetSelect_Num(),
+					}...)
+					if err != nil {
+						panic(err)
+					} else if count, err := r.RowsAffected(); count != 1 || err != nil {
+						panic("insert fail")
+					}
+				}
+
+				sqlStr = `
+				INSERT INTO %s
+				(id,item_id,option_id)				
+				VALUES
+				(?,?,?)
+				`
+				sqlStr = fmt.Sprintf(sqlStr, menuSchema+"."+common.ItemOptionDt.TableName)
+				for _, itemOption := range menuDbItemOptions {
+					r, err := d.Exec(sqlStr, []interface{}{
+						itemOption.GetID(),
+						itemOption.GetItem_ID(),
+						itemOption.GetOption_ID(),
 					}...)
 					if err != nil {
 						panic(err)
