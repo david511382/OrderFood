@@ -2,7 +2,6 @@ package common
 
 import (
 	"fmt"
-	"orderfood/src/database/models"
 	"strings"
 )
 
@@ -20,19 +19,22 @@ type DbTable struct {
 const (
 	memberTableName table = "member"
 	itemTableName   table = "item"
+	shopTableName   table = "shop"
 )
 
 var (
 	MemberDt DbTable
 	ItemDt   DbTable
+	ShopDt   DbTable
 )
 
 func init() {
-	MemberDt = newDt(memberTableName, &models.Member{})
-	ItemDt = newDt(itemTableName, &models.Item{})
+	MemberDt = newDt(memberTableName)
+	ItemDt = newDt(itemTableName)
+	ShopDt = newDt(shopTableName)
 }
 
-func newDt(tableName table, m interface{}) DbTable {
+func newDt(tableName table) DbTable {
 	const (
 		selectSQLStr string = `
 		SELECT
