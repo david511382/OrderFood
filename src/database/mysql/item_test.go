@@ -96,6 +96,14 @@ func TestGetItem(t *testing.T) {
 				&(menuDbItems[3]),
 			},
 		},
+		{
+			name:  "get 5",
+			input: &(menuDbItems[4]),
+			err:   nil,
+			output: []*models.Item{
+				&(menuDbItems[4]),
+			},
+		},
 	}
 
 	for _, flag := range flagtests {
@@ -121,10 +129,12 @@ func TestUpdateItem(t *testing.T) {
 		output int64
 	}{
 		{
-			name: "update 1 name",
+			name: "update 1",
 			input: models.Item{
-				ID:   menuDbItems[0].GetID(),
-				Name: new,
+				ID:      menuDbItems[0].GetID(),
+				Name:    new,
+				Shop_ID: newSI,
+				Price:   newI,
 			},
 			err:    nil,
 			output: 1,
@@ -148,19 +158,20 @@ func TestUpdateItem(t *testing.T) {
 			output: 1,
 		},
 		{
-			name: "update 4",
+			name: "update 4 name",
 			input: models.Item{
-				ID:      menuDbItems[3].GetID(),
-				Name:    new,
-				Shop_ID: newSI,
-				Price:   newI,
+				ID:   menuDbItems[3].GetID(),
+				Name: new,
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name:   "update 5",
-			input:  menuDbItems[4],
+			name: "update 7",
+			input: models.Item{
+				ID:   7,
+				Name: new,
+			},
 			err:    nil,
 			output: 0,
 		},
@@ -184,33 +195,33 @@ func TestDeleteItem(t *testing.T) {
 		output int64
 	}{
 		{
-			name: "delete 1 shop_id",
+			name: "delete 1 id",
 			input: models.Item{
-				Shop_ID: menuDbItems[0].GetShop_ID(),
+				ID: menuDbItems[0].GetID(),
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "delete 2 price",
+			name: "delete 2 name",
 			input: models.Item{
-				Price: menuDbItems[1].GetPrice(),
+				Name: menuDbItems[1].GetName(),
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "delete 3 name",
+			name: "delete 3 shop_id",
 			input: models.Item{
-				Name: menuDbItems[2].GetName(),
+				Shop_ID: menuDbItems[2].GetShop_ID(),
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "delete 4 id",
+			name: "delete 4 price",
 			input: models.Item{
-				ID: menuDbItems[3].GetID(),
+				Price: menuDbItems[3].GetPrice(),
 			},
 			err:    nil,
 			output: 1,

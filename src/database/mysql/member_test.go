@@ -96,6 +96,14 @@ func TestGetMember(t *testing.T) {
 				&(memberDbMembers[3]),
 			},
 		},
+		{
+			name:  "get 5",
+			input: &(memberDbMembers[4]),
+			err:   nil,
+			output: []*models.Member{
+				&(memberDbMembers[4]),
+			},
+		},
 	}
 
 	for _, flag := range flagtests {
@@ -116,10 +124,12 @@ func TestUpdateMember(t *testing.T) {
 		output int64
 	}{
 		{
-			name: "update 1 name",
+			name: "update 1",
 			input: models.Member{
-				ID:   memberDbMembers[0].GetID(),
-				Name: new,
+				ID:       memberDbMembers[0].GetID(),
+				Name:     new,
+				Username: new,
+				Password: new,
 			},
 			err:    nil,
 			output: 1,
@@ -143,19 +153,20 @@ func TestUpdateMember(t *testing.T) {
 			output: 1,
 		},
 		{
-			name: "update 4",
+			name: "update 4 name",
 			input: models.Member{
-				ID:       memberDbMembers[3].GetID(),
-				Name:     new,
-				Username: new,
-				Password: new,
+				ID:   memberDbMembers[3].GetID(),
+				Name: new,
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name:   "update 5",
-			input:  memberDbMembers[4],
+			name: "update 7",
+			input: models.Member{
+				ID:   7,
+				Name: new,
+			},
 			err:    nil,
 			output: 0,
 		},
@@ -179,33 +190,33 @@ func TestDeleteMember(t *testing.T) {
 		output int64
 	}{
 		{
-			name: "delete 1 username",
+			name: "delete 1 id",
 			input: models.Member{
-				Username: memberDbMembers[0].GetUsername(),
+				ID: memberDbMembers[0].GetID(),
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "delete 2 password",
+			name: "delete 2 name",
 			input: models.Member{
-				Password: memberDbMembers[1].GetPassword(),
+				Name: memberDbMembers[1].GetName(),
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "delete 3 name",
+			name: "delete 3 username",
 			input: models.Member{
-				Name: memberDbMembers[2].GetName(),
+				Username: memberDbMembers[2].GetUsername(),
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "delete 4 id",
+			name: "delete 4 password",
 			input: models.Member{
-				ID: memberDbMembers[3].GetID(),
+				Password: memberDbMembers[3].GetPassword(),
 			},
 			err:    nil,
 			output: 1,
