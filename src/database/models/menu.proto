@@ -27,8 +27,7 @@ message ItemOption {
 // Option 。
 message Option {
 	int32 ID = 1;
-	bool Is_Optional = 2;
-	int32 Select_Num = 3;
+	int32 Least_Select_Num = 2;
 }
 
 // OptionSelection 。
