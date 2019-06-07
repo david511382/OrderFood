@@ -105,7 +105,7 @@ func TestGetItemOption(t *testing.T) {
 func TestUpdateItemOption(t *testing.T) {
 	const (
 		newII int32 = 4
-		newOI int32 = 4
+		newOI int32 = 3
 	)
 
 	flagtests := []struct {

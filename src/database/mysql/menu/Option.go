@@ -1,19 +1,144 @@
 package menu
 
 import (
+	"orderfood/src/database/common"
 	"orderfood/src/database/models"
+
+	"github.com/jmoiron/sqlx"
 )
 
-// Option 。
-func (d *MenuDb) GetOption(*models.Option) ([]*models.Option, error) {
-	return nil, nil
+func (d *MenuDb) GetOption(option *models.Option) ([]*models.Option, error) {
+	condictionCols := make([]string, 0)
+	if option != nil {
+		condictionCols = optionCondiction(option)
+	}
+
+	sqlStr := common.OptionDt.SelectSQL(nil, condictionCols)
+
+	args := make([]interface{}, 0)
+	var err error
+	if option != nil {
+		sqlStr, args, err = sqlx.Named(sqlStr, option)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	options := make([]*models.Option, 0)
+	db, err := d.Connect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	err = db.Select(&options, sqlStr, args...)
+
+	return options, err
 }
-func (d *MenuDb) AddOption(*models.Option) error {
+
+func (d *MenuDb) AddOption(option *models.Option) error {
+	if option == nil {
+		return common.DbDataError
+	}
+	sqlStr := common.OptionDt.InsertSQL([]string{"id", "least_select_num"})
+
+	sqlStr, args, err := sqlx.Named(sqlStr, option)
+	if err != nil {
+		return err
+	}
+
+	db, err := d.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	dbRes, err := db.Exec(sqlStr, args...)
+	if err != nil {
+		return err
+	}
+
+	id, err := dbRes.LastInsertId()
+	if err != nil {
+		return err
+	}
+
+	option.ID = int32(id)
 	return nil
 }
-func (d *MenuDb) DeleteOption(*models.Option) (int64, error) {
-	return 0, nil
+
+func (d *MenuDb) UpdateOption(option *models.Option) (int64, error) {
+	if option == nil {
+		return 0, common.DbDataError
+	}
+
+	cols := make([]string, 0)
+	if option.GetLeast_Select_Num() != -1 {
+		cols = append(cols, "least_select_num")
+	}
+
+	sqlStr := common.OptionDt.UpdateSQL(cols)
+
+	args := make([]interface{}, 0)
+	var err error
+	if option != nil {
+		sqlStr, args, err = sqlx.Named(sqlStr, option)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	db, err := d.Connect()
+	if err != nil {
+		return 0, err
+	}
+	defer db.Close()
+	r, err := db.Exec(sqlStr, args...)
+	if err != nil {
+		return 0, err
+	}
+
+	count, err := r.RowsAffected()
+	return count, err
 }
-func (d *MenuDb) UpdateOption(*models.Option) (int64, error) {
-	return 0, nil
+
+func (d *MenuDb) DeleteOption(option *models.Option) (int64, error) {
+	if option == nil {
+		return 0, common.DbDataError
+	}
+
+	condictionCols := optionCondiction(option)
+	sqlStr := common.OptionDt.DeleteSQL(condictionCols)
+
+	args := make([]interface{}, 0)
+	var err error
+	if option != nil {
+		sqlStr, args, err = sqlx.Named(sqlStr, option)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	db, err := d.Connect()
+	if err != nil {
+		return 0, err
+	}
+	defer db.Close()
+
+	r, err := db.Exec(sqlStr, args...)
+	if err != nil {
+		return 0, err
+	}
+
+	count, err := r.RowsAffected()
+	return count, err
+}
+
+func optionCondiction(option *models.Option) []string {
+	condictionCols := make([]string, 0)
+	if option.GetID() != 0 {
+		condictionCols = append(condictionCols, "id")
+	}
+	if option.GetLeast_Select_Num() > -1 {
+		condictionCols = append(condictionCols, "least_select_num")
+	}
+	return condictionCols
 }

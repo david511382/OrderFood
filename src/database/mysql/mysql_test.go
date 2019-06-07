@@ -142,30 +142,22 @@ var (
 		models.ItemOption{
 			ID:        i4,
 			Item_ID:   i4,
-			Option_ID: i4,
+			Option_ID: i2,
 		},
 	}
 
 	menuDbOptions = []models.Option{
 		models.Option{
-			ID:          i1,
-			Is_Optional: b1,
-			Select_Num:  i1,
+			ID:               i1,
+			Least_Select_Num: i1,
 		},
 		models.Option{
-			ID:          i2,
-			Is_Optional: b1,
-			Select_Num:  i1,
+			ID:               i2,
+			Least_Select_Num: i2,
 		},
 		models.Option{
-			ID:          i3,
-			Is_Optional: b1,
-			Select_Num:  i3,
-		},
-		models.Option{
-			ID:          i4,
-			Is_Optional: b1,
-			Select_Num:  i1,
+			ID:               i3,
+			Least_Select_Num: i3,
 		},
 	}
 )
@@ -273,16 +265,15 @@ func (db *testDBM) initDb() {
 
 				sqlStr = `
 				INSERT INTO %s
-				(id,is_optional,select_num)				
+				(id,least_select_num)				
 				VALUES
-				(?,?,?)
+				(?,?)
 				`
-				sqlStr = fmt.Sprintf(sqlStr, menuSchema+".Option")
+				sqlStr = fmt.Sprintf(sqlStr, menuSchema+"."+common.OptionDt.TableName)
 				for _, option := range menuDbOptions {
 					r, err := d.Exec(sqlStr, []interface{}{
 						option.GetID(),
-						option.GetIs_Optional(),
-						option.GetSelect_Num(),
+						option.GetLeast_Select_Num(),
 					}...)
 					if err != nil {
 						panic(err)
