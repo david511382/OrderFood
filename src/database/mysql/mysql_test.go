@@ -160,6 +160,21 @@ var (
 			Least_Select_Num: i3,
 		},
 	}
+
+	menuDbSelections = []models.Selection{
+		models.Selection{
+			ID:               i1,
+			Name: s1,
+		},
+		models.Selection{
+			ID:               i2,
+			Name: s2,
+		},
+		models.Selection{
+			ID:               i3,
+			Name: s3,
+		},
+	}
 )
 
 func TestMain(m *testing.M) {
@@ -294,6 +309,25 @@ func (db *testDBM) initDb() {
 						itemOption.GetID(),
 						itemOption.GetItem_ID(),
 						itemOption.GetOption_ID(),
+					}...)
+					if err != nil {
+						panic(err)
+					} else if count, err := r.RowsAffected(); count != 1 || err != nil {
+						panic("insert fail")
+					}
+				}
+
+				sqlStr = `
+				INSERT INTO %s
+				(id,name)				
+				VALUES
+				(?,?)
+				`
+				sqlStr = fmt.Sprintf(sqlStr, menuSchema+"."+common.SelectionDt.TableName)
+				for _, option := range menuDbSelections {
+					r, err := d.Exec(sqlStr, []interface{}{
+						option.GetID(),
+						option.GetName(),
 					}...)
 					if err != nil {
 						panic(err)

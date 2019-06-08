@@ -16,28 +16,22 @@ type DbTable struct {
 	deleteSQL string
 }
 
-const (
-	memberTableName     table = "members"
-	itemTableName       table = "items"
-	shopTableName       table = "shops"
-	itemOptionTableName table = "item_option"
-	optionTableName     table = "options"
-)
-
 var (
 	MemberDt     DbTable
 	ItemDt       DbTable
 	ShopDt       DbTable
 	ItemOptionDt DbTable
 	OptionDt     DbTable
+	SelectionDt  DbTable
 )
 
 func init() {
-	MemberDt = newDt(memberTableName)
-	ItemDt = newDt(itemTableName)
-	ShopDt = newDt(shopTableName)
-	ItemOptionDt = newDt(itemOptionTableName)
-	OptionDt = newDt(optionTableName)
+	MemberDt = newDt("members")
+	ItemDt = newDt("items")
+	ShopDt = newDt("shops")
+	ItemOptionDt = newDt("item_option")
+	OptionDt = newDt("options")
+	SelectionDt = newDt("selections")
 }
 
 func newDt(tableName table) DbTable {
