@@ -17,12 +17,13 @@ type DbTable struct {
 }
 
 var (
-	MemberDt     DbTable
-	ItemDt       DbTable
-	ShopDt       DbTable
-	ItemOptionDt DbTable
-	OptionDt     DbTable
-	SelectionDt  DbTable
+	MemberDt          DbTable
+	ItemDt            DbTable
+	ShopDt            DbTable
+	ItemOptionDt      DbTable
+	OptionDt          DbTable
+	OptionSelectionDt DbTable
+	SelectionDt       DbTable
 )
 
 func init() {
@@ -31,6 +32,7 @@ func init() {
 	ShopDt = newDt("shops")
 	ItemOptionDt = newDt("item_option")
 	OptionDt = newDt("options")
+	OptionSelectionDt = newDt("option_selection")
 	SelectionDt = newDt("selections")
 }
 

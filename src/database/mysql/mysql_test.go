@@ -175,6 +175,39 @@ var (
 			Name: s3,
 		},
 	}
+
+	menuDbOptionSelections = []models.OptionSelection{
+		models.OptionSelection{
+			ID:               i1,
+			Option_ID:i1,
+			Price:i1,
+			Selection_ID: i1,
+		},
+		models.OptionSelection{
+			ID:               i2,
+			Option_ID:i2,
+			Price:i2,
+			Selection_ID: i2,
+		},
+		models.OptionSelection{
+			ID:               i3,
+			Option_ID:i3,
+			Price:i3,
+			Selection_ID: i1,
+		},
+		models.OptionSelection{
+			ID:               i4,
+			Option_ID:i1,
+			Price:i4,
+			Selection_ID: i3,
+		},
+		models.OptionSelection{
+			ID:               i5,
+			Option_ID:i3,
+			Price:i5,
+			Selection_ID: i2,
+		},
+	}
 )
 
 func TestMain(m *testing.M) {
@@ -324,10 +357,10 @@ func (db *testDBM) initDb() {
 				(?,?)
 				`
 				sqlStr = fmt.Sprintf(sqlStr, menuSchema+"."+common.SelectionDt.TableName)
-				for _, option := range menuDbSelections {
+				for _, selection := range menuDbSelections {
 					r, err := d.Exec(sqlStr, []interface{}{
-						option.GetID(),
-						option.GetName(),
+						selection.GetID(),
+						selection.GetName(),
 					}...)
 					if err != nil {
 						panic(err)
@@ -335,6 +368,29 @@ func (db *testDBM) initDb() {
 						panic("insert fail")
 					}
 				}
+
+				sqlStr = `
+				INSERT INTO %s
+				(id,option_id,price,selection_id)				
+				VALUES
+				(?,?,?,?)
+				`
+				sqlStr = fmt.Sprintf(sqlStr, menuSchema+"."+common.OptionSelectionDt.TableName)
+				for _, optionSelection := range menuDbOptionSelections {
+					r, err := d.Exec(sqlStr, []interface{}{
+						optionSelection.GetID(),
+						optionSelection.GetOption_ID(),
+						optionSelection.GetPrice(),
+						optionSelection.GetSelection_ID(),
+					}...)
+					if err != nil {
+
+						panic(err)
+					} else if count, err := r.RowsAffected(); count != 1 || err != nil {
+						panic("insert fail")
+					}
+				}
+				
 			},
 		},
 	}
