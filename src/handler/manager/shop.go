@@ -8,7 +8,7 @@ import (
 )
 
 // ChangeView 更改商店
-// @Tags shop
+// @Tags manager
 // @Summary 更改商店
 // @Description 更改商店
 // @Accept  x-www-form-urlencoded

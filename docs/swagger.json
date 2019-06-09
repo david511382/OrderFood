@@ -88,6 +88,692 @@
                 }
             }
         },
+        "/menu/item": {
+            "get": {
+                "description": "刪除商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "刪除商店",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "修改商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "修改商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.MenuItem"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增商店",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "新增商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.MenuItem"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/itemOption": {
+            "get": {
+                "description": "刪除商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "刪除商店",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "修改商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "修改商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.MenuItem"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增商店",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "新增商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.MenuItem"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/menu/{shop}": {
+            "get": {
+                "description": "取得菜單",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "取得菜單",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "shop",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.ShopMenu"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/option": {
+            "get": {
+                "description": "刪除商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "刪除商店",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "修改商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "修改商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.MenuOption"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增商店",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "新增商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.MenuOption"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/optionSelection": {
+            "get": {
+                "description": "刪除商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "刪除商店",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "修改商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "修改商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.MenuOption"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增商店",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "新增商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.MenuOption"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/selection": {
+            "get": {
+                "description": "刪除商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "刪除商店",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "修改商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "修改商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.MenuSelection"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增商店",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "新增商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.MenuSelection"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/shop": {
+            "get": {
+                "description": "刪除商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "刪除商店",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "修改商店",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "修改商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.Shop"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增商店",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "新增商店",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.Shop"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/order": {
             "get": {
                 "description": "取得訂單",
@@ -196,7 +882,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "shop"
+                    "manager"
                 ],
                 "summary": "更改商店",
                 "parameters": [
@@ -213,371 +899,6 @@
                         "description": "商店",
                         "schema": {
                             "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/shop/": {
-            "get": {
-                "description": "取得商店",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "取得商店",
-                "responses": {
-                    "200": {
-                        "description": "菜單",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/resp.Shop"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "新增商店",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "新增商店",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "商店",
-                        "name": "name",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "菜單",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/resp.Shop"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/shop/item": {
-            "post": {
-                "description": "新增商品",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "新增商品",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "商店ID",
-                        "name": "shop_id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "商品",
-                        "name": "name",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "商品",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/resp.MenuItem"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/shop/item/size": {
-            "post": {
-                "description": "新增商品尺寸",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "新增商品尺寸",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "商店ID",
-                        "name": "item_id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "尺寸ID",
-                        "name": "size_id",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "商品",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/resp.MenuItem"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/shop/item/{shop_id}": {
-            "get": {
-                "description": "取得商品",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "取得商品",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "商店ID",
-                        "name": "shop_id",
-                        "in": "path"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "商品",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/resp.MenuItem"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/shop/kind": {
-            "get": {
-                "description": "取得種類",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "取得種類",
-                "responses": {
-                    "200": {
-                        "description": "種類",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/resp.KindOption"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "新增種類",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "新增種類",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "種類",
-                        "name": "name",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "種類",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/resp.KindOption"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/shop/menu/{shop}": {
-            "get": {
-                "description": "取得菜單",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "取得菜單",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "商店",
-                        "name": "shop",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "菜單",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/resp.MenuKind"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/shop/size": {
-            "get": {
-                "description": "取得尺寸",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "取得尺寸",
-                "responses": {
-                    "200": {
-                        "description": "尺寸",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/resp.Size"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "新增尺寸",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shop"
-                ],
-                "summary": "新增尺寸",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "尺寸",
-                        "name": "name",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "尺寸",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/resp.Size"
                         }
                     },
                     "500": {
@@ -698,42 +1019,6 @@
                 }
             }
         },
-        "resp.IntMap": {
-            "type": "object",
-            "properties": {
-                "Pairs": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/resp.IntPair"
-                    }
-                }
-            }
-        },
-        "resp.IntPair": {
-            "type": "object",
-            "properties": {
-                "Key": {
-                    "type": "string"
-                },
-                "Value": {
-                    "type": "integer"
-                }
-            }
-        },
-        "resp.KindOption": {
-            "type": "object",
-            "properties": {
-                "ID": {
-                    "type": "integer"
-                },
-                "Name": {
-                    "type": "string"
-                },
-                "Price": {
-                    "type": "integer"
-                }
-            }
-        },
         "resp.MenuItem": {
             "type": "object",
             "properties": {
@@ -743,37 +1028,45 @@
                 "Name": {
                     "type": "string"
                 },
-                "ShopID": {
-                    "type": "integer"
-                },
-                "SizePrice": {
+                "Options": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/resp.SizePrice"
+                        "$ref": "#/definitions/resp.MenuOption"
+                    }
+                },
+                "Price": {
+                    "type": "integer"
+                }
+            }
+        },
+        "resp.MenuOption": {
+            "type": "object",
+            "properties": {
+                "OptionID": {
+                    "type": "integer"
+                },
+                "SelectNum": {
+                    "type": "integer"
+                },
+                "Selection": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/resp.MenuSelection"
                     }
                 }
             }
         },
-        "resp.MenuKind": {
+        "resp.MenuSelection": {
             "type": "object",
             "properties": {
-                "CheckOption": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/resp.KindOption"
-                    }
+                "Name": {
+                    "type": "integer"
                 },
-                "Items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/resp.MenuItem"
-                    }
+                "Price": {
+                    "type": "integer"
                 },
-                "RequiredSelection": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/resp.IntMap"
-                    }
+                "SelectionID": {
+                    "type": "integer"
                 }
             }
         },
@@ -788,25 +1081,18 @@
                 }
             }
         },
-        "resp.Size": {
+        "resp.ShopMenu": {
             "type": "object",
             "properties": {
-                "ID": {
-                    "type": "integer"
+                "Items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/resp.MenuItem"
+                    }
                 },
-                "Size": {
-                    "type": "string"
-                }
-            }
-        },
-        "resp.SizePrice": {
-            "type": "object",
-            "properties": {
-                "Price": {
-                    "type": "integer"
-                },
-                "Size": {
-                    "type": "string"
+                "Shop": {
+                    "type": "object",
+                    "$ref": "#/definitions/resp.Shop"
                 }
             }
         }

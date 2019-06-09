@@ -14,3 +14,5 @@ https://philipzheng.gitbooks.io/docker_practice/content/dockerfile/instructions.
 
 go get github.com/akavel/rsrc
 rsrc -manifest nac.manifest -o nac.syso
+
+swag init

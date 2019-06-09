@@ -3,47 +3,31 @@ syntax = "proto3";
 // 生成的程式在 Golang 中將會屬於 `resp` 套件。
 package resp;
 
-// MenuItem 。
-message MenuItem {
-	int32 ShopID = 1; 
-	int32 ItemID = 2; 
-	string Name = 3; 
-	repeated SizePrice SizePrice = 4;
-}
-
-// SizePrice 。
-message SizePrice {
-	string Size = 1;
-	int32 Price = 2;
-}
-
-// Size 。
-message Size {
-	int32 ID = 1;
-	string Size = 2;
-}
-
-// KindOption 。
-message KindOption {
-	int32 ID = 1;
-	string Name = 2;
+message MenuSelection {
+	int32 SelectionID = 1; 
+	int32 Name = 2;
 	int32 Price = 3;
 }
 
-// MenuKind 。
-message MenuKind {
-	repeated MenuItem Items = 1;
-	repeated IntMap RequiredSelection = 2;
-	repeated KindOption CheckOption = 3;
+message MenuOption {
+	int32 OptionID = 1; 
+	int32 SelectNum = 2;
+	repeated MenuSelection Selection = 3;
 }
 
-// IntPair 。
-message IntPair {
-   string Key = 1;
-   int32 Value = 2;
+message MenuItem {
+	int32 ItemID = 1; 
+	string Name = 2; 
+	repeated MenuOption Options = 3;
+	int32 Price = 4;
 }
 
-// IntMap 。
-message IntMap {
-   repeated IntPair Pairs = 1;
+message ShopMenu {
+	Shop Shop = 1;
+	repeated MenuItem Items = 2;
+}
+
+message Shop {
+	int32 ID = 1;
+	string Name = 2; 
 }
