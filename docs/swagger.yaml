@@ -22,7 +22,7 @@ definitions:
     type: object
   resp.MenuItem:
     properties:
-      ItemID:
+      ID:
         type: integer
       Name:
         type: string
@@ -35,7 +35,7 @@ definitions:
     type: object
   resp.MenuOption:
     properties:
-      OptionID:
+      ID:
         type: integer
       SelectNum:
         type: integer
@@ -46,11 +46,11 @@ definitions:
     type: object
   resp.MenuSelection:
     properties:
+      ID:
+        type: integer
       Name:
         type: integer
       Price:
-        type: integer
-      SelectionID:
         type: integer
     type: object
   resp.Shop:
@@ -131,34 +131,17 @@ paths:
       tags:
       - shop
   /menu/item:
-    get:
-      description: 刪除商店
-      parameters:
-      - description: ID
-        in: formData
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 刪除商店
-      tags:
-      - menu
     post:
       consumes:
       - application/x-www-form-urlencoded
-      description: 新增商店
+      description: 新增商品
       parameters:
       - description: 商店
+        in: formData
+        name: shopID
+        required: true
+        type: integer
+      - description: 商名
         in: formData
         name: name
         required: true
@@ -175,17 +158,73 @@ paths:
           description: 内部错误
           schema:
             type: string
-      summary: 新增商店
+      summary: 新增商品
       tags:
       - menu
     put:
-      description: 修改商店
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 修改商品
       parameters:
-      - description: 商店
+      - description: 編號
+        in: formData
+        name: id
+        required: true
+        type: integer
+      - description: 品名
         in: formData
         name: name
-        required: true
         type: string
+      - description: 價格
+        in: formData
+        name: price
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 結果
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 修改商品
+      tags:
+      - menu
+  /menu/item/{id}:
+    delete:
+      description: 刪除商品
+      parameters:
+      - description: 編號
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 刪除商品
+      tags:
+      - menu
+  /menu/item/{shopID}:
+    get:
+      description: 取得商品
+      parameters:
+      - description: 商店編號
+        in: path
+        name: shopID
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -199,7 +238,7 @@ paths:
           description: 内部错误
           schema:
             type: string
-      summary: 修改商店
+      summary: 取得商品
       tags:
       - menu
   /menu/itemOption:

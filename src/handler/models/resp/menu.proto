@@ -4,19 +4,19 @@ syntax = "proto3";
 package resp;
 
 message MenuSelection {
-	int32 SelectionID = 1; 
+	int32 ID = 1; 
 	int32 Name = 2;
 	int32 Price = 3;
 }
 
 message MenuOption {
-	int32 OptionID = 1; 
+	int32 ID = 1; 
 	int32 SelectNum = 2;
 	repeated MenuSelection Selection = 3;
 }
 
 message MenuItem {
-	int32 ItemID = 1; 
+	int32 ID = 1; 
 	string Name = 2; 
 	repeated MenuOption Options = 3;
 	int32 Price = 4;

@@ -60,11 +60,11 @@ func GetMenu(shopName string) (menu *resp.ShopMenu, err error) {
 
 			options := make([]*resp.MenuOption, 0)
 			options = append(options, &resp.MenuOption{
-				OptionID: itemOption.GetOption_ID(),
+				ID: itemOption.GetOption_ID(),
 			})
 
 			return &resp.MenuItem{
-				ItemID:  item.GetID(),
+				ID:      item.GetID(),
 				Name:    item.GetName(),
 				Price:   item.GetPrice(),
 				Options: options,
@@ -122,7 +122,7 @@ func UpdateShop(id int32, name string) (bool, error) {
 func DeleteShop(id int32) (bool, error) {
 	db := database.Db.Menu()
 	shop := &models.Shop{
-		ID:   id,
+		ID: id,
 	}
 	count, err := db.DeleteShop(shop)
 	if err != nil {
@@ -152,4 +152,36 @@ func GetItem(shopID int32) ([]*models.Item, error) {
 
 	items, err := db.GetItem(item)
 	return items, err
+}
+
+func UpdateItem(id int32, name string, price int32) (bool, error) {
+	db := database.Db.Menu()
+	item := &models.Item{
+		ID:    id,
+		Name:  name,
+		Price: price,
+	}
+	count, err := db.UpdateItem(item)
+	if err != nil {
+		return false, err
+	} else if count == 0 {
+		return false, nil
+	} else {
+		return true, nil
+	}
+}
+
+func DeleteItem(id int32) (bool, error) {
+	db := database.Db.Menu()
+	item := &models.Item{
+		ID: id,
+	}
+	count, err := db.DeleteItem(item)
+	if err != nil {
+		return false, err
+	} else if count == 0 {
+		return false, nil
+	} else {
+		return true, nil
+	}
 }
