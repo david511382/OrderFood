@@ -39,7 +39,7 @@ func (d *MenuDb) AddSelection(selection *models.Selection) error {
 	if selection == nil {
 		return common.DbDataError
 	}
-	sqlStr := common.SelectionDt.InsertSQL([]string{"id", "name"})
+	sqlStr := common.SelectionDt.InsertSQL([]string{"id", "name","group_id","price"})
 
 	sqlStr, args, err := sqlx.Named(sqlStr, selection)
 	if err != nil {
@@ -73,6 +73,12 @@ func (d *MenuDb) UpdateSelection(selection *models.Selection) (int64, error) {
 	cols := make([]string, 0)
 	if selection.GetName() != "" {
 		cols = append(cols, "name")
+	}
+	if selection.GetGroup_ID() != 0 {
+		cols = append(cols, "group_id")
+	}
+	if selection.GetPrice() > -1 {
+		cols = append(cols, "price")
 	}
 
 	sqlStr := common.SelectionDt.UpdateSQL(cols)
@@ -139,6 +145,12 @@ func selectionCondiction(selection *models.Selection) []string {
 	}
 	if selection.GetName() != "" {
 		condictionCols = append(condictionCols, "name")
+	}
+	if selection.GetGroup_ID() != 0 {
+		condictionCols = append(condictionCols, "group_id")
+	}
+	if selection.GetPrice() > -1 {
+		condictionCols = append(condictionCols, "price")
 	}
 	return condictionCols
 }

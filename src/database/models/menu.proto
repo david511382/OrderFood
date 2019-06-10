@@ -13,33 +13,21 @@ message Shop {
 message Item {
 	int32 ID = 1; 
 	string Name = 2;
-	int32 Shop_ID = 3; 
+	int32 Group_ID = 3; 
 	int32 Price = 4;
 }
 
-// ItemOption 。
-message ItemOption {
+// Group 。
+message Group {
 	int32 ID = 1;
-	int32 Item_ID = 2;
-	int32 Option_ID = 3;
-}
-
-// Option 。
-message Option {
-	int32 ID = 1;
-	int32 Least_Select_Num = 2;
-}
-
-// OptionSelection 。
-message OptionSelection {
-	int32 ID = 1;
-	int32 Option_ID = 2;
-	int32 Selection_ID = 3;
-	int32 Price = 4;
+	int32 Shop_ID = 2;
+	int32 Least_Select_Num = 3;
 }
 
 // selection
 message Selection {
 	int32 ID = 1;
 	string Name = 2;
+	int32 Group_ID = 3;
+	int32 Price = 4;
 }

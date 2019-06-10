@@ -20,9 +20,7 @@ var (
 	MemberDt          DbTable
 	ItemDt            DbTable
 	ShopDt            DbTable
-	ItemOptionDt      DbTable
-	OptionDt          DbTable
-	OptionSelectionDt DbTable
+	GroupDt          DbTable
 	SelectionDt       DbTable
 )
 
@@ -30,9 +28,7 @@ func init() {
 	MemberDt = newDt("members")
 	ItemDt = newDt("items")
 	ShopDt = newDt("shops")
-	ItemOptionDt = newDt("item_option")
-	OptionDt = newDt("options")
-	OptionSelectionDt = newDt("option_selection")
+	GroupDt = newDt("groups")
 	SelectionDt = newDt("selections")
 }
 
