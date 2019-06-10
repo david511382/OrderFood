@@ -93,28 +93,63 @@ func AddShop(name string) (*models.Shop, error) {
 	return shop, nil
 }
 
-func GetShop() ([]*models.Shop, error) {
+func GetShop(id int32, name string) ([]*models.Shop, error) {
 	db := database.Db.Menu()
-	shops, err :=db.GetShop(nil)
+	shop := &models.Shop{
+		ID:   id,
+		Name: name,
+	}
+	shops, err := db.GetShop(shop)
 	return shops, err
+}
+
+func UpdateShop(id int32, name string) (bool, error) {
+	db := database.Db.Menu()
+	shop := &models.Shop{
+		ID:   id,
+		Name: name,
+	}
+	count, err := db.UpdateShop(shop)
+	if err != nil {
+		return false, err
+	} else if count == 0 {
+		return false, nil
+	} else {
+		return true, nil
+	}
+}
+
+func DeleteShop(id int32) (bool, error) {
+	db := database.Db.Menu()
+	shop := &models.Shop{
+		ID:   id,
+	}
+	count, err := db.DeleteShop(shop)
+	if err != nil {
+		return false, err
+	} else if count == 0 {
+		return false, nil
+	} else {
+		return true, nil
+	}
 }
 
 func AddItem(shopID int32, name string) (*models.Item, error) {
 	db := database.Db.Menu()
 	item := &models.Item{
-		Name: name,
-		Shop_ID:shopID,
+		Name:    name,
+		Shop_ID: shopID,
 	}
 	err := db.AddItem(item)
-	 return item, err
+	return item, err
 }
 
 func GetItem(shopID int32) ([]*models.Item, error) {
 	db := database.Db.Menu()
 	item := &models.Item{
-		Shop_ID:shopID,
+		Shop_ID: shopID,
 	}
 
-	items, err :=db.GetItem(item)
+	items, err := db.GetItem(item)
 	return items, err
 }

@@ -517,25 +517,30 @@ paths:
       - menu
   /menu/shop:
     get:
-      description: 刪除商店
+      description: 取得商店
       parameters:
-      - description: ID
-        in: formData
+      - description: 編號
+        in: query
         name: id
-        required: true
-        type: integer
+        type: string
+      - description: 商名
+        in: query
+        name: name
+        type: string
       produces:
       - application/json
       responses:
         "200":
-          description: 成功
+          description: 菜單
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/resp.Shop'
+            type: array
         "500":
           description: 内部错误
           schema:
             type: string
-      summary: 刪除商店
+      summary: 取得商店
       tags:
       - menu
     post:
@@ -543,7 +548,7 @@ paths:
       - application/x-www-form-urlencoded
       description: 新增商店
       parameters:
-      - description: 商店
+      - description: 商名
         in: formData
         name: name
         required: true
@@ -564,9 +569,16 @@ paths:
       tags:
       - menu
     put:
+      consumes:
+      - application/x-www-form-urlencoded
       description: 修改商店
       parameters:
-      - description: 商店
+      - description: 編號
+        in: formData
+        name: id
+        required: true
+        type: integer
+      - description: 店名
         in: formData
         name: name
         required: true
@@ -575,16 +587,37 @@ paths:
       - application/json
       responses:
         "200":
-          description: 菜單
+          description: 結果
           schema:
-            items:
-              $ref: '#/definitions/resp.Shop'
-            type: array
+            type: string
         "500":
           description: 内部错误
           schema:
             type: string
       summary: 修改商店
+      tags:
+      - menu
+  /menu/shop/{id}:
+    delete:
+      description: 刪除商店
+      parameters:
+      - description: 編號
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 刪除商店
       tags:
       - menu
   /order:
