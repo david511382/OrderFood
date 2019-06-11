@@ -39,9 +39,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `orderfood_menu`.`groups`
+-- Table `orderfood_menu`.`item_groups`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `orderfood_menu`.`groups` (
+CREATE TABLE IF NOT EXISTS `orderfood_menu`.`item_groups` (
   `id` INT NOT NULL,
   `shop_id` INT NOT NULL,
   `least_select_num` INT NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `orderfood_menu`.`selections` (
   INDEX `group_selection_fk_idx` (`group_id` ASC) VISIBLE,
   CONSTRAINT `group_selection_fk`
     FOREIGN KEY (`group_id`)
-    REFERENCES `orderfood_menu`.`groups` (`id`)
+    REFERENCES `orderfood_menu`.`item_groups` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `orderfood_menu`.`items` (
   INDEX `group_fk_idx` (`group_id` ASC) VISIBLE,
   CONSTRAINT `group_item_fk`
     FOREIGN KEY (`group_id`)
-    REFERENCES `orderfood_menu`.`groups` (`id`)
+    REFERENCES `orderfood_menu`.`item_groups` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;

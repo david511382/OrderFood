@@ -28,7 +28,7 @@ func init() {
 	MemberDt = newDt("members")
 	ItemDt = newDt("items")
 	ShopDt = newDt("shops")
-	GroupDt = newDt("groups")
+	GroupDt = newDt("item_groups")
 	SelectionDt = newDt("selections")
 }
 
