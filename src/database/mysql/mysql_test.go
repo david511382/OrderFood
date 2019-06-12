@@ -82,130 +82,105 @@ var (
 			ID:   i3,
 			Name: s3,
 		},
-		models.Shop{
-			ID:   i4,
-			Name: s4,
-		},
-		models.Shop{
-			ID:   i5,
-			Name: s5,
-		},
 	}
 	menuDbItems = []models.Item{
 		models.Item{
-			ID:      i1,
-			Name:    s1,
+			ID:       i1,
+			Name:     s1,
 			Shop_ID: i1,
-			Price:   i1,
+			Price:    i1,
 		},
 		models.Item{
-			ID:      i2,
-			Name:    s2,
+			ID:       i2,
+			Name:     s2,
+			Shop_ID: i1,
+			Price:    i2,
+		},
+		models.Item{
+			ID:       i3,
+			Name:     s3,
 			Shop_ID: i2,
-			Price:   i2,
+			Price:    i3,
 		},
 		models.Item{
-			ID:      i3,
-			Name:    s3,
-			Shop_ID: i3,
-			Price:   i3,
+			ID:       i4,
+			Name:     s4,
+			Shop_ID: i1,
+			Price:    i4,
 		},
 		models.Item{
-			ID:      i4,
-			Name:    s4,
-			Shop_ID: i4,
-			Price:   i4,
-		},
-		models.Item{
-			ID:      i5,
-			Name:    s5,
-			Shop_ID: i5,
-			Price:   i5,
+			ID:       i5,
+			Name:     s5,
+			Shop_ID: i1,
+			Price:    i3,
 		},
 	}
-	menuDbItemOptions = []models.ItemOption{
+	menuDbItemOption = []models.ItemOption{
 		models.ItemOption{
-			ID:        i1,
-			Item_ID:   i1,
+			ID:               i1,
+			Item_ID:          i1,
 			Option_ID: i1,
 		},
 		models.ItemOption{
-			ID:        i2,
-			Item_ID:   i2,
+			ID:               i2,
+			Item_ID:          i2,
 			Option_ID: i2,
 		},
 		models.ItemOption{
-			ID:        i3,
-			Item_ID:   i3,
+			ID:               i3,
+			Item_ID:          i3,
 			Option_ID: i3,
 		},
 		models.ItemOption{
-			ID:        i4,
-			Item_ID:   i4,
-			Option_ID: i2,
+			ID:               i4,
+			Item_ID:          i4,
+			Option_ID: i1,
 		},
 	}
-
 	menuDbOptions = []models.Option{
 		models.Option{
 			ID:               i1,
-			Least_Select_Num: i1,
+			Select_Num: i1,
 		},
 		models.Option{
 			ID:               i2,
-			Least_Select_Num: i2,
+			Select_Num: i2,
 		},
 		models.Option{
 			ID:               i3,
-			Least_Select_Num: i3,
+			Select_Num: i3,
 		},
-	}
-
+	}	
 	menuDbSelections = []models.Selection{
 		models.Selection{
-			ID:               i1,
-			Name: s1,
+			ID:       i1,
+			Name:     s1,
+			Option_ID: i1,
+			Price:    i1,
 		},
 		models.Selection{
-			ID:               i2,
-			Name: s2,
+			ID:       i2,
+			Name:     s2,
+			Option_ID: i2,
+			Price:    i2,
 		},
 		models.Selection{
-			ID:               i3,
-			Name: s3,
+			ID:       i3,
+			Name:     s3,
+			Option_ID: i3,
+			Price:    i3,
 		},
-	}
-
-	menuDbOptionSelections = []models.OptionSelection{
-		models.OptionSelection{
-			ID:               i1,
-			Option_ID:i1,
-			Price:i1,
-			Selection_ID: i1,
+		models.Selection{
+			ID:       i4,
+			Name:     s4,
+			Option_ID: i1,
+			Price:    i4,
 		},
-		models.OptionSelection{
-			ID:               i2,
-			Option_ID:i2,
-			Price:i2,
-			Selection_ID: i2,
-		},
-		models.OptionSelection{
-			ID:               i3,
-			Option_ID:i3,
-			Price:i3,
-			Selection_ID: i1,
-		},
-		models.OptionSelection{
-			ID:               i4,
-			Option_ID:i1,
-			Price:i4,
-			Selection_ID: i3,
-		},
-		models.OptionSelection{
-			ID:               i5,
-			Option_ID:i3,
-			Price:i5,
-			Selection_ID: i2,
+		models.Selection{
+			ID:       i5,
+			Name:     s5,
+			Option_ID: i2,
+			Price:    i5,
 		},
 	}
 )
@@ -292,6 +267,25 @@ func (db *testDBM) initDb() {
 
 				sqlStr = `
 				INSERT INTO %s
+				(id,select_num)				
+				VALUES
+				(?,?)
+				`
+				sqlStr = fmt.Sprintf(sqlStr, menuSchema+"."+common.OptionDt.TableName)
+				for _, option := range menuDbOptions {
+					r, err := d.Exec(sqlStr, []interface{}{
+						option.GetID(),
+						option.GetSelect_Num(),
+					}...)
+					if err != nil {
+						panic(err)
+					} else if count, err := r.RowsAffected(); count != 1 || err != nil {
+						panic("insert fail")
+					}
+				}
+
+				sqlStr = `
+				INSERT INTO %s
 				(id,name,shop_id,price)				
 				VALUES
 				(?,?,?,?)
@@ -313,31 +307,12 @@ func (db *testDBM) initDb() {
 
 				sqlStr = `
 				INSERT INTO %s
-				(id,least_select_num)				
-				VALUES
-				(?,?)
-				`
-				sqlStr = fmt.Sprintf(sqlStr, menuSchema+"."+common.OptionDt.TableName)
-				for _, option := range menuDbOptions {
-					r, err := d.Exec(sqlStr, []interface{}{
-						option.GetID(),
-						option.GetLeast_Select_Num(),
-					}...)
-					if err != nil {
-						panic(err)
-					} else if count, err := r.RowsAffected(); count != 1 || err != nil {
-						panic("insert fail")
-					}
-				}
-
-				sqlStr = `
-				INSERT INTO %s
 				(id,item_id,option_id)				
 				VALUES
 				(?,?,?)
 				`
 				sqlStr = fmt.Sprintf(sqlStr, menuSchema+"."+common.ItemOptionDt.TableName)
-				for _, itemOption := range menuDbItemOptions {
+				for _, itemOption := range menuDbItemOption {
 					r, err := d.Exec(sqlStr, []interface{}{
 						itemOption.GetID(),
 						itemOption.GetItem_ID(),
@@ -352,15 +327,17 @@ func (db *testDBM) initDb() {
 
 				sqlStr = `
 				INSERT INTO %s
-				(id,name)				
+				(id,name,option_id,price)				
 				VALUES
-				(?,?)
+				(?,?,?,?)
 				`
 				sqlStr = fmt.Sprintf(sqlStr, menuSchema+"."+common.SelectionDt.TableName)
 				for _, selection := range menuDbSelections {
 					r, err := d.Exec(sqlStr, []interface{}{
 						selection.GetID(),
 						selection.GetName(),
+						selection.GetOption_ID(),
+						selection.GetPrice(),
 					}...)
 					if err != nil {
 						panic(err)
@@ -368,29 +345,6 @@ func (db *testDBM) initDb() {
 						panic("insert fail")
 					}
 				}
-
-				sqlStr = `
-				INSERT INTO %s
-				(id,option_id,price,selection_id)				
-				VALUES
-				(?,?,?,?)
-				`
-				sqlStr = fmt.Sprintf(sqlStr, menuSchema+"."+common.OptionSelectionDt.TableName)
-				for _, optionSelection := range menuDbOptionSelections {
-					r, err := d.Exec(sqlStr, []interface{}{
-						optionSelection.GetID(),
-						optionSelection.GetOption_ID(),
-						optionSelection.GetPrice(),
-						optionSelection.GetSelection_ID(),
-					}...)
-					if err != nil {
-
-						panic(err)
-					} else if count, err := r.RowsAffected(); count != 1 || err != nil {
-						panic("insert fail")
-					}
-				}
-				
 			},
 		},
 	}

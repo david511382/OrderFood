@@ -7,41 +7,41 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func (d *MenuDb) GetGroup(group *models.Group) ([]*models.Group, error) {
+func (d *MenuDb) GetOption(option *models.Option) ([]*models.Option, error) {
 	condictionCols := make([]string, 0)
-	if group != nil {
-		condictionCols = groupCondiction(group)
+	if option != nil {
+		condictionCols = optionCondiction(option)
 	}
 
-	sqlStr := common.GroupDt.SelectSQL(nil, condictionCols)
+	sqlStr := common.OptionDt.SelectSQL(nil, condictionCols)
 
 	args := make([]interface{}, 0)
 	var err error
-	if group != nil {
-		sqlStr, args, err = sqlx.Named(sqlStr, group)
+	if option != nil {
+		sqlStr, args, err = sqlx.Named(sqlStr, option)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	groups := make([]*models.Group, 0)
+	options := make([]*models.Option, 0)
 	db, err := d.Connect()
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
-	err = db.Select(&groups, sqlStr, args...)
+	err = db.Select(&options, sqlStr, args...)
 
-	return groups, err
+	return options, err
 }
 
-func (d *MenuDb) AddGroup(group *models.Group) error {
-	if group == nil {
+func (d *MenuDb) AddOption(option *models.Option) error {
+	if option == nil {
 		return common.DbDataError
 	}
-	sqlStr := common.GroupDt.InsertSQL([]string{"id", "shop_id", "least_select_num"})
+	sqlStr := common.OptionDt.InsertSQL([]string{"id", "select_num"})
 
-	sqlStr, args, err := sqlx.Named(sqlStr, group)
+	sqlStr, args, err := sqlx.Named(sqlStr, option)
 	if err != nil {
 		return err
 	}
@@ -61,29 +61,26 @@ func (d *MenuDb) AddGroup(group *models.Group) error {
 		return err
 	}
 
-	group.ID = int32(id)
+	option.ID = int32(id)
 	return nil
 }
 
-func (d *MenuDb) UpdateGroup(group *models.Group) (int64, error) {
-	if group == nil {
+func (d *MenuDb) UpdateOption(option *models.Option) (int64, error) {
+	if option == nil {
 		return 0, common.DbDataError
 	}
 
 	cols := make([]string, 0)
-	if group.GetShop_ID() != 0 {
-		cols = append(cols, "shop_id")
-	}
-	if group.GetLeast_Select_Num() != -1 {
-		cols = append(cols, "least_select_num")
+	if option.GetSelect_Num() != -1 {
+		cols = append(cols, "select_num")
 	}
 
-	sqlStr := common.GroupDt.UpdateSQL(cols)
+	sqlStr := common.OptionDt.UpdateSQL(cols)
 
 	args := make([]interface{}, 0)
 	var err error
-	if group != nil {
-		sqlStr, args, err = sqlx.Named(sqlStr, group)
+	if option != nil {
+		sqlStr, args, err = sqlx.Named(sqlStr, option)
 		if err != nil {
 			return 0, err
 		}
@@ -103,18 +100,18 @@ func (d *MenuDb) UpdateGroup(group *models.Group) (int64, error) {
 	return count, err
 }
 
-func (d *MenuDb) DeleteGroup(group *models.Group) (int64, error) {
-	if group == nil {
+func (d *MenuDb) DeleteOption(option *models.Option) (int64, error) {
+	if option == nil {
 		return 0, common.DbDataError
 	}
 
-	condictionCols := groupCondiction(group)
-	sqlStr := common.GroupDt.DeleteSQL(condictionCols)
+	condictionCols := optionCondiction(option)
+	sqlStr := common.OptionDt.DeleteSQL(condictionCols)
 
 	args := make([]interface{}, 0)
 	var err error
-	if group != nil {
-		sqlStr, args, err = sqlx.Named(sqlStr, group)
+	if option != nil {
+		sqlStr, args, err = sqlx.Named(sqlStr, option)
 		if err != nil {
 			return 0, err
 		}
@@ -135,16 +132,13 @@ func (d *MenuDb) DeleteGroup(group *models.Group) (int64, error) {
 	return count, err
 }
 
-func groupCondiction(group *models.Group) []string {
+func optionCondiction(option *models.Option) []string {
 	condictionCols := make([]string, 0)
-	if group.GetID() != 0 {
+	if option.GetID() != 0 {
 		condictionCols = append(condictionCols, "id")
 	}
-	if group.GetShop_ID() != 0 {
-		condictionCols = append(condictionCols, "shop_id")
-	}
-	if group.GetLeast_Select_Num() > -1 {
-		condictionCols = append(condictionCols, "least_select_num")
+	if option.GetSelect_Num() > -1 {
+		condictionCols = append(condictionCols, "select_num")
 	}
 	return condictionCols
 }

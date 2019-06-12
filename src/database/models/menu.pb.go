@@ -74,7 +74,7 @@ func (m *Shop) GetName() string {
 type Item struct {
 	ID                   int32    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
 	Name                 string   `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
-	Group_ID             int32    `protobuf:"varint,3,opt,name=Group_ID,json=GroupID,proto3" json:"Group_ID,omitempty"`
+	Shop_ID              int32    `protobuf:"varint,3,opt,name=Shop_ID,json=ShopID,proto3" json:"Shop_ID,omitempty"`
 	Price                int32    `protobuf:"varint,4,opt,name=Price,proto3" json:"Price,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -120,9 +120,9 @@ func (m *Item) GetName() string {
 	return ""
 }
 
-func (m *Item) GetGroup_ID() int32 {
+func (m *Item) GetShop_ID() int32 {
 	if m != nil {
-		return m.Group_ID
+		return m.Shop_ID
 	}
 	return 0
 }
@@ -134,58 +134,106 @@ func (m *Item) GetPrice() int32 {
 	return 0
 }
 
-// Group 。
-type Group struct {
+// ItemOption 。
+type ItemOption struct {
 	ID                   int32    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
-	Shop_ID              int32    `protobuf:"varint,2,opt,name=Shop_ID,json=ShopID,proto3" json:"Shop_ID,omitempty"`
-	Least_Select_Num     int32    `protobuf:"varint,3,opt,name=Least_Select_Num,json=LeastSelectNum,proto3" json:"Least_Select_Num,omitempty"`
+	Item_ID              int32    `protobuf:"varint,2,opt,name=Item_ID,json=ItemID,proto3" json:"Item_ID,omitempty"`
+	Option_ID            int32    `protobuf:"varint,3,opt,name=Option_ID,json=OptionID,proto3" json:"Option_ID,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Group) Reset()         { *m = Group{} }
-func (m *Group) String() string { return proto.CompactTextString(m) }
-func (*Group) ProtoMessage()    {}
-func (*Group) Descriptor() ([]byte, []int) {
+func (m *ItemOption) Reset()         { *m = ItemOption{} }
+func (m *ItemOption) String() string { return proto.CompactTextString(m) }
+func (*ItemOption) ProtoMessage()    {}
+func (*ItemOption) Descriptor() ([]byte, []int) {
 	return fileDescriptor_6cc3f7e2ebb06a21, []int{2}
 }
 
-func (m *Group) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Group.Unmarshal(m, b)
+func (m *ItemOption) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ItemOption.Unmarshal(m, b)
 }
-func (m *Group) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Group.Marshal(b, m, deterministic)
+func (m *ItemOption) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ItemOption.Marshal(b, m, deterministic)
 }
-func (m *Group) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Group.Merge(m, src)
+func (m *ItemOption) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ItemOption.Merge(m, src)
 }
-func (m *Group) XXX_Size() int {
-	return xxx_messageInfo_Group.Size(m)
+func (m *ItemOption) XXX_Size() int {
+	return xxx_messageInfo_ItemOption.Size(m)
 }
-func (m *Group) XXX_DiscardUnknown() {
-	xxx_messageInfo_Group.DiscardUnknown(m)
+func (m *ItemOption) XXX_DiscardUnknown() {
+	xxx_messageInfo_ItemOption.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Group proto.InternalMessageInfo
+var xxx_messageInfo_ItemOption proto.InternalMessageInfo
 
-func (m *Group) GetID() int32 {
+func (m *ItemOption) GetID() int32 {
 	if m != nil {
 		return m.ID
 	}
 	return 0
 }
 
-func (m *Group) GetShop_ID() int32 {
+func (m *ItemOption) GetItem_ID() int32 {
 	if m != nil {
-		return m.Shop_ID
+		return m.Item_ID
 	}
 	return 0
 }
 
-func (m *Group) GetLeast_Select_Num() int32 {
+func (m *ItemOption) GetOption_ID() int32 {
 	if m != nil {
-		return m.Least_Select_Num
+		return m.Option_ID
+	}
+	return 0
+}
+
+// Option 。
+type Option struct {
+	ID                   int32    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	Select_Num           int32    `protobuf:"varint,2,opt,name=Select_Num,json=SelectNum,proto3" json:"Select_Num,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Option) Reset()         { *m = Option{} }
+func (m *Option) String() string { return proto.CompactTextString(m) }
+func (*Option) ProtoMessage()    {}
+func (*Option) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6cc3f7e2ebb06a21, []int{3}
+}
+
+func (m *Option) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Option.Unmarshal(m, b)
+}
+func (m *Option) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Option.Marshal(b, m, deterministic)
+}
+func (m *Option) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Option.Merge(m, src)
+}
+func (m *Option) XXX_Size() int {
+	return xxx_messageInfo_Option.Size(m)
+}
+func (m *Option) XXX_DiscardUnknown() {
+	xxx_messageInfo_Option.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Option proto.InternalMessageInfo
+
+func (m *Option) GetID() int32 {
+	if m != nil {
+		return m.ID
+	}
+	return 0
+}
+
+func (m *Option) GetSelect_Num() int32 {
+	if m != nil {
+		return m.Select_Num
 	}
 	return 0
 }
@@ -194,7 +242,7 @@ func (m *Group) GetLeast_Select_Num() int32 {
 type Selection struct {
 	ID                   int32    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
 	Name                 string   `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
-	Group_ID             int32    `protobuf:"varint,3,opt,name=Group_ID,json=GroupID,proto3" json:"Group_ID,omitempty"`
+	Option_ID            int32    `protobuf:"varint,3,opt,name=Option_ID,json=OptionID,proto3" json:"Option_ID,omitempty"`
 	Price                int32    `protobuf:"varint,4,opt,name=Price,proto3" json:"Price,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -205,7 +253,7 @@ func (m *Selection) Reset()         { *m = Selection{} }
 func (m *Selection) String() string { return proto.CompactTextString(m) }
 func (*Selection) ProtoMessage()    {}
 func (*Selection) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6cc3f7e2ebb06a21, []int{3}
+	return fileDescriptor_6cc3f7e2ebb06a21, []int{4}
 }
 
 func (m *Selection) XXX_Unmarshal(b []byte) error {
@@ -240,9 +288,9 @@ func (m *Selection) GetName() string {
 	return ""
 }
 
-func (m *Selection) GetGroup_ID() int32 {
+func (m *Selection) GetOption_ID() int32 {
 	if m != nil {
-		return m.Group_ID
+		return m.Option_ID
 	}
 	return 0
 }
@@ -257,26 +305,28 @@ func (m *Selection) GetPrice() int32 {
 func init() {
 	proto.RegisterType((*Shop)(nil), "models.Shop")
 	proto.RegisterType((*Item)(nil), "models.Item")
-	proto.RegisterType((*Group)(nil), "models.Group")
+	proto.RegisterType((*ItemOption)(nil), "models.ItemOption")
+	proto.RegisterType((*Option)(nil), "models.Option")
 	proto.RegisterType((*Selection)(nil), "models.Selection")
 }
 
 func init() { proto.RegisterFile("src/database/models/menu.proto", fileDescriptor_6cc3f7e2ebb06a21) }
 
 var fileDescriptor_6cc3f7e2ebb06a21 = []byte{
-	// 215 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x90, 0xcd, 0x4a, 0xc4, 0x30,
-	0x14, 0x85, 0x69, 0x4c, 0x3b, 0xce, 0x5d, 0x0c, 0x12, 0x04, 0xe3, 0x46, 0x86, 0xac, 0x8a, 0x0b,
-	0xbb, 0xf0, 0x15, 0x02, 0x12, 0x90, 0x22, 0x33, 0x3b, 0x5d, 0xd4, 0x4c, 0xe7, 0x82, 0x03, 0x4d,
-	0x53, 0xf2, 0xf3, 0xfe, 0xd2, 0x1b, 0x77, 0x6e, 0xdc, 0xb8, 0xcb, 0xf7, 0x71, 0x38, 0x39, 0x5c,
-	0x78, 0x88, 0x61, 0xec, 0xce, 0x36, 0xd9, 0x93, 0x8d, 0xd8, 0x39, 0x7f, 0xc6, 0x29, 0x76, 0x0e,
-	0xe7, 0xfc, 0xb4, 0x04, 0x9f, 0xbc, 0x68, 0x8a, 0x52, 0x8f, 0xc0, 0x8f, 0x5f, 0x7e, 0x11, 0x3b,
-	0x60, 0x46, 0xcb, 0x6a, 0x5f, 0xb5, 0xf5, 0x81, 0x19, 0x2d, 0x04, 0xf0, 0xde, 0x3a, 0x94, 0x6c,
-	0x5f, 0xb5, 0xdb, 0x03, 0xbd, 0xd5, 0x07, 0x70, 0x93, 0xd0, 0xfd, 0x25, 0x2b, 0xee, 0xe1, 0xfa,
-	0x25, 0xf8, 0xbc, 0x0c, 0x46, 0xcb, 0x2b, 0x4a, 0x6e, 0x88, 0x8d, 0x16, 0xb7, 0x50, 0xbf, 0x85,
-	0xcb, 0x88, 0x92, 0x93, 0x2f, 0xa0, 0xde, 0xa1, 0xa6, 0xc0, 0xaf, 0xf6, 0x3b, 0xd8, 0xac, 0x0b,
-	0xd7, 0x22, 0x46, 0xb2, 0x59, 0xd1, 0x68, 0xd1, 0xc2, 0xcd, 0x2b, 0xda, 0x98, 0x86, 0x23, 0x4e,
-	0x38, 0xa6, 0xa1, 0xcf, 0xee, 0xe7, 0xab, 0x1d, 0xf9, 0xa2, 0xfb, 0xec, 0xd4, 0x27, 0x6c, 0x0b,
-	0x5c, 0xfc, 0xfc, 0x2f, 0xeb, 0x4f, 0x0d, 0x5d, 0xf5, 0xf9, 0x3b, 0x00, 0x00, 0xff, 0xff, 0xc1,
-	0x12, 0xb6, 0x97, 0x77, 0x01, 0x00, 0x00,
+	// 230 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x91, 0x31, 0x4b, 0xc4, 0x30,
+	0x14, 0xc7, 0x69, 0xcc, 0xe5, 0xec, 0x1b, 0x1c, 0x82, 0x70, 0x01, 0x51, 0x8e, 0x4c, 0x87, 0x83,
+	0x1d, 0x1c, 0xfc, 0x02, 0x59, 0xb2, 0x54, 0xe9, 0x4d, 0x4e, 0x47, 0xda, 0x3e, 0xb0, 0xd0, 0x34,
+	0xa5, 0x4d, 0xbf, 0xbf, 0x24, 0x29, 0x38, 0x58, 0xe5, 0xb6, 0xfc, 0x7f, 0x79, 0xef, 0xf7, 0xf2,
+	0x08, 0x3c, 0xcd, 0x53, 0x53, 0xb4, 0xc6, 0x9b, 0xda, 0xcc, 0x58, 0x58, 0xd7, 0x62, 0x3f, 0x17,
+	0x16, 0x87, 0xe5, 0x65, 0x9c, 0x9c, 0x77, 0x9c, 0x25, 0x24, 0x9f, 0x81, 0x9e, 0xbf, 0xdc, 0xc8,
+	0xef, 0x80, 0x68, 0x25, 0xb2, 0x63, 0x76, 0xda, 0x55, 0x44, 0x2b, 0xce, 0x81, 0x96, 0xc6, 0xa2,
+	0x20, 0xc7, 0xec, 0x94, 0x57, 0xf1, 0x2c, 0x3f, 0x81, 0x6a, 0x8f, 0xf6, 0x9a, 0x5a, 0x7e, 0x80,
+	0x7d, 0xf0, 0x5e, 0xb4, 0x12, 0x37, 0xb1, 0x90, 0x85, 0xa8, 0x15, 0xbf, 0x87, 0xdd, 0xc7, 0xd4,
+	0x35, 0x28, 0x68, 0xc4, 0x29, 0xc8, 0x0a, 0x20, 0xa8, 0xdf, 0x47, 0xdf, 0xb9, 0xe1, 0xd7, 0x80,
+	0x03, 0xec, 0xc3, 0x6d, 0x90, 0x91, 0x24, 0x0b, 0x51, 0x2b, 0xfe, 0x00, 0x79, 0x6a, 0xf9, 0x99,
+	0x73, 0x9b, 0x80, 0x56, 0xf2, 0x0d, 0xd8, 0x1f, 0xbe, 0x47, 0x80, 0x33, 0xf6, 0xd8, 0xf8, 0x4b,
+	0xb9, 0xd8, 0x55, 0x99, 0x27, 0x52, 0x2e, 0x56, 0xd6, 0xb0, 0x86, 0xad, 0xde, 0xad, 0x65, 0xff,
+	0x7b, 0xc6, 0xf6, 0xc2, 0x35, 0x8b, 0xdf, 0xf0, 0xfa, 0x1d, 0x00, 0x00, 0xff, 0xff, 0x17, 0x35,
+	0xb6, 0xf4, 0xa8, 0x01, 0x00, 0x00,
 }

@@ -39,7 +39,7 @@ func (d *MenuDb) AddItem(item *models.Item) error {
 	if item == nil {
 		return common.DbDataError
 	}
-	sqlStr := common.ItemDt.InsertSQL([]string{"id", "name", "price", "group_id"})
+	sqlStr := common.ItemDt.InsertSQL([]string{"id", "name", "price", "shop_id"})
 
 	sqlStr, args, err := sqlx.Named(sqlStr, item)
 	if err != nil {
@@ -74,11 +74,11 @@ func (d *MenuDb) UpdateItem(item *models.Item) (int64, error) {
 	if item.GetName() != "" {
 		cols = append(cols, "name")
 	}
-	if item.GetPrice() != 0 {
+	if item.GetPrice() > -1 {
 		cols = append(cols, "price")
 	}
-	if item.GetGroup_ID() != 0 {
-		cols = append(cols, "group_id")
+	if item.GetShop_ID() != 0 {
+		cols = append(cols, "shop_id")
 	}
 
 	sqlStr := common.ItemDt.UpdateSQL(cols)
@@ -146,11 +146,11 @@ func itemCondiction(item *models.Item) []string {
 	if item.GetName() != "" {
 		condictionCols = append(condictionCols, "name")
 	}
-	if item.GetPrice() != 0 {
+	if item.GetPrice() > -1 {
 		condictionCols = append(condictionCols, "price")
 	}
-	if item.GetGroup_ID() != 0 {
-		condictionCols = append(condictionCols, "group_id")
+	if item.GetShop_ID() != 0 {
+		condictionCols = append(condictionCols, "shop_id")
 	}
 	return condictionCols
 }

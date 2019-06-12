@@ -10,7 +10,9 @@ import (
 
 func TestAddSelection(t *testing.T) {
 	const (
-		s = "3"
+		n  string = "test"
+		oi int32  = 1
+		p  int32  = 154531
 	)
 
 	flagtests := []struct {
@@ -20,14 +22,18 @@ func TestAddSelection(t *testing.T) {
 		output *models.Selection
 	}{
 		{
-			name: "add 4",
+			name: "add 6",
 			input: &models.Selection{
-				Name: s,
+				Name:      n,
+				Option_ID: oi,
+				Price:     p,
 			},
 			err: nil,
 			output: &models.Selection{
-				ID:               4,
-				Name: s,
+				ID:        6,
+				Name:      n,
+				Option_ID: oi,
+				Price:     p,
 			},
 		},
 	}
@@ -52,8 +58,8 @@ func TestGetSelection(t *testing.T) {
 		{
 			name: "get 1 id",
 			input: &models.Selection{
-				ID:               menuDbSelections[0].GetID(),
-				
+				ID:    menuDbSelections[0].GetID(),
+				Price: -1,
 			},
 			err: nil,
 			output: []*models.Selection{
@@ -63,7 +69,8 @@ func TestGetSelection(t *testing.T) {
 		{
 			name: "get 2 name",
 			input: &models.Selection{
-				Name: menuDbSelections[1].GetName(),
+				Name:  menuDbSelections[1].GetName(),
+				Price: -1,
 			},
 			err: nil,
 			output: []*models.Selection{
@@ -71,12 +78,42 @@ func TestGetSelection(t *testing.T) {
 			},
 		},
 		{
-			name:  "get 3",
-			input: &(menuDbSelections[2]),
-			err:   nil,
+			name: "get 3 option_id",
+			input: &models.Selection{
+				Option_ID: menuDbSelections[2].GetOption_ID(),
+				Price:     -1,
+			},
+			err: nil,
 			output: []*models.Selection{
 				&(menuDbSelections[2]),
 			},
+		},
+		{
+			name: "get 4 Price",
+			input: &models.Selection{
+				Price: menuDbSelections[3].GetPrice(),
+			},
+			err: nil,
+			output: []*models.Selection{
+				&(menuDbSelections[3]),
+			},
+		},
+		{
+			name:  "get 5",
+			input: &(menuDbSelections[4]),
+			err:   nil,
+			output: []*models.Selection{
+				&(menuDbSelections[4]),
+			},
+		},
+		{
+			name: "get 7",
+			input: &models.Selection{
+				ID:    7,
+				Price: -1,
+			},
+			err:    nil,
+			output: []*models.Selection{},
 		},
 	}
 
@@ -91,7 +128,9 @@ func TestGetSelection(t *testing.T) {
 }
 func TestUpdateSelection(t *testing.T) {
 	const (
-		new  = "new"
+		new       = "new"
+		oi  int32 = 1
+		p   int32 = 87641
 	)
 
 	flagtests := []struct {
@@ -103,17 +142,48 @@ func TestUpdateSelection(t *testing.T) {
 		{
 			name: "update 1",
 			input: models.Selection{
-				ID:               menuDbSelections[0].GetID(),
-				Name: new,
+				ID:    menuDbSelections[0].GetID(),
+				Name:  new,
+				Option_ID: oi,
+				Price: -1,
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "update 5",
+			name: "update 2 option_id",
 			input: models.Selection{
-				ID:               5,
-				Name: new,
+				ID:        menuDbSelections[1].GetID(),
+				Option_ID: oi,
+				Price:     -1,
+			},
+			err:    nil,
+			output: 1,
+		},
+		{
+			name: "update 3 price",
+			input: models.Selection{
+				ID:    menuDbSelections[2].GetID(),
+				Price: p,
+			},
+			err:    nil,
+			output: 1,
+		},
+		{
+			name: "update 4 name",
+			input: models.Selection{
+				ID:    menuDbSelections[3].GetID(),
+				Name:  new,
+				Price: -1,
+			},
+			err:    nil,
+			output: 1,
+		},
+		{
+			name: "update 7",
+			input: models.Selection{
+				ID:    7,
+				Price: p,
 			},
 			err:    nil,
 			output: 0,
@@ -140,8 +210,8 @@ func TestDeleteSelection(t *testing.T) {
 		{
 			name: "delete 1 id",
 			input: models.Selection{
-				ID:               menuDbSelections[0].GetID(),
-				
+				ID:    menuDbSelections[0].GetID(),
+				Price: -1,
 			},
 			err:    nil,
 			output: 1,
@@ -149,22 +219,34 @@ func TestDeleteSelection(t *testing.T) {
 		{
 			name: "delete 2 name",
 			input: models.Selection{
-				Name: menuDbSelections[1].GetName(),
+				Name:  menuDbSelections[1].GetName(),
+				Price: -1,
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name:   "delete 3",
-			input:  menuDbSelections[2],
+			name: "delete 3 option_id",
+			input: models.Selection{
+				Option_ID: menuDbSelections[2].GetOption_ID(),
+				Price:     -1,
+			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "delete 5",
+			name: "delete 4 price",
 			input: models.Selection{
-				ID:               5,
-				
+				Price: menuDbSelections[3].GetPrice(),
+			},
+			err:    nil,
+			output: 1,
+		},
+		{
+			name: "delete 7",
+			input: models.Selection{
+				ID:    7,
+				Price: -1,
 			},
 			err:    nil,
 			output: 0,

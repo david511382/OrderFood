@@ -20,13 +20,13 @@ func TestAddShop(t *testing.T) {
 		output *models.Shop
 	}{
 		{
-			name: "add 6",
+			name: "add 4",
 			input: &models.Shop{
 				Name: n,
 			},
 			err: nil,
 			output: &models.Shop{
-				ID:   6,
+				ID:   4,
 				Name: n,
 			},
 		},
@@ -70,12 +70,20 @@ func TestGetShop(t *testing.T) {
 			},
 		},
 		{
-			name:  "get 4",
-			input: &(menuDbShops[3]),
+			name:  "get 3",
+			input: &(menuDbShops[2]),
 			err:   nil,
 			output: []*models.Shop{
-				&(menuDbShops[3]),
+				&(menuDbShops[2]),
 			},
+		},
+		{
+			name: "get 5",
+			input: &models.Shop{
+				ID: 5,
+			},
+			err:    nil,
+			output: []*models.Shop{},
 		},
 	}
 
@@ -110,9 +118,9 @@ func TestUpdateShop(t *testing.T) {
 			output: 1,
 		},
 		{
-			name: "update 7",
+			name: "update 5",
 			input: models.Shop{
-				ID:   7,
+				ID:   5,
 				Name: new,
 			},
 			err:    nil,
@@ -164,15 +172,15 @@ func TestDeleteShop(t *testing.T) {
 			output: 1,
 		},
 		{
-			name:   "delete 4",
-			input:  menuDbShops[4],
+			name:   "delete 3",
+			input:  menuDbShops[2],
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "delete 7",
+			name: "delete 5",
 			input: models.Shop{
-				ID: 7,
+				ID: 5,
 			},
 			err:    nil,
 			output: 0,

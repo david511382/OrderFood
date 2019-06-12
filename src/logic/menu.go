@@ -4,7 +4,6 @@ import (
 	"orderfood/src/database"
 	"orderfood/src/database/models"
 	"orderfood/src/handler/models/resp"
-
 	//linq "github.com/ahmetb/go-linq"
 )
 
@@ -28,7 +27,7 @@ func GetMenu(shopName string) (menu *resp.ShopMenu, err error) {
 	// }
 
 	// items, err := db.GetItem(&models.Item{
-	// 	Group_ID: resShop.GetID(),
+	// 	Option_ID: resShop.GetID(),
 	// })
 	// if err != nil {
 	// 	return
@@ -138,7 +137,7 @@ func AddItem(shopID int32, name string) (*models.Item, error) {
 	db := database.Db.Menu()
 	item := &models.Item{
 		Name:    name,
-		Group_ID: shopID,
+		Shop_ID: shopID,
 	}
 	err := db.AddItem(item)
 	return item, err
@@ -147,7 +146,7 @@ func AddItem(shopID int32, name string) (*models.Item, error) {
 func GetItem(shopID int32) ([]*models.Item, error) {
 	db := database.Db.Menu()
 	item := &models.Item{
-		Group_ID: shopID,
+		Shop_ID: shopID,
 	}
 
 	items, err := db.GetItem(item)

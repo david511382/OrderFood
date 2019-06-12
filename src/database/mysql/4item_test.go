@@ -10,9 +10,8 @@ import (
 
 func TestAddItem(t *testing.T) {
 	const (
-		i  int32  = 6
 		n  string = "fjdsakl;tg"
-		si int32  = 5
+		si int32  = 1
 		p  int32  = 15315
 	)
 
@@ -31,7 +30,7 @@ func TestAddItem(t *testing.T) {
 			},
 			err: nil,
 			output: &models.Item{
-				ID:      i,
+				ID:      6,
 				Name:    n,
 				Shop_ID: si,
 				Price:   p,
@@ -60,6 +59,7 @@ func TestGetItem(t *testing.T) {
 			name: "get 1 id",
 			input: &models.Item{
 				ID: menuDbItems[0].GetID(),
+				Price:   -1,
 			},
 			err: nil,
 			output: []*models.Item{
@@ -70,6 +70,7 @@ func TestGetItem(t *testing.T) {
 			name: "get 2 name",
 			input: &models.Item{
 				Name: menuDbItems[1].GetName(),
+				Price:   -1,
 			},
 			err: nil,
 			output: []*models.Item{
@@ -80,6 +81,7 @@ func TestGetItem(t *testing.T) {
 			name: "get 3 shop_id",
 			input: &models.Item{
 				Shop_ID: menuDbItems[2].GetShop_ID(),
+				Price:   -1,
 			},
 			err: nil,
 			output: []*models.Item{
@@ -104,6 +106,15 @@ func TestGetItem(t *testing.T) {
 				&(menuDbItems[4]),
 			},
 		},
+		{
+			name: "get 7",
+			input: &models.Item{
+				ID: 7,
+				Price:   -1,
+			},
+			err:    nil,
+			output: []*models.Item{},
+		},
 	}
 
 	for _, flag := range flagtests {
@@ -117,9 +128,10 @@ func TestGetItem(t *testing.T) {
 }
 func TestUpdateItem(t *testing.T) {
 	const (
-		new   string = "new"
-		newI  int32  = 5465347
-		newSI int32  = 5
+		new1  string = "new"
+		new2  string = "new2"
+		newP  int32  = 5465347
+		newSI int32  = 3
 	)
 
 	flagtests := []struct {
@@ -132,9 +144,9 @@ func TestUpdateItem(t *testing.T) {
 			name: "update 1",
 			input: models.Item{
 				ID:      menuDbItems[0].GetID(),
-				Name:    new,
+				Name:    new1,
 				Shop_ID: newSI,
-				Price:   newI,
+				Price:   newP,
 			},
 			err:    nil,
 			output: 1,
@@ -144,6 +156,7 @@ func TestUpdateItem(t *testing.T) {
 			input: models.Item{
 				ID:      menuDbItems[1].GetID(),
 				Shop_ID: newSI,
+				Price:   -1,
 			},
 			err:    nil,
 			output: 1,
@@ -152,7 +165,7 @@ func TestUpdateItem(t *testing.T) {
 			name: "update 3 price",
 			input: models.Item{
 				ID:    menuDbItems[2].GetID(),
-				Price: newI,
+				Price: newP,
 			},
 			err:    nil,
 			output: 1,
@@ -161,7 +174,8 @@ func TestUpdateItem(t *testing.T) {
 			name: "update 4 name",
 			input: models.Item{
 				ID:   menuDbItems[3].GetID(),
-				Name: new,
+				Name: new2,
+				Price:   -1,
 			},
 			err:    nil,
 			output: 1,
@@ -170,7 +184,8 @@ func TestUpdateItem(t *testing.T) {
 			name: "update 7",
 			input: models.Item{
 				ID:   7,
-				Name: new,
+				Name: new2,
+				Price:   -1,
 			},
 			err:    nil,
 			output: 0,
@@ -198,6 +213,7 @@ func TestDeleteItem(t *testing.T) {
 			name: "delete 1 id",
 			input: models.Item{
 				ID: menuDbItems[0].GetID(),
+				Price:   -1,
 			},
 			err:    nil,
 			output: 1,
@@ -206,6 +222,7 @@ func TestDeleteItem(t *testing.T) {
 			name: "delete 2 name",
 			input: models.Item{
 				Name: menuDbItems[1].GetName(),
+				Price:   -1,
 			},
 			err:    nil,
 			output: 1,
@@ -214,6 +231,7 @@ func TestDeleteItem(t *testing.T) {
 			name: "delete 3 shop_id",
 			input: models.Item{
 				Shop_ID: menuDbItems[2].GetShop_ID(),
+				Price:   -1,
 			},
 			err:    nil,
 			output: 1,
@@ -236,6 +254,7 @@ func TestDeleteItem(t *testing.T) {
 			name: "delete 7",
 			input: models.Item{
 				ID: 7,
+				Price:   -1,
 			},
 			err:    nil,
 			output: 0,

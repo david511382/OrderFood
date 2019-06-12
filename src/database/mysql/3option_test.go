@@ -10,7 +10,7 @@ import (
 
 func TestAddOption(t *testing.T) {
 	const (
-		li int32 = 3
+		sn int32 = 10
 	)
 
 	flagtests := []struct {
@@ -22,12 +22,12 @@ func TestAddOption(t *testing.T) {
 		{
 			name: "add 4",
 			input: &models.Option{
-				Least_Select_Num: li,
+				Select_Num: sn,
 			},
 			err: nil,
 			output: &models.Option{
-				ID:               4,
-				Least_Select_Num: li,
+				ID:         4,
+				Select_Num: sn,
 			},
 		},
 	}
@@ -52,8 +52,8 @@ func TestGetOption(t *testing.T) {
 		{
 			name: "get 1 id",
 			input: &models.Option{
-				ID:               menuDbOptions[0].GetID(),
-				Least_Select_Num: -1,
+				ID:         menuDbOptions[0].GetID(),
+				Select_Num: -1,
 			},
 			err: nil,
 			output: []*models.Option{
@@ -61,9 +61,9 @@ func TestGetOption(t *testing.T) {
 			},
 		},
 		{
-			name: "get 2 least_select_num",
+			name: "get 2 select_num",
 			input: &models.Option{
-				Least_Select_Num: menuDbOptions[1].GetLeast_Select_Num(),
+				Select_Num: menuDbOptions[1].GetSelect_Num(),
 			},
 			err: nil,
 			output: []*models.Option{
@@ -78,6 +78,15 @@ func TestGetOption(t *testing.T) {
 				&(menuDbOptions[2]),
 			},
 		},
+		{
+			name: "get 5",
+			input: &models.Option{
+				ID:         5,
+				Select_Num: -1,
+			},
+			err:    nil,
+			output: []*models.Option{},
+		},
 	}
 
 	for _, flag := range flagtests {
@@ -91,7 +100,7 @@ func TestGetOption(t *testing.T) {
 }
 func TestUpdateOption(t *testing.T) {
 	const (
-		newLI int32 = 4
+		newSI int32 = 8
 	)
 
 	flagtests := []struct {
@@ -103,8 +112,8 @@ func TestUpdateOption(t *testing.T) {
 		{
 			name: "update 1",
 			input: models.Option{
-				ID:               menuDbOptions[0].GetID(),
-				Least_Select_Num: newLI,
+				ID:         menuDbOptions[0].GetID(),
+				Select_Num: newSI,
 			},
 			err:    nil,
 			output: 1,
@@ -112,8 +121,8 @@ func TestUpdateOption(t *testing.T) {
 		{
 			name: "update 5",
 			input: models.Option{
-				ID:               5,
-				Least_Select_Num: newLI,
+				ID:         5,
+				Select_Num: newSI,
 			},
 			err:    nil,
 			output: 0,
@@ -140,16 +149,16 @@ func TestDeleteOption(t *testing.T) {
 		{
 			name: "delete 1 id",
 			input: models.Option{
-				ID:               menuDbOptions[0].GetID(),
-				Least_Select_Num: -1,
+				ID:         menuDbOptions[0].GetID(),
+				Select_Num: -1,
 			},
 			err:    nil,
 			output: 1,
 		},
 		{
-			name: "delete 2 least_select_num",
+			name: "delete 2 select_num",
 			input: models.Option{
-				Least_Select_Num: menuDbOptions[1].GetLeast_Select_Num(),
+				Select_Num: menuDbOptions[1].GetSelect_Num(),
 			},
 			err:    nil,
 			output: 1,
@@ -163,8 +172,8 @@ func TestDeleteOption(t *testing.T) {
 		{
 			name: "delete 5",
 			input: models.Option{
-				ID:               5,
-				Least_Select_Num: -1,
+				ID:         5,
+				Select_Num: -1,
 			},
 			err:    nil,
 			output: 0,

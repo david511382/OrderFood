@@ -36,10 +36,16 @@ type IMenu interface {
 	UpdateItem(*models.Item) (int64, error)
 
 	// Option 。
-	GetGroup(*models.Group) ([]*models.Group, error)
-	AddGroup(*models.Group) error
-	DeleteGroup(*models.Group) (int64, error)
-	UpdateGroup(*models.Group) (int64, error)
+	GetOption(*models.Option) ([]*models.Option, error)
+	AddOption(*models.Option) error
+	DeleteOption(*models.Option) (int64, error)
+	UpdateOption(*models.Option) (int64, error)
+
+	// ItemOption 。
+	GetItemOption(*models.ItemOption) ([]*models.ItemOption, error)
+	AddItemOption(*models.ItemOption) error
+	DeleteItemOption(*models.ItemOption) (int64, error)
+	UpdateItemOption(*models.ItemOption) (int64, error)
 
 	// selection
 	GetSelection(*models.Selection) ([]*models.Selection, error)

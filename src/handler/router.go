@@ -3,9 +3,9 @@ package handler
 import (
 	"orderfood/src/handler/auth"
 	"orderfood/src/handler/manager"
+	"orderfood/src/handler/menu"
 	"orderfood/src/handler/middleware"
 	"orderfood/src/handler/order"
-	"orderfood/src/handler/menu"
 	"orderfood/src/handler/swag"
 	"orderfood/src/handler/user"
 	"orderfood/src/handler/ws"
@@ -65,25 +65,15 @@ func Init(isReleaseMode bool) *gin.Engine {
 	me.PUT("/shop", menu.UpdateShop)
 	me.DELETE("/shop/:id", menu.DeleteShop)
 
+	me.POST("/option", menu.AddOption)
+	me.GET("/option/:shopID", menu.GetOption)
+	me.PUT("/option", menu.UpdateOption)
+	me.DELETE("/option/:id", menu.DeleteOption)
+
 	me.POST("/item", menu.AddItem)
 	me.GET("/item/:shopID", menu.GetItem)
 	me.PUT("/item", menu.UpdateItem)
 	me.DELETE("/item/:id", menu.DeleteItem)
-
-	me.POST("/itemOption", menu.AddItemOption)
-	me.GET("/itemOption", menu.GetItemOption)
-	me.PUT("/itemOption", menu.UpdateItemOption)
-	me.DELETE("/itemOption", menu.DeleteItemOption)
-
-	me.POST("/option", menu.AddOption)
-	me.GET("/option", menu.GetOption)
-	me.PUT("/option", menu.UpdateOption)
-	me.DELETE("/option", menu.DeleteOption)
-
-	me.POST("/optionSelection", menu.AddOptionSelection)
-	me.GET("/optionSelection", menu.GetOptionSelection)
-	me.PUT("/optionSelection", menu.UpdateOptionSelection)
-	me.DELETE("/optionSelection", menu.DeleteOptionSelection)
 
 	me.POST("/selection", menu.AddSelection)
 	me.GET("/selection", menu.GetSelection)
