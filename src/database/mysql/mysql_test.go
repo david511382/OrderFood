@@ -16,11 +16,11 @@ type testDBM struct {
 }
 
 const (
-	i1 int32 = 1
-	i2 int32 = 2
-	i3 int32 = 3
-	i4 int32 = 4
-	i5 int32 = 5
+	i1 int = 1
+	i2 int = 2
+	i3 int = 3
+	i4 int = 4
+	i5 int = 5
 
 	s1 string = "1"
 	s2 string = "2"

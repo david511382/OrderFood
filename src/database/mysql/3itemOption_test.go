@@ -10,8 +10,8 @@ import (
 
 func TestAddItemOption(t *testing.T) {
 	const (
-		ii int32 = 1
-		oi int32 = 1
+		ii int = 1
+		oi int = 1
 	)
 
 	flagtests := []struct {
@@ -111,8 +111,8 @@ func TestGetItemOption(t *testing.T) {
 }
 func TestUpdateItemOption(t *testing.T) {
 	const (
-		newII int32 = 4
-		newOI int32 = 3
+		newII int = 4
+		newOI int = 3
 	)
 
 	flagtests := []struct {

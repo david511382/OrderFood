@@ -11,8 +11,8 @@ import (
 func TestAddSelection(t *testing.T) {
 	const (
 		n  string = "test"
-		oi int32  = 1
-		p  int32  = 154531
+		oi int  = 1
+		p  int  = 154531
 	)
 
 	flagtests := []struct {
@@ -129,8 +129,8 @@ func TestGetSelection(t *testing.T) {
 func TestUpdateSelection(t *testing.T) {
 	const (
 		new       = "new"
-		oi  int32 = 1
-		p   int32 = 87641
+		oi  int = 1
+		p   int = 87641
 	)
 
 	flagtests := []struct {

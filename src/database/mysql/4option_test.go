@@ -10,7 +10,7 @@ import (
 
 func TestAddOption(t *testing.T) {
 	const (
-		sn int32 = 10
+		sn int = 10
 	)
 
 	flagtests := []struct {
@@ -100,7 +100,7 @@ func TestGetOption(t *testing.T) {
 }
 func TestUpdateOption(t *testing.T) {
 	const (
-		newSI int32 = 8
+		newSI int = 8
 	)
 
 	flagtests := []struct {

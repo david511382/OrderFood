@@ -99,7 +99,7 @@ func TestGetShop(t *testing.T) {
 func TestUpdateShop(t *testing.T) {
 	const (
 		new  string = "new"
-		newI int32  = 5465347
+		newI int  = 5465347
 	)
 
 	flagtests := []struct {

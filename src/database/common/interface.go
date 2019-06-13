@@ -52,4 +52,7 @@ type IMenu interface {
 	AddSelection(*models.Selection) error
 	DeleteSelection(*models.Selection) (int64, error)
 	UpdateSelection(*models.Selection) (int64, error)
+
+	// item option view
+	GetItemOptionView(*models.ItemOptionView) ([]*models.ItemOptionView, error)
 }

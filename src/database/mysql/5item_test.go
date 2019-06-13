@@ -11,8 +11,8 @@ import (
 func TestAddItem(t *testing.T) {
 	const (
 		n  string = "fjdsakl;tg"
-		si int32  = 1
-		p  int32  = 15315
+		si int  = 1
+		p  int  = 15315
 	)
 
 	flagtests := []struct {
@@ -130,8 +130,8 @@ func TestUpdateItem(t *testing.T) {
 	const (
 		new1  string = "new"
 		new2  string = "new2"
-		newP  int32  = 5465347
-		newSI int32  = 3
+		newP  int  = 5465347
+		newSI int  = 3
 	)
 
 	flagtests := []struct {
