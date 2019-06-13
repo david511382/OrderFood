@@ -17,7 +17,8 @@ import (
 // @Produce  json
 // @Param shopID formData int true "商店"
 // @Param name formData string true "商名"
-// @Success 200 {object} resp.MenuItem "菜單"
+// @Param price formData int false "價格"
+// @Success 200 {object} resp.Item "菜單"
 // @Failure 500 {string} string "内部错误"
 // @Router /menu/item [post]
 func AddItem(c *gin.Context) {
@@ -32,14 +33,26 @@ func AddItem(c *gin.Context) {
 		c.AbortWithError(http.StatusBadRequest, nil)
 		return
 	}
+	priceStr := c.PostForm("price")
+	price, err := strconv.Atoi(priceStr)
+	if err != nil {
+		price = 0
+	}
 
-	data, err := logic.AddItem(int32(shopID), itemName)
+	data, err := logic.AddItem(shopID, itemName, price)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, data)
+	result := &resp.Item{
+		ID:      int32(data.GetID()),
+		Name:    data.GetName(),
+		Price:   int32(data.GetPrice()),
+		Options: "",
+	}
+
+	c.JSON(http.StatusOK, result)
 }
 
 // GetItem 取得商品
@@ -48,7 +61,8 @@ func AddItem(c *gin.Context) {
 // @Description 取得商品
 // @Produce  json
 // @Param shopID path int true "商店編號"
-// @Success 200 {array} resp.MenuItem "菜單"
+// @Param optionID query int false "選單編號"
+// @Success 200 {array} resp.Item "菜單"
 // @Failure 500 {string} string "内部错误"
 // @Router /menu/item/{shopID} [get]
 func GetItem(c *gin.Context) {
@@ -59,18 +73,25 @@ func GetItem(c *gin.Context) {
 		return
 	}
 
-	data, err := logic.GetItem(int32(shopID))
+	optionIDStr := c.Query("optionID")
+	optionID, err := strconv.Atoi(optionIDStr)
+	if err != nil {
+		optionID = 0
+	}
+
+	data, err := logic.GetItem(shopID, optionID)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 
-	result := make([]resp.MenuItem, 0)
+	result := make([]resp.Item, 0)
 	for _, v := range data {
-		result = append(result, resp.MenuItem{
-			ID:    v.GetID(),
-			Name:  v.GetName(),
-			Price: v.GetPrice(),
+		result = append(result, resp.Item{
+			ID:      int32(v.GetID()),
+			Name:    v.GetName(),
+			Price:   int32(v.GetPrice()),
+			Options: "",
 		})
 	}
 	c.JSON(http.StatusOK, result)
@@ -106,7 +127,7 @@ func UpdateItem(c *gin.Context) {
 		}
 	}
 
-	success, err := logic.UpdateItem(int32(itemID), itemName, int32(price))
+	success, err := logic.UpdateItem(itemID, itemName, price)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
@@ -132,7 +153,7 @@ func DeleteItem(c *gin.Context) {
 		return
 	}
 
-	success, err := logic.DeleteItem(int32(itemID))
+	success, err := logic.DeleteItem(itemID)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return

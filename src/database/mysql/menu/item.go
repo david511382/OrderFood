@@ -61,7 +61,7 @@ func (d *MenuDb) AddItem(item *models.Item) error {
 		return err
 	}
 
-	item.ID = int32(id)
+	item.ID = int(id)
 	return nil
 }
 

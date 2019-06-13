@@ -4,7 +4,8 @@ import (
 	"orderfood/src/database"
 	"orderfood/src/database/models"
 	"orderfood/src/handler/models/resp"
-	//linq "github.com/ahmetb/go-linq"
+
+	linq "github.com/ahmetb/go-linq"
 )
 
 func GetMenu(shopName string) (menu *resp.ShopMenu, err error) {
@@ -92,7 +93,7 @@ func AddShop(name string) (*models.Shop, error) {
 	return shop, nil
 }
 
-func GetShop(id int32, name string) ([]*models.Shop, error) {
+func GetShop(id int, name string) ([]*models.Shop, error) {
 	db := database.Db.Menu()
 	shop := &models.Shop{
 		ID:   id,
@@ -102,7 +103,7 @@ func GetShop(id int32, name string) ([]*models.Shop, error) {
 	return shops, err
 }
 
-func UpdateShop(id int32, name string) (bool, error) {
+func UpdateShop(id int, name string) (bool, error) {
 	db := database.Db.Menu()
 	shop := &models.Shop{
 		ID:   id,
@@ -118,7 +119,7 @@ func UpdateShop(id int32, name string) (bool, error) {
 	}
 }
 
-func DeleteShop(id int32) (bool, error) {
+func DeleteShop(id int) (bool, error) {
 	db := database.Db.Menu()
 	shop := &models.Shop{
 		ID: id,
@@ -133,27 +134,50 @@ func DeleteShop(id int32) (bool, error) {
 	}
 }
 
-func AddItem(shopID int32, name string) (*models.Item, error) {
+func AddItem(shopID int, name string, price int) (*models.Item, error) {
 	db := database.Db.Menu()
 	item := &models.Item{
 		Name:    name,
 		Shop_ID: shopID,
+		Price:   price,
 	}
 	err := db.AddItem(item)
 	return item, err
 }
 
-func GetItem(shopID int32) ([]*models.Item, error) {
+func GetItem(shopID, optionID int) ([]*models.Item, error) {
 	db := database.Db.Menu()
 	item := &models.Item{
 		Shop_ID: shopID,
 	}
-
 	items, err := db.GetItem(item)
+	if err != nil {
+		return nil, err
+	}
+
+	itemOption := &models.ItemOption{
+		Option_ID: optionID,
+	}
+	itemOptions, err := db.GetItemOption(itemOption)
+	if err != nil {
+		return nil, err
+	}
+
+	linq.From(items).Where(func(itemI interface{}) bool {
+		item := itemI.(*models.Item)
+		itemID := item.GetID()
+		for _, itemOption := range itemOptions {
+			if itemID == itemOption.GetItem_ID() {
+				return true
+			}
+		}
+		return false
+	}).ToSlice(items)
+
 	return items, err
 }
 
-func UpdateItem(id int32, name string, price int32) (bool, error) {
+func UpdateItem(id int, name string, price int) (bool, error) {
 	db := database.Db.Menu()
 	item := &models.Item{
 		ID:    id,
@@ -170,7 +194,7 @@ func UpdateItem(id int32, name string, price int32) (bool, error) {
 	}
 }
 
-func DeleteItem(id int32) (bool, error) {
+func DeleteItem(id int) (bool, error) {
 	db := database.Db.Menu()
 	item := &models.Item{
 		ID: id,

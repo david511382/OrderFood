@@ -10,7 +10,7 @@ import (
 
 func TestAddMember(t *testing.T) {
 	const (
-		i  int32  = 6
+		i  int  = 6
 		n  string = "fjdsakl;tg"
 		un string = "fjdsakl;ffjslfjkla"
 		p  string = "fdsagewgege"
