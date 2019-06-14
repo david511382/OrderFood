@@ -24,6 +24,7 @@ var (
 	ItemOptionDt   DbTable
 	SelectionDt    DbTable
 	ItemOptionViewDt DbTable
+	OptionSelectionViewDt DbTable
 )
 
 func init() {
@@ -35,6 +36,7 @@ func init() {
 	OptionDt = newDt("options")
 	SelectionDt = newDt("selections")
 	ItemOptionViewDt = newDt("item_option_view")
+	OptionSelectionViewDt = newDt("option_selection_view")
 }
 
 func newDt(tableName table) DbTable {

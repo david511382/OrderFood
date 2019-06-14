@@ -55,4 +55,7 @@ type IMenu interface {
 
 	// item option view
 	GetItemOptionView(*models.ItemOptionView) ([]*models.ItemOptionView, error)
+
+	// option selection view
+	GetOptionSelectionView(*models.OptionSelectionView) ([]*models.OptionSelectionView, error)
 }
