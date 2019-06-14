@@ -10,19 +10,19 @@ import (
 func (d *MenuDb) GetItemOptionView(itemOptionView *models.ItemOptionView) ([]*models.ItemOptionView, error) {
 	condictionCols := make([]string, 0)
 	if itemOptionView != nil {
-		if itemOptionView.GetShop_ID() != nil {
+		if itemOptionView.GetShop_ID() != 0 {
 			condictionCols = append(condictionCols, "shop_id")
 		}
 		if itemOptionView.GetOption_ID() != nil {
 			condictionCols = append(condictionCols, "option_id")
 		}
-		if itemOptionView.GetItem_ID() != nil {
+		if itemOptionView.GetItem_ID() != 0 {
 			condictionCols = append(condictionCols, "item_id")
 		}
-		if itemOptionView.GetName() != nil {
+		if itemOptionView.GetName() != "" {
 			condictionCols = append(condictionCols, "name")
 		}
-		if itemOptionView.GetPrice() != nil {
+		if itemOptionView.GetPrice() > -1 {
 			condictionCols = append(condictionCols, "price")
 		}
 	}
