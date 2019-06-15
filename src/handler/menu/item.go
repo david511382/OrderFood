@@ -36,7 +36,7 @@ func AddItem(c *gin.Context) {
 	priceStr := c.PostForm("price")
 	price, err := strconv.Atoi(priceStr)
 	if err != nil {
-		price = 0
+		price = -1
 	}
 
 	data, err := logic.AddItem(shopID, itemName, price)
@@ -91,7 +91,7 @@ func GetItem(c *gin.Context) {
 			ID:      int32(v.GetID()),
 			Name:    v.GetName(),
 			Price:   int32(v.GetPrice()),
-			Options: "",
+			Options: v.GetOptions(),
 		})
 	}
 	c.JSON(http.StatusOK, result)
@@ -120,7 +120,7 @@ func UpdateItem(c *gin.Context) {
 	priceStr := c.PostForm("price")
 	price, err := strconv.Atoi(priceStr)
 	if err != nil {
-		price = 0
+		price = -1
 		if itemName == "" {
 			c.AbortWithError(http.StatusBadRequest, err)
 			return

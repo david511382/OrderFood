@@ -4,6 +4,9 @@ import (
 	"orderfood/src/database"
 	"orderfood/src/database/models"
 	"orderfood/src/handler/models/resp"
+	"strconv"
+
+	"strings"
 
 	linq "github.com/ahmetb/go-linq"
 )
@@ -145,34 +148,119 @@ func AddItem(shopID int, name string, price int) (*models.Item, error) {
 	return item, err
 }
 
-func GetItem(shopID, optionID int) ([]*models.Item, error) {
+func GetItem(shopID, optionID int) ([]*resp.Item, error) {
 	db := database.Db.Menu()
-	item := &models.Item{
+	itemOptionView := &models.ItemOptionView{
 		Shop_ID: shopID,
+		Price:   -1,
 	}
-	items, err := db.GetItem(item)
+	itemOptionViews, err := db.GetItemOptionView(itemOptionView)
 	if err != nil {
 		return nil, err
 	}
 
-	itemOption := &models.ItemOption{
-		Option_ID: optionID,
-	}
-	itemOptions, err := db.GetItemOption(itemOption)
+	selections, err := db.GetSelection(nil)
 	if err != nil {
 		return nil, err
 	}
 
-	linq.From(items).Where(func(itemI interface{}) bool {
-		item := itemI.(*models.Item)
-		itemID := item.GetID()
-		for _, itemOption := range itemOptions {
-			if itemID == itemOption.GetItem_ID() {
+	// make option selection
+	linq.From(selections).OrderBy(func(m interface{}) interface{} {
+		selection := m.(*models.Selection)
+		return selection.GetName()
+	}).ToSlice(&selections)
+
+	optionNameMap := make(map[int][]string)
+	for _, selection := range selections {
+		oi := selection.GetOption_ID()
+		arr := make([]string, 0)
+		if optionNameMap[oi] != nil {
+			arr = optionNameMap[oi]
+		}
+		optionNameMap[oi] = append(arr, selection.GetName())
+	}
+
+	optionNames := make(map[int]string)
+	for optionID, names := range optionNameMap {
+		optionName := strings.Join(names, ",")
+		optionNames[optionID] = optionName
+	}
+
+	linq.From(itemOptionViews).OrderBy(func(m interface{}) interface{} {
+		itemOption := m.(*models.ItemOptionView)
+		v := 0
+		if itemOption.GetOption_ID() != nil {
+			v = *itemOption.GetOption_ID()
+		}
+		return v
+	}).ToSlice(&itemOptionViews)
+
+	// find item ids
+	itemIDs := make([]int, 0)
+	linq.From(itemOptionViews).Where(
+		func(m interface{}) bool {
+			itemOption := m.(*models.ItemOptionView)
+			if optionID == 0 {
 				return true
 			}
+			if itemOption.GetOption_ID() != nil && optionID == *itemOption.GetOption_ID() {
+				return true
+			}
+			return false
+		}).Select(func(m interface{}) interface{} {
+		itemOption := m.(*models.ItemOptionView)
+		return itemOption.GetItem_ID()
+	}).Distinct().ToSlice(&itemIDs)
+
+	// make item option
+	itemOptionIDMap := make(map[int][]int)
+	for _, itemID := range itemIDs {
+		for _, itemOption := range itemOptionViews {
+			iID := itemOption.GetItem_ID()
+			if iID != itemID {
+				continue
+			}
+
+			arr := make([]int, 0)
+			if itemOption.GetOption_ID() != nil {
+				if itemOptionIDMap[itemID] != nil {
+					arr = itemOptionIDMap[itemID]
+				}
+				arr = append(arr, *itemOption.GetOption_ID())
+			}
+
+			itemOptionIDMap[itemID] = arr
 		}
-		return false
-	}).ToSlice(items)
+	}
+
+	items := make([]*resp.Item, 0)
+	for itemID, optionIDs := range itemOptionIDMap {
+		optionNameArr := make([]string, 0)
+		for _, optionID := range optionIDs {
+			name := optionNames[optionID]
+			if name == "" {
+				name = "no selection OptionID:" + strconv.Itoa(optionID)
+			}
+			optionNameArr = append(optionNameArr, name)
+		}
+		optionName := strings.Join(optionNameArr, "|")
+		if optionName == "" {
+			optionName = "無"
+		}
+
+		for _, itemOption := range itemOptionViews {
+			if itemOption.GetItem_ID() == itemID {
+				item := &resp.Item{
+					ID:      int32(itemID),
+					Options: optionName,
+					Name:    itemOption.GetName(),
+					Price:   int32(itemOption.GetPrice()),
+				}
+				items = append(items, item)
+				break
+			}
+		}
+	}
 
 	return items, err
 }
@@ -197,13 +285,14 @@ func UpdateItem(id int, name string, price int) (bool, error) {
 func DeleteItem(id int) (bool, error) {
 	db := database.Db.Menu()
 	item := &models.Item{
-		ID: id,
+		ID:    id,
+		Price: -1,
 	}
 	count, err := db.DeleteItem(item)
 	if err != nil {
 		return false, err
 	} else if count == 0 {
-		return false, nil
+		return false, NoDataError
 	} else {
 		return true, nil
 	}

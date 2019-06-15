@@ -20,18 +20,26 @@ definitions:
       Username:
         type: string
     type: object
-  resp.MenuItem:
+  resp.Item:
     properties:
       ID:
         type: integer
       Name:
         type: string
       Options:
+        type: string
+      Price:
+        type: integer
+    type: object
+  resp.MenuItem:
+    properties:
+      Item:
+        $ref: '#/definitions/resp.Item'
+        type: object
+      Options:
         items:
           $ref: '#/definitions/resp.MenuOption'
         type: array
-      Price:
-        type: integer
     type: object
   resp.MenuOption:
     properties:
@@ -130,6 +138,101 @@ paths:
       summary: 取得菜單
       tags:
       - shop
+  /menu/group:
+    get:
+      description: 刪除商品選單
+      parameters:
+      - description: ID
+        in: formData
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 刪除商品選單
+      tags:
+      - menu
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 新增商品選單
+      parameters:
+      - description: 商品選單
+        in: formData
+        name: shopID
+        required: true
+        type: integer
+      - description: 商品選單
+        in: formData
+        name: leastSelectNum
+        type: leastSelectNum
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            $ref: '#/definitions/resp.MenuOption'
+            type: object
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 新增商品選單
+      tags:
+      - menu
+    put:
+      description: 修改商品選單
+      parameters:
+      - description: 商品選單
+        in: formData
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            items:
+              $ref: '#/definitions/resp.MenuOption'
+            type: array
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 修改商品選單
+      tags:
+      - menu
+  /menu/group/{shopID}:
+    get:
+      description: 取得商品選單
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            items:
+              $ref: '#/definitions/resp.MenuOption'
+            type: array
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得商品選單
+      tags:
+      - menu
   /menu/item:
     post:
       consumes:
@@ -146,13 +249,17 @@ paths:
         name: name
         required: true
         type: string
+      - description: 價格
+        in: formData
+        name: price
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: 菜單
           schema:
-            $ref: '#/definitions/resp.MenuItem'
+            $ref: '#/definitions/resp.Item'
             type: object
         "500":
           description: 内部错误
@@ -225,6 +332,10 @@ paths:
         name: shopID
         required: true
         type: integer
+      - description: 選單編號
+        in: query
+        name: optionID
+        type: integer
       produces:
       - application/json
       responses:
@@ -232,7 +343,7 @@ paths:
           description: 菜單
           schema:
             items:
-              $ref: '#/definitions/resp.MenuItem'
+              $ref: '#/definitions/resp.Item'
             type: array
         "500":
           description: 内部错误
@@ -336,78 +447,6 @@ paths:
           schema:
             type: string
       summary: 取得菜單
-      tags:
-      - menu
-  /menu/option:
-    get:
-      description: 刪除商店
-      parameters:
-      - description: ID
-        in: formData
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 刪除商店
-      tags:
-      - menu
-    post:
-      consumes:
-      - application/x-www-form-urlencoded
-      description: 新增商店
-      parameters:
-      - description: 商店
-        in: formData
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 菜單
-          schema:
-            $ref: '#/definitions/resp.MenuOption'
-            type: object
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 新增商店
-      tags:
-      - menu
-    put:
-      description: 修改商店
-      parameters:
-      - description: 商店
-        in: formData
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 菜單
-          schema:
-            items:
-              $ref: '#/definitions/resp.MenuOption'
-            type: array
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 修改商店
       tags:
       - menu
   /menu/optionSelection:
