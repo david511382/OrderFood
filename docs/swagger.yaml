@@ -65,7 +65,7 @@ definitions:
       ID:
         type: integer
       Name:
-        type: integer
+        type: string
       Price:
         type: integer
     type: object
@@ -426,111 +426,26 @@ paths:
       summary: 修改商品選單
       tags:
       - menu
-  /menu/optionSelection:
-    get:
-      description: 刪除商店
-      parameters:
-      - description: ID
-        in: formData
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 刪除商店
-      tags:
-      - menu
-    post:
-      consumes:
-      - application/x-www-form-urlencoded
-      description: 新增商店
-      parameters:
-      - description: 商店
-        in: formData
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 菜單
-          schema:
-            $ref: '#/definitions/resp.MenuOption'
-            type: object
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 新增商店
-      tags:
-      - menu
-    put:
-      description: 修改商店
-      parameters:
-      - description: 商店
-        in: formData
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 菜單
-          schema:
-            items:
-              $ref: '#/definitions/resp.MenuOption'
-            type: array
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 修改商店
-      tags:
-      - menu
   /menu/selection:
-    get:
-      description: 刪除商店
-      parameters:
-      - description: ID
-        in: formData
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 刪除商店
-      tags:
-      - menu
     post:
       consumes:
       - application/x-www-form-urlencoded
-      description: 新增商店
+      description: 新增選單選項
       parameters:
-      - description: 商店
+      - description: 選單編號
+        in: formData
+        name: optionID
+        required: true
+        type: integer
+      - description: 名稱
         in: formData
         name: name
         required: true
         type: string
+      - description: 價格
+        in: formData
+        name: price
+        type: integer
       produces:
       - application/json
       responses:
@@ -543,31 +458,55 @@ paths:
           description: 内部错误
           schema:
             type: string
-      summary: 新增商店
+      summary: 新增選單選項
       tags:
       - menu
-    put:
-      description: 修改商店
+  /menu/selection/{id}:
+    get:
+      description: 刪除選單選項
       parameters:
-      - description: 商店
-        in: formData
-        name: name
+      - description: ID
+        in: path
+        name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: 菜單
+          description: 成功
           schema:
-            items:
-              $ref: '#/definitions/resp.MenuSelection'
-            type: array
+            type: string
         "500":
           description: 内部错误
           schema:
             type: string
-      summary: 修改商店
+      summary: 刪除選單選項
+      tags:
+      - menu
+    put:
+      description: 修改選單選項
+      parameters:
+      - description: 名稱
+        in: formData
+        name: name
+        type: string
+      - description: 價格
+        in: formData
+        name: price
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 結果
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 修改選單選項
       tags:
       - menu
   /menu/shop:

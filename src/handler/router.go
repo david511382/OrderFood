@@ -80,9 +80,8 @@ func Init(isReleaseMode bool) *gin.Engine {
 	me.DELETE("/option/:id", menu.DeleteOption)
 
 	me.POST("/selection", menu.AddSelection)
-	me.GET("/selection", menu.GetSelection)
-	me.PUT("/selection", menu.UpdateSelection)
-	me.DELETE("/selection", menu.DeleteSelection)
+	me.PUT("/selection/:id", menu.UpdateSelection)
+	me.DELETE("/selection/:id", menu.DeleteSelection)
 
 	// auth
 	au := api.Group("auth")

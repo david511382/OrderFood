@@ -5,7 +5,7 @@ package resp;
 
 message MenuSelection {
 	int32 ID = 1; 
-	int32 Name = 2;
+	string Name = 2;
 	int32 Price = 3;
 }
 

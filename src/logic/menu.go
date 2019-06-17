@@ -333,12 +333,7 @@ func AddOption(selectNum int, selectionName string) (*models.Option, error) {
 		return nil, err
 	}
 
-	selection := &models.Selection{
-		Name:      selectionName,
-		Option_ID: option.GetID(),
-		Price:     0,
-	}
-	err = db.AddSelection(selection)
+	_,err= AddSelection( option.GetID(),0,selectionName)
 	if err != nil {
 		db.DeleteOption(option)
 		return nil, err
@@ -369,6 +364,53 @@ func DeleteOption(id int) (bool, error) {
 		ID: id,
 	}
 	count, err := db.DeleteOption(option)
+	if err != nil {
+		return false, err
+	} else if count == 0 {
+		return false, nil
+	} else {
+		return true, nil
+	}
+}
+
+func AddSelection(optionID,price int, name string) (*models.Selection, error) {
+	db := database.Db.Menu()
+	selection := &models.Selection{
+		Name:      name,
+		Option_ID:optionID,
+		Price:     price,
+	}
+	err := db.AddSelection(selection)
+	if err != nil {
+		return nil, err
+	}
+
+	return selection, nil
+}
+
+func UpdateSelection(id, price int,name string) (bool, error) {
+	db := database.Db.Menu()
+	selection := &models.Selection{
+		ID:id,
+		Name:      name,		
+		Price:     price,
+	}
+	count, err := db.UpdateSelection(selection)
+	if err != nil {
+		return false, err
+	} else if count == 0 {
+		return false, nil
+	} else {
+		return true, nil
+	}
+}
+
+func DeleteSelection(id int) (bool, error) {
+	db := database.Db.Menu()
+	selection := &models.Selection{
+		ID: id,
+	}
+	count, err := db.DeleteSelection(selection)
 	if err != nil {
 		return false, err
 	} else if count == 0 {
