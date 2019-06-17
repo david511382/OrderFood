@@ -10,9 +10,8 @@ message MenuSelection {
 }
 
 message MenuOption {
-	int32 ID = 1; 
-	int32 SelectNum = 2;
-	repeated MenuSelection Selection = 3;
+	Option Option = 1; 
+	repeated MenuSelection Selection = 2;
 }
 
 message MenuItem {
@@ -23,6 +22,11 @@ message MenuItem {
 message ShopMenu {
 	Shop Shop = 1;
 	repeated MenuItem Items = 2;
+}
+
+message Option {
+	int32 ID = 1; 
+	int32 SelectNum = 2;
 }
 
 message Item {

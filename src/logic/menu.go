@@ -322,3 +322,58 @@ func DeleteItemOption(id int) (bool, error) {
 		return true, nil
 	}
 }
+
+func AddOption(selectNum int, selectionName string) (*models.Option, error) {
+	db := database.Db.Menu()
+	option := &models.Option{
+		Select_Num: selectNum,
+	}
+	err := db.AddOption(option)
+	if err != nil {
+		return nil, err
+	}
+
+	selection := &models.Selection{
+		Name:      selectionName,
+		Option_ID: option.GetID(),
+		Price:     0,
+	}
+	err = db.AddSelection(selection)
+	if err != nil {
+		db.DeleteOption(option)
+		return nil, err
+	}
+
+	return option, nil
+}
+
+func UpdateOption(id, selectNum int) (bool, error) {
+	db := database.Db.Menu()
+	option := &models.Option{
+		ID:         id,
+		Select_Num: selectNum,
+	}
+	count, err := db.UpdateOption(option)
+	if err != nil {
+		return false, err
+	} else if count == 0 {
+		return false, nil
+	} else {
+		return true, nil
+	}
+}
+
+func DeleteOption(id int) (bool, error) {
+	db := database.Db.Menu()
+	option := &models.Option{
+		ID: id,
+	}
+	count, err := db.DeleteOption(option)
+	if err != nil {
+		return false, err
+	} else if count == 0 {
+		return false, nil
+	} else {
+		return true, nil
+	}
+}

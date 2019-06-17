@@ -52,10 +52,9 @@ definitions:
     type: object
   resp.MenuOption:
     properties:
-      ID:
-        type: integer
-      SelectNum:
-        type: integer
+      Option:
+        $ref: '#/definitions/resp.Option'
+        type: object
       Selection:
         items:
           $ref: '#/definitions/resp.MenuSelection'
@@ -68,6 +67,13 @@ definitions:
       Name:
         type: integer
       Price:
+        type: integer
+    type: object
+  resp.Option:
+    properties:
+      ID:
+        type: integer
+      SelectNum:
         type: integer
     type: object
   resp.Shop:
@@ -147,101 +153,6 @@ paths:
       summary: 取得菜單
       tags:
       - shop
-  /menu/group:
-    get:
-      description: 刪除商品選單
-      parameters:
-      - description: ID
-        in: formData
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 刪除商品選單
-      tags:
-      - menu
-    post:
-      consumes:
-      - application/x-www-form-urlencoded
-      description: 新增商品選單
-      parameters:
-      - description: 商品選單
-        in: formData
-        name: shopID
-        required: true
-        type: integer
-      - description: 商品選單
-        in: formData
-        name: leastSelectNum
-        type: leastSelectNum
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 菜單
-          schema:
-            $ref: '#/definitions/resp.MenuOption'
-            type: object
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 新增商品選單
-      tags:
-      - menu
-    put:
-      description: 修改商品選單
-      parameters:
-      - description: 商品選單
-        in: formData
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 菜單
-          schema:
-            items:
-              $ref: '#/definitions/resp.MenuOption'
-            type: array
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 修改商品選單
-      tags:
-      - menu
-  /menu/group/{shopID}:
-    get:
-      description: 取得商品選單
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 菜單
-          schema:
-            items:
-              $ref: '#/definitions/resp.MenuOption'
-            type: array
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 取得商品選單
-      tags:
-      - menu
   /menu/item:
     post:
       consumes:
@@ -438,6 +349,81 @@ paths:
           schema:
             type: string
       summary: 取得菜單
+      tags:
+      - menu
+  /menu/option:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 新增商品選單
+      parameters:
+      - description: 選單選項
+        in: formData
+        name: selectionName
+        required: true
+        type: string
+      - description: 必選數
+        in: formData
+        name: selectNum
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 商品選單
+          schema:
+            $ref: '#/definitions/resp.Option'
+            type: object
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 新增商品選單
+      tags:
+      - menu
+  /menu/option/{id}:
+    get:
+      description: 刪除商品選單
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 刪除商品選單
+      tags:
+      - menu
+    put:
+      description: 修改商品選單
+      parameters:
+      - description: 商品選單
+        in: formData
+        name: selectNum
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 修改商品選單
       tags:
       - menu
   /menu/optionSelection:

@@ -88,149 +88,6 @@
                 }
             }
         },
-        "/menu/group": {
-            "get": {
-                "description": "刪除商品選單",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "menu"
-                ],
-                "summary": "刪除商品選單",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID",
-                        "name": "id",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "成功",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "修改商品選單",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "menu"
-                ],
-                "summary": "修改商品選單",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "商品選單",
-                        "name": "name",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "菜單",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/resp.MenuOption"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "新增商品選單",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "menu"
-                ],
-                "summary": "新增商品選單",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "商品選單",
-                        "name": "shopID",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "leastSelectNum",
-                        "description": "商品選單",
-                        "name": "leastSelectNum",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "菜單",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/resp.MenuOption"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/menu/group/{shopID}": {
-            "get": {
-                "description": "取得商品選單",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "menu"
-                ],
-                "summary": "取得商品選單",
-                "responses": {
-                    "200": {
-                        "description": "菜單",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/resp.MenuOption"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/menu/item": {
             "post": {
                 "description": "新增商品",
@@ -518,6 +375,119 @@
                             "items": {
                                 "$ref": "#/definitions/resp.ShopMenu"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/option": {
+            "post": {
+                "description": "新增商品選單",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "新增商品選單",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "選單選項",
+                        "name": "selectionName",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "必選數",
+                        "name": "selectNum",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "商品選單",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/resp.Option"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/option/{id}": {
+            "get": {
+                "description": "刪除商品選單",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "刪除商品選單",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "修改商品選單",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "修改商品選單",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "商品選單",
+                        "name": "selectNum",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "500": {
@@ -1197,11 +1167,9 @@
         "resp.MenuOption": {
             "type": "object",
             "properties": {
-                "ID": {
-                    "type": "integer"
-                },
-                "SelectNum": {
-                    "type": "integer"
+                "Option": {
+                    "type": "object",
+                    "$ref": "#/definitions/resp.Option"
                 },
                 "Selection": {
                     "type": "array",
@@ -1221,6 +1189,17 @@
                     "type": "integer"
                 },
                 "Price": {
+                    "type": "integer"
+                }
+            }
+        },
+        "resp.Option": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "SelectNum": {
                     "type": "integer"
                 }
             }
