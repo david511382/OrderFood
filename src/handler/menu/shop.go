@@ -75,13 +75,13 @@ func GetShop(c *gin.Context) {
 // @Description 修改商店
 // @Accept  x-www-form-urlencoded
 // @Produce  json
-// @Param id formData int true "編號"
+// @Param id path int true "編號"
 // @Param name formData string true "店名"
 // @Success 200 {string} string "結果"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/shop [put]
+// @Router /menu/shop/{id} [put]
 func UpdateShop(c *gin.Context) {
-	shopIDStr := c.PostForm("id")
+	shopIDStr := c.Param("id")
 	shopID, err := strconv.Atoi(shopIDStr)
 	if err != nil {
 		shopID = 0
