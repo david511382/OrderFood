@@ -277,13 +277,36 @@ paths:
       summary: 新增商品
       tags:
       - menu
+  /menu/item/{id}:
+    delete:
+      description: 刪除商品
+      parameters:
+      - description: 編號
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 刪除商品
+      tags:
+      - menu
     put:
       consumes:
       - application/x-www-form-urlencoded
       description: 修改商品
       parameters:
       - description: 編號
-        in: formData
+        in: path
         name: id
         required: true
         type: integer
@@ -307,29 +330,6 @@ paths:
           schema:
             type: string
       summary: 修改商品
-      tags:
-      - menu
-  /menu/item/{id}:
-    delete:
-      description: 刪除商品
-      parameters:
-      - description: 編號
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 刪除商品
       tags:
       - menu
   /menu/item/{shopID}:

@@ -232,54 +232,6 @@
             }
         },
         "/menu/item": {
-            "put": {
-                "description": "修改商品",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "menu"
-                ],
-                "summary": "修改商品",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "編號",
-                        "name": "id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "品名",
-                        "name": "name",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "價格",
-                        "name": "price",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "結果",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "新增商品",
                 "consumes": [
@@ -332,6 +284,54 @@
             }
         },
         "/menu/item/{id}": {
+            "put": {
+                "description": "修改商品",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "修改商品",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "編號",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "品名",
+                        "name": "name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "價格",
+                        "name": "price",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "結果",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "description": "刪除商品",
                 "produces": [

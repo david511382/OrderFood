@@ -103,14 +103,14 @@ func GetItem(c *gin.Context) {
 // @Description 修改商品
 // @Accept  x-www-form-urlencoded
 // @Produce  json
-// @Param id formData int true "編號"
+// @Param id path int true "編號"
 // @Param name formData string false "品名"
 // @Param price formData int false "價格"
 // @Success 200 {string} string "結果"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/item [put]
+// @Router /menu/item/{id} [put]
 func UpdateItem(c *gin.Context) {
-	itemIDStr := c.PostForm("id")
+	itemIDStr := c.Param("id")
 	itemID, err := strconv.Atoi(itemIDStr)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
