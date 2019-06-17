@@ -297,3 +297,28 @@ func DeleteItem(id int) (bool, error) {
 		return true, nil
 	}
 }
+
+func AddItemOption(itemID, optionID int) (*models.ItemOption, error) {
+	db := database.Db.Menu()
+	itemOption := &models.ItemOption{
+		Item_ID:   itemID,
+		Option_ID: optionID,
+	}
+	err := db.AddItemOption(itemOption)
+	return itemOption, err
+}
+
+func DeleteItemOption(id int) (bool, error) {
+	db := database.Db.Menu()
+	itemOption := &models.ItemOption{
+		ID: id,
+	}
+	count, err := db.DeleteItemOption(itemOption)
+	if err != nil {
+		return false, err
+	} else if count == 0 {
+		return false, nil
+	} else {
+		return true, nil
+	}
+}

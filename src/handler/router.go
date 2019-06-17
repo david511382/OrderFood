@@ -73,8 +73,6 @@ func Init(isReleaseMode bool) *gin.Engine {
 	me.DELETE("/item/:id", menu.DeleteItem)
 
 	me.POST("/itemoption", menu.AddItemOption)
-	me.GET("/itemoption/:optionID", menu.GetItemOption)
-	me.PUT("/itemoption", menu.UpdateItemOption)
 	me.DELETE("/itemoption/:id", menu.DeleteItemOption)
 
 	me.POST("/option", menu.AddOption)

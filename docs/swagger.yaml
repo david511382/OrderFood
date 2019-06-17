@@ -362,28 +362,6 @@ paths:
       tags:
       - menu
   /menu/itemOption:
-    get:
-      description: 刪除商店
-      parameters:
-      - description: ID
-        in: formData
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 刪除商店
-      tags:
-      - menu
     post:
       consumes:
       - application/x-www-form-urlencoded
@@ -414,47 +392,27 @@ paths:
       summary: 商品加入選單
       tags:
       - menu
-    put:
-      description: 修改商店
+  /menu/itemOption/{id}:
+    delete:
+      description: 刪除選單的商品
       parameters:
-      - description: 商店
-        in: formData
-        name: name
+      - description: ID
+        in: path
+        name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: 菜單
+          description: 成功
           schema:
-            items:
-              $ref: '#/definitions/resp.MenuItem'
-            type: array
+            type: string
         "500":
           description: 内部错误
           schema:
             type: string
-      summary: 修改商店
-      tags:
-      - menu
-  /menu/itemOption/optionID:
-    get:
-      description: 取得商店
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 菜單
-          schema:
-            items:
-              $ref: '#/definitions/resp.ItemOption'
-            type: array
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 取得商店
+      summary: 刪除選單的商品
       tags:
       - menu
   /menu/menu/{shop}:

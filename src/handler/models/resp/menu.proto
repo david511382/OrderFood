@@ -36,3 +36,9 @@ message Shop {
 	int32 ID = 1;
 	string Name = 2; 
 }
+
+message ItemOption {
+	int32 ID = 1; 
+	int32 ItemID = 2;
+	int32 OptionID = 3;
+}

@@ -1,109 +1,76 @@
 package menu
 
 import (
+	"net/http"
+	"orderfood/src/handler/models/resp"
+	"orderfood/src/logic"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
-// AddItemOption 新增商店
+// AddItemOption 商品加入選單
 // @Tags menu
-// @Summary 新增商店
-// @Description 新增商店
+// @Summary 商品加入選單
+// @Description 商品加入選單
 // @Accept  x-www-form-urlencoded
 // @Produce  json
-// @Param name formData string true "商店"
-// @Success 200 {object} resp.MenuItem "菜單"
+// @Param itemID formData int true "商品編號"
+// @Param optionID formData int true "選單編號"
+// @Success 200 {object} resp.ItemOption "結果"
 // @Failure 500 {string} string "内部错误"
 // @Router /menu/itemOption [post]
 func AddItemOption(c *gin.Context) {
-	// shopName := c.PostForm("name")
-	// if shopName == "" {
-	// 	c.AbortWithError(http.StatusBadRequest, nil)
-	// 	return
-	// }
+	itemIDstr := c.PostForm("itemID")
+	itemID, err := strconv.Atoi(itemIDstr)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+	optionIDstr := c.PostForm("optionID")
+	optionID, err := strconv.Atoi(optionIDstr)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
 
-	// data, err := logic.AddItemOption(shopName)
-	// if err != nil {
-	// 	c.AbortWithError(http.StatusBadRequest, err)
-	// 	return
-	// }
+	data, err := logic.AddItemOption(itemID, optionID)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
 
-	// c.JSON(http.StatusOK, data)
+	result := &resp.ItemOption{
+		ID:       int32(data.GetID()),
+		ItemID:   int32(data.GetItem_ID()),
+		OptionID: int32(data.GetOption_ID()),
+	}
+
+	c.JSON(http.StatusOK, result)
 }
 
-// GetItemOption 取得商店
+// DeleteItemOption 刪除選單的商品
 // @Tags menu
-// @Summary 取得商店
-// @Description 取得商店
+// @Summary 刪除選單的商品
+// @Description 刪除選單的商品
 // @Produce  json
-// @Success 200 {array} resp.MenuItem "菜單"
-// @Failure 500 {string} string "内部错误"
-// @Router /menu/itemOption [get]
-func GetItemOption(c *gin.Context) {
-	// data, err := logic.GetItemOption()
-	// if err != nil {
-	// 	c.AbortWithError(http.StatusBadRequest, err)
-	// 	return
-	// }
-
-	// response := make([]resp.MenuItem, 0)
-	// for _, v := range data {
-	// 	response = append(response, resp.MenuItem{
-	// 		ID:   v.GetID(),
-	// 		Name: v.GetName(),
-	// 	})
-	// }
-	// c.JSON(http.StatusOK, response)
-}
-
-// UpdateItemOption 修改商店
-// @Tags menu
-// @Summary 修改商店
-// @Description 修改商店
-// @Produce  json
-// @Param name formData string true "商店"
-// @Success 200 {array} resp.MenuItem "菜單"
-// @Failure 500 {string} string "内部错误"
-// @Router /menu/itemOption [put]
-func UpdateItemOption(c *gin.Context) {
-	// data, err := logic.GetItemOption()
-	// if err != nil {
-	// 	c.AbortWithError(http.StatusBadRequest, err)
-	// 	return
-	// }
-
-	// response := make([]resp.MenuItem, 0)
-	// for _, v := range data {
-	// 	response = append(response, resp.MenuItem{
-	// 		ID:   v.GetID(),
-	// 		Name: v.GetName(),
-	// 	})
-	// }
-	// c.JSON(http.StatusOK, response)
-}
-
-// DeleteItemOption 刪除商店
-// @Tags menu
-// @Summary 刪除商店
-// @Description 刪除商店
-// @Produce  json
-// @Param id formData int true "ID"
+// @Param id path int true "ID"
 // @Success 200 {string} result "成功"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/itemOption [get]
+// @Router /menu/itemOption/{id} [delete]
 func DeleteItemOption(c *gin.Context) {
-	// data, err := logic.GetItemOption()
-	// if err != nil {
-	// 	c.AbortWithError(http.StatusBadRequest, err)
-	// 	return
-	// }
+	itemOptionIDStr := c.Param("id")
+	itemOptionID, err := strconv.Atoi(itemOptionIDStr)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
 
-	// response := make([]resp.MenuItem, 0)
-	// for _, v := range data {
-	// 	response = append(response, resp.MenuItem{
-	// 		ID:   v.GetID(),
-	// 		Name: v.GetName(),
-	// 	})
-	// }
-	// c.JSON(http.StatusOK, response)
+	success, err := logic.DeleteItemOption(itemOptionID)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, success)
 }
