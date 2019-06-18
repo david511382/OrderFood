@@ -24,13 +24,18 @@ func Init(isReleaseMode bool) *gin.Engine {
 	}
 
 	router.LoadHTMLGlob("src/templates/*.html")
+
+	// image
 	router.StaticFile("src/img/rice.jpg", "src/img/rice.jpg")
 	router.StaticFile("src/img/vag.jpg", "src/img/vag.jpg")
 	router.StaticFile("favicon.ico", "src/img/head.ico")
 
+	// css
 	router.StaticFile("src/css/style.css", "src/css/style.css")
 	router.StaticFile("src/css/managerStyle.css", "src/css/managerStyle.css")
+	router.StaticFile("css/managerHome.css", "src/css/managerHome.css")
 
+	// js
 	router.StaticFile("src/js/menu.js", "src/js/menu.js")
 	router.StaticFile("src/js/menuView.js", "src/js/menuView.js")
 	router.StaticFile("src/js/post.js", "src/js/post.js")
@@ -46,7 +51,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 	mangr.Use(
 		middleware.Verify,
 	)
-	mangr.GET("/", manager.Manager)
+	mangr.GET("", manager.View)
 	mangr.PUT("/shop", manager.ChangeView)
 
 	api := router.Group("api")
