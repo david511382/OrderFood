@@ -3,8 +3,8 @@ package logic
 import (
 	"fmt"
 	"orderfood/src/database"
+	"orderfood/src/database/models"
 	"strconv"
-	"strings"
 )
 
 func ManagerView(username string) (string, error) {
@@ -27,10 +27,7 @@ func ManagerView(username string) (string, error) {
 		%s
 
         <form id="selectViewForm">
-            <select id="viewSelect" name="view">
-                <option value ="vag">素食</option>
-                <option value ="rice">飯捲</option>
-            </select>
+           %s
         </form>
 
         users order</br>
@@ -47,33 +44,47 @@ func ManagerView(username string) (string, error) {
     </html>
     `
 
-	tree, err := menuTree()
-	if err != nil {
-		return "", err
-	}
-
-	html = fmt.Sprintf(html,
-		"OrderFood後台",
-		"後台",
-		tree,
-	)
-	return html, nil
-}
-
-func menuTree() (string, error) {
 	db := database.Db.Menu()
 	shops, err := db.GetShop(nil)
 	if err != nil {
 		return "", err
 	}
 
-	shopArr := make([]string, 0)
+	viewSelect := viewSelect(shops)
+
+	tree := menuTree(shops)
+
+	html = fmt.Sprintf(html,
+		"OrderFood後台",
+		"後台",
+		viewSelect,
+		tree,
+	)
+	return html, nil
+}
+
+func viewSelect(shops []*models.Shop) string {
+	shopStr := ""
 	for _, shop := range shops {
-		s := `<li onclick="toManageShop(` + strconv.Itoa(shop.GetID()) + `)">` + shop.GetName()
-		shopArr = append(shopArr, s)
+		shopStr += `<option value ="` + strconv.Itoa(shop.GetID()) + `">` + shop.GetName() + `</option>`
 	}
-	shopStr := strings.Join(shopArr, "</li>")
-	shopStr = shopStr + "</li>"
+
+	result := `
+	<select id="viewSelect" name="view">
+		%s
+	</select>`
+
+	result = fmt.Sprintf(result,
+		shopStr,
+	)
+	return result
+}
+
+func menuTree(shops []*models.Shop) string {
+	shopStr := ""
+	for _, shop := range shops {
+		shopStr += `<li onclick="toManageShop(` + strconv.Itoa(shop.GetID()) + `)">` + shop.GetName() + "</li>"
+	}
 
 	result := `
 	<ul id="myUL">
@@ -114,7 +125,7 @@ func menuTree() (string, error) {
 	result = fmt.Sprintf(result,
 		shopStr,
 	)
-	return result, nil
+	return result
 }
 
 func ManageShopView(shopID int) (string, error) {
@@ -148,10 +159,13 @@ func ManageShopView(shopID int) (string, error) {
     </html>
     `
 
-	tree, err := menuTree()
+	db := database.Db.Menu()
+	shops, err := db.GetShop(nil)
 	if err != nil {
 		return "", err
 	}
+
+	tree := menuTree(shops)
 
 	html = fmt.Sprintf(html,
 		"OrderFood後台",

@@ -54,7 +54,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 	)
 	mangr.GET("", managerView.Home)
 	mangr.GET("/manageshop", managerView.ManageShop)
-	mangr.PUT("/shop", manager.ChangeView)
+	mangr.PUT("/changeshop", manager.ChangeView)
 
 	api := router.Group("api")
 
