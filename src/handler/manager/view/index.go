@@ -3,6 +3,7 @@ package view
 import (
 	"net/http"
 	"orderfood/src/logic"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,7 +11,7 @@ import (
 func Home(c *gin.Context) {
 	v, ok := c.Get("username")
 	if !ok {
-        c.AbortWithError(http.StatusBadRequest, nil)
+		c.AbortWithError(http.StatusBadRequest, nil)
 		return
 	}
 	username := v.(string)
@@ -32,14 +33,18 @@ func Home(c *gin.Context) {
 func ManageShop(c *gin.Context) {
 	// v, ok := c.Get("username")
 	// if !ok {
-    //     c.AbortWithError(http.StatusBadRequest, nil)
+	//     c.AbortWithError(http.StatusBadRequest, nil)
 	// 	return
 	// }
 	// username := v.(string)
 
-	shopName := c.Query("shopName")
+	shopIDStr := c.Query("shopID")
+	shopID, err := strconv.Atoi(shopIDStr)
+	if err != nil {
+		shopID = 0
+	}
 
-	data, err := logic.ManageShopView(shopName)
+	data, err := logic.ManageShopView(shopID)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return

@@ -3,6 +3,7 @@ package logic
 import (
 	"fmt"
 	"orderfood/src/database"
+	"strconv"
 	"strings"
 )
 
@@ -66,14 +67,13 @@ func menuTree() (string, error) {
 		return "", err
 	}
 
-	const ToManageShopLIStr = `<li onclick="toManageShop(this)">`
-
 	shopArr := make([]string, 0)
 	for _, shop := range shops {
-		shopArr = append(shopArr, shop.GetName())
+		s := `<li onclick="toManageShop(` + strconv.Itoa(shop.GetID()) + `)">` + shop.GetName()
+		shopArr = append(shopArr, s)
 	}
-	shopStr := strings.Join(shopArr, "</li>"+ToManageShopLIStr)
-	shopStr = ToManageShopLIStr + shopStr + "</li>"
+	shopStr := strings.Join(shopArr, "</li>")
+	shopStr = shopStr + "</li>"
 
 	result := `
 	<ul id="myUL">
@@ -94,7 +94,7 @@ func menuTree() (string, error) {
 		}
 
 		function toManageShop(o){
-			var url =  "/manager/manageshop?shopName=";
+			var url =  "/manager/manageshop?shopID=";
 			if (o !== undefined) {
 				url += o.innerHTML;
 			}
@@ -117,7 +117,7 @@ func menuTree() (string, error) {
 	return result, nil
 }
 
-func ManageShopView(shopName string) (string, error) {
+func ManageShopView(shopID int) (string, error) {
 	html := `
     <!DOCTYPE html>
     <html>
@@ -133,7 +133,7 @@ func ManageShopView(shopName string) (string, error) {
 
 		<script>
 			var shopData;
-			var selectedShop = %s;
+			var selectedShopID = %d;
 
 			$.ajax({
 				type:"GET",
@@ -155,9 +155,9 @@ func ManageShopView(shopName string) (string, error) {
 
 	html = fmt.Sprintf(html,
 		"OrderFood後台",
-		shopName,
+		"test",
 		tree,
-		shopName,
+		shopID,
 	)
 	return html, nil
 }
