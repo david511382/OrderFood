@@ -39,19 +39,6 @@ func ManagerView(username string) (string, error) {
         total</br>
         <textarea class="list" id="result" readonly></textarea>
 
-
-<script>
-var toggler = document.getElementsByClassName("caret");
-var i;
-
-for (i = 0; i < toggler.length; i++) {
-toggler[i].addEventListener("click", function() {
-  this.parentElement.querySelector(".nested").classList.toggle("active");
-  this.classList.toggle("caret-down");
-});
-}
-</script>
-
         <script src="/src/js/post.js"></script>
         <script src="/src/js/websocket.js"></script>
         <script src="/src/js/manager.js"></script>
@@ -91,8 +78,8 @@ func menuTree() (string, error) {
 	result := `
 	<ul id="myUL">
 	<li onclick="toHome()">Home</li>
-	<li><span class="caret">Manage Shop</span>
-	  <ul class="nested">
+	<li><a onclick="toManageShop()">Manage Shop</a>
+	  <ul>
 		%s
 	  </ul>
 	</li>
@@ -107,9 +94,9 @@ func menuTree() (string, error) {
 		}
 
 		function toManageShop(o){
-			var url =  "/manager/manageshop";
+			var url =  "/manager/manageshop?shopName=";
 			if (o !== undefined) {
-				url += "/" + o.innerHTML;
+				url += o.innerHTML;
 			}
 			
 			$.ajax({
@@ -128,4 +115,49 @@ func menuTree() (string, error) {
 		shopStr,
 	)
 	return result, nil
+}
+
+func ManageShopView(shopName string) (string, error) {
+	html := `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>%s</title>
+
+        <link rel="stylesheet" type="text/css" href="/css/managerHome.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h2>商店 %s</h2>
+		%s
+
+		<script>
+			var shopData;
+			var selectedShop = %s;
+
+			$.ajax({
+				type:"GET",
+				url: "/menu/shopmenu"
+			}).done(init);
+
+			function init(data){
+				shopData = data
+			}
+		</script>
+    </body>
+    </html>
+    `
+
+	tree, err := menuTree()
+	if err != nil {
+		return "", err
+	}
+
+	html = fmt.Sprintf(html,
+		"OrderFood後台",
+		shopName,
+		tree,
+		shopName,
+	)
+	return html, nil
 }

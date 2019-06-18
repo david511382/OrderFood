@@ -3,6 +3,7 @@ package handler
 import (
 	"orderfood/src/handler/auth"
 	"orderfood/src/handler/manager"
+	managerView "orderfood/src/handler/manager/view"
 	"orderfood/src/handler/menu"
 	"orderfood/src/handler/middleware"
 	"orderfood/src/handler/order"
@@ -51,7 +52,8 @@ func Init(isReleaseMode bool) *gin.Engine {
 	mangr.Use(
 		middleware.Verify,
 	)
-	mangr.GET("", manager.View)
+	mangr.GET("", managerView.Home)
+	mangr.GET("/manageshop", managerView.ManageShop)
 	mangr.PUT("/shop", manager.ChangeView)
 
 	api := router.Group("api")
