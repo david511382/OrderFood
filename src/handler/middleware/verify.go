@@ -14,6 +14,9 @@ func Verify(c *gin.Context) {
 	ip := c.Request.RemoteAddr
 	ips := strings.Split(ip, ":")
 	username := ips[0]
+	if username == "[" {
+		username = "localhost"
+	}
 
 	// register
 	member := &models.Member{

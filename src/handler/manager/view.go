@@ -13,7 +13,7 @@ func Manager(c *gin.Context) {
 	}
 	username := v.(string)
 
-	if username != "192.168.0.144" {
+	if username != "localhost" {
 		c.String(http.StatusOK, username+"禁止進入")
 		return
 	}
