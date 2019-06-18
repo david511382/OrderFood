@@ -40,22 +40,18 @@ definitions:
       OptionID:
         type: integer
     type: object
-  resp.MenuItem:
-    properties:
-      Item:
-        $ref: '#/definitions/resp.Item'
-        type: object
-      Options:
-        items:
-          $ref: '#/definitions/resp.MenuOption'
-        type: array
-    type: object
   resp.MenuOption:
     properties:
+      Items:
+        items:
+          $ref: '#/definitions/resp.Item'
+        type: array
+      Name:
+        type: string
       Option:
         $ref: '#/definitions/resp.Option'
         type: object
-      Selection:
+      Selections:
         items:
           $ref: '#/definitions/resp.MenuSelection'
         type: array
@@ -85,9 +81,9 @@ definitions:
     type: object
   resp.ShopMenu:
     properties:
-      Items:
+      Options:
         items:
-          $ref: '#/definitions/resp.MenuItem'
+          $ref: '#/definitions/resp.MenuOption'
         type: array
       Shop:
         $ref: '#/definitions/resp.Shop'
@@ -612,6 +608,25 @@ paths:
           schema:
             type: string
       summary: 修改商店
+      tags:
+      - menu
+  /menu/shopmenu:
+    get:
+      description: 取得菜單
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜單
+          schema:
+            items:
+              $ref: '#/definitions/resp.ShopMenu'
+            type: array
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 取得菜單
       tags:
       - menu
   /order:

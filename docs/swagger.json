@@ -782,6 +782,35 @@
                 }
             }
         },
+        "/menu/shopmenu": {
+            "get": {
+                "description": "取得菜單",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "取得菜單",
+                "responses": {
+                    "200": {
+                        "description": "菜單",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.ShopMenu"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/order": {
             "get": {
                 "description": "取得訂單",
@@ -1058,29 +1087,23 @@
                 }
             }
         },
-        "resp.MenuItem": {
-            "type": "object",
-            "properties": {
-                "Item": {
-                    "type": "object",
-                    "$ref": "#/definitions/resp.Item"
-                },
-                "Options": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/resp.MenuOption"
-                    }
-                }
-            }
-        },
         "resp.MenuOption": {
             "type": "object",
             "properties": {
+                "Items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/resp.Item"
+                    }
+                },
+                "Name": {
+                    "type": "string"
+                },
                 "Option": {
                     "type": "object",
                     "$ref": "#/definitions/resp.Option"
                 },
-                "Selection": {
+                "Selections": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/resp.MenuSelection"
@@ -1127,10 +1150,10 @@
         "resp.ShopMenu": {
             "type": "object",
             "properties": {
-                "Items": {
+                "Options": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/resp.MenuItem"
+                        "$ref": "#/definitions/resp.MenuOption"
                     }
                 },
                 "Shop": {

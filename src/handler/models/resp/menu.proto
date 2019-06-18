@@ -11,17 +11,14 @@ message MenuSelection {
 
 message MenuOption {
 	Option Option = 1; 
-	repeated MenuSelection Selection = 2;
-}
-
-message MenuItem {
-	Item Item = 1;
-	repeated MenuOption Options = 2;
+	string Name = 2;
+	repeated Item Items = 3;
+	repeated MenuSelection Selections = 4;
 }
 
 message ShopMenu {
 	Shop Shop = 1;
-	repeated MenuItem Items = 2;
+	repeated MenuOption Options = 2;
 }
 
 message Option {
