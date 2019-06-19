@@ -7,6 +7,7 @@ go build -tags release
 ./orderfood -ip
 
 go test -v -count=1 ./src/database/mysql
+go test -v -count=1 ./src/database/redis
 
 docker
 docker-compose -f ./docker/docker-compose.yml up -d --build

@@ -1,0 +1,7 @@
+FROM redis
+MAINTAINER david
+
+EXPOSE 6380
+
+COPY config.conf /etc/redis/config.conf
+ENTRYPOINT redis-server /etc/redis/config.conf

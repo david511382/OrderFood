@@ -10,6 +10,7 @@ type Config struct {
 	MySQLdbm    DbConfig `yaml:"mysql_dbm"`
 	MySQLMember DbConfig `yaml:"mysql_member"`
 	MySQLMenu   DbConfig `yaml:"mysql_menu"`
+	Redis       DbConfig `yaml:"redis"`
 	Txt         DbConfig `yaml:"txt"`
 }
 
@@ -19,7 +20,7 @@ type Server struct {
 }
 
 type DbConfig struct {
-	Domain   string `yaml:"domain"`
+	Address  string `yaml:"address"`
 	Username string `yaml:"username"`
 	Password string `yaml:"password"`
 	Database string `yaml:"database"`
@@ -44,7 +45,7 @@ func (d *DbConfig) MysqlURL() string {
 	dsn := fmt.Sprintf(dsnFormat,
 		d.Username,
 		d.Password,
-		d.Domain,
+		d.Address,
 		d.Database,
 		d.Param)
 	return dsn

@@ -4,6 +4,7 @@ import (
 	"orderfood/src/config"
 	"orderfood/src/database/common"
 	"orderfood/src/database/mysql"
+	"orderfood/src/database/redis"
 	"orderfood/src/database/txt"
 	"orderfood/src/util"
 
@@ -14,11 +15,15 @@ type db struct {
 	member common.IMember
 	menu   common.IMenu
 	dbm    common.IDBM
+
+	redis common.IRedis
 }
 
 var Db common.IDb
 
 func InitMysql(cfg *config.Config) error {
+	redisDb, _ := redis.New(cfg.Redis)
+
 	memberDb := mysql.NewMemberDb(cfg.MySQLMember)
 	menuDb := mysql.NewMenuDb(cfg.MySQLMenu)
 	dbmDb := mysql.NewDBMdb(cfg.MySQLdbm)
@@ -26,6 +31,7 @@ func InitMysql(cfg *config.Config) error {
 		member: memberDb,
 		menu:   menuDb,
 		dbm:    dbmDb,
+		redis:  redisDb,
 	}
 
 	//check db

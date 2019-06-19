@@ -53,7 +53,7 @@ func GetShop(c *gin.Context) {
 	}
 	shopName := c.Query("name")
 
-	data, err := logic.GetShop(shopID, shopName)
+	data, err := logic.GetShop(int32(shopID), shopName)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -88,7 +88,7 @@ func UpdateShop(c *gin.Context) {
 	}
 	shopName := c.PostForm("name")
 
-	success, err := logic.UpdateShop(shopID, shopName)
+	success, err := logic.UpdateShop(int32(shopID), shopName)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -114,7 +114,7 @@ func DeleteShop(c *gin.Context) {
 		return
 	}
 
-	success, err := logic.DeleteShop(shopID)
+	success, err := logic.DeleteShop(int32(shopID))
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return

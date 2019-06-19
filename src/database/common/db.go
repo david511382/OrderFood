@@ -17,13 +17,13 @@ type DbTable struct {
 }
 
 var (
-	MemberDt       DbTable
-	ItemDt         DbTable
-	ShopDt         DbTable
-	OptionDt       DbTable
-	ItemOptionDt   DbTable
-	SelectionDt    DbTable
-	ItemOptionViewDt DbTable
+	MemberDt              DbTable
+	ItemDt                DbTable
+	ShopDt                DbTable
+	OptionDt              DbTable
+	ItemOptionDt          DbTable
+	SelectionDt           DbTable
+	ItemOptionViewDt      DbTable
 	OptionSelectionViewDt DbTable
 )
 
@@ -150,4 +150,8 @@ func whereSQLStr(conditionCols []string) string {
 	}
 
 	return "WHERE " + strings.Join(kv, " AND ")
+}
+
+func (dt DbTable) Name() string {
+	return string(dt.TableName)
 }

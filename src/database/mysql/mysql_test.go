@@ -38,31 +38,31 @@ var (
 
 	memberDbMembers = []models.Member{
 		models.Member{
-			ID:       i1,
+			ID:       int32(i1),
 			Name:     s1,
 			Username: s1,
 			Password: s1,
 		},
 		models.Member{
-			ID:       i2,
+			ID:        int32(i2),
 			Name:     s2,
 			Username: s2,
 			Password: s2,
 		},
 		models.Member{
-			ID:       i3,
+			ID:        int32(i3),
 			Name:     s3,
 			Username: s3,
 			Password: s3,
 		},
 		models.Member{
-			ID:       i4,
+			ID:       int32(i4),
 			Name:     s4,
 			Username: s4,
 			Password: s4,
 		},
 		models.Member{
-			ID:       i5,
+			ID:        int32(i5),
 			Name:     s5,
 			Username: s5,
 			Password: s5,
@@ -71,15 +71,15 @@ var (
 
 	menuDbShops = []models.Shop{
 		models.Shop{
-			ID:   i1,
+			ID:    int32(i1),
 			Name: s1,
 		},
 		models.Shop{
-			ID:   i2,
+			ID:    int32(i2),
 			Name: s2,
 		},
 		models.Shop{
-			ID:   i3,
+			ID:    int32(i3),
 			Name: s3,
 		},
 	}

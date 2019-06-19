@@ -66,7 +66,7 @@ func ManagerView(username string) (string, error) {
 func viewSelect(shops []*models.Shop) string {
 	shopStr := ""
 	for _, shop := range shops {
-		shopStr += `<option value ="` + strconv.Itoa(shop.GetID()) + `">` + shop.GetName() + `</option>`
+		shopStr += `<option value ="` + strconv.Itoa(int(shop.GetID())) + `">` + shop.GetName() + `</option>`
 	}
 
 	result := `
@@ -83,7 +83,7 @@ func viewSelect(shops []*models.Shop) string {
 func menuTree(shops []*models.Shop) string {
 	shopStr := ""
 	for _, shop := range shops {
-		shopStr += `<li onclick="toManageShop(` + strconv.Itoa(shop.GetID()) + `)">` + shop.GetName() + "</li>"
+		shopStr += `<li onclick="toManageShop(` + strconv.Itoa(int(shop.GetID())) + `)">` + shop.GetName() + "</li>"
 	}
 
 	result := `

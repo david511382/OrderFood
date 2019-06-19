@@ -10,6 +10,13 @@ services:
         orderfoodnetwork:
             ipv4_address: 172.19.0.9
             
+  redis:
+    container_name: redis
+    build: redis
+    networks:
+        orderfoodnetwork:
+            ipv4_address: 172.19.0.10
+
   orderfood:
     container_name: orderfood
     build:

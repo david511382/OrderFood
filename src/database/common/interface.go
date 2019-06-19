@@ -22,12 +22,16 @@ type IMember interface {
 	DeleteMember(*models.Member) (int64, error)
 }
 
-type IMenu interface {
-	// Shop 。
+type ishop interface {
 	GetShop(*models.Shop) ([]*models.Shop, error)
 	AddShop(*models.Shop) error
 	DeleteShop(*models.Shop) (int64, error)
 	UpdateShop(*models.Shop) (int64, error)
+}
+
+type IMenu interface {
+	// Shop 。
+	ishop
 
 	// Item 。
 	GetItem(*models.Item) ([]*models.Item, error)
@@ -58,4 +62,11 @@ type IMenu interface {
 
 	// option selection view
 	GetOptionSelectionView(*models.OptionSelectionView) ([]*models.OptionSelectionView, error)
+}
+
+type IRedis interface {
+	IMember
+
+	// Shop 。
+	ishop
 }

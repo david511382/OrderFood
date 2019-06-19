@@ -148,7 +148,7 @@ itemOptionNameMap[itemID] = name
 	// combine
 	result:=make([]*resp.ShopMenu,0)
 	for _,shop:=range shops{
-		shopID:=shop.GetID()
+		shopID:=int(shop.GetID())
 		shopMenu:=&resp.ShopMenu{
 			Shop:&resp.Shop{
 				ID:int32(shopID),
@@ -278,7 +278,7 @@ func AddShop(name string) (*models.Shop, error) {
 	return shop, nil
 }
 
-func GetShop(id int, name string) ([]*models.Shop, error) {
+func GetShop(id int32, name string) ([]*models.Shop, error) {
 	db := database.Db.Menu()
 	shop := &models.Shop{
 		ID:   id,
@@ -288,7 +288,7 @@ func GetShop(id int, name string) ([]*models.Shop, error) {
 	return shops, err
 }
 
-func UpdateShop(id int, name string) (bool, error) {
+func UpdateShop(id int32, name string) (bool, error) {
 	db := database.Db.Menu()
 	shop := &models.Shop{
 		ID:   id,
@@ -304,7 +304,7 @@ func UpdateShop(id int, name string) (bool, error) {
 	}
 }
 
-func DeleteShop(id int) (bool, error) {
+func DeleteShop(id int32) (bool, error) {
 	db := database.Db.Menu()
 	shop := &models.Shop{
 		ID: id,

@@ -3,26 +3,31 @@ server:
   port: 5487
 
 mysql_dbm:
-  domain: "localhost:3306"
+  address: "localhost:3306"
   username: "root"
   password: "root"
   database: ""
   param: "charset=utf8mb4&parseTime=true"
 mysql_member:
-  domain: "localhost:3306"
+  address: "localhost:3306"
   username: "root"
   password: "root"
   database: "orderfood_member"
   param: "charset=utf8mb4&parseTime=true"
 mysql_menu:
-  domain: "localhost:3306"
+  address: "localhost:3306"
   username: "root"
   password: "root"
   database: "orderfood_menu"
   param: "charset=utf8mb4&parseTime=true"
 
+redis:
+  address: "localhost:6380"
+  password: "root"
+  database: "1"
+
 txt:
-  domain: "./data"
+  address: "./data"
   username: ""
   password: ""
   database: "order_member"

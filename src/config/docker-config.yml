@@ -3,20 +3,25 @@ server:
   port: 5487
 
 mysql_dbm:
-  domain: "172.19.0.9:3306"
+  address: "172.19.0.9:3306"
   username: "root"
   password: "root"
   database: ""
   param: "charset=utf8mb4&parseTime=true"
 mysql_member:
-  domain: "172.19.0.9:3306"
+  address: "172.19.0.9:3306"
   username: "root"
   password: "root"
   database: "orderfood_member"
   param: "charset=utf8mb4&parseTime=true"
 mysql_menu:
-  domain: "172.19.0.9:3306"
+  address: "172.19.0.9:3306"
   username: "root"
   password: "root"
   database: "orderfood_menu"
   param: "charset=utf8mb4&parseTime=true"
+
+redis:
+  address: "172.19.0.10:6380"
+  password: "root"
+  database: "1"

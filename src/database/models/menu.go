@@ -1,25 +1,5 @@
 package models
 
-// Shop 。
-type Shop struct {
-	ID   int    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
-	Name string `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
-}
-
-func (m *Shop) GetID() int {
-	if m != nil {
-		return m.ID
-	}
-	return 0
-}
-
-func (m *Shop) GetName() string {
-	if m != nil {
-		return m.Name
-	}
-	return ""
-}
-
 // Item 。
 type Item struct {
 	ID      int    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`

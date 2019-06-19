@@ -1,16 +1,17 @@
-package mysql
+package redis
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
+	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 )
 
 func TestAddMember(t *testing.T) {
 	const (
-		i  int    = 6
+		i  int32  = 6
 		n  string = "fjdsakl;tg"
 		un string = "fjdsakl;ffjslfjkla"
 		p  string = "fdsagewgege"
@@ -20,21 +21,22 @@ func TestAddMember(t *testing.T) {
 		name   string
 		input  *models.Member
 		err    error
-		output *models.Member
+		output []interface{}
 	}{
 		{
 			name: "add 6",
 			input: &models.Member{
+				ID:       i,
 				Name:     n,
 				Username: un,
 				Password: p,
 			},
 			err: nil,
-			output: &models.Member{
-				ID:       int32(i),
-				Name:     n,
-				Username: un,
-				Password: p,
+			output: []interface{}{
+				i,
+				n,
+				un,
+				p,
 			},
 		},
 	}
@@ -42,9 +44,11 @@ func TestAddMember(t *testing.T) {
 	for _, flag := range flagtests {
 		t.Run(flag.name, func(t *testing.T) {
 			input := *flag.input
-			output := &input
-			err := memberDb.AddMember(output)
+			data := &input
+			err := IRedis.AddMember(data)
 			assert.Equal(t, flag.err, err)
+
+			output := []interface{}{data.GetID(), data.GetName(), data.GetUsername(), data.GetPassword()}
 			assert.Equal(t, flag.output, output)
 		})
 	}
@@ -109,7 +113,7 @@ func TestGetMember(t *testing.T) {
 	for _, flag := range flagtests {
 		t.Run(flag.name, func(t *testing.T) {
 			input := *flag.input
-			output, err := memberDb.GetMember(&input)
+			output, err := IRedis.GetMember(&input)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -176,7 +180,7 @@ func TestUpdateMember(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := memberDb.UpdateMember(inputp)
+			output, err := IRedis.UpdateMember(inputp)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -202,24 +206,24 @@ func TestDeleteMember(t *testing.T) {
 			input: models.Member{
 				Name: memberDbMembers[1].GetName(),
 			},
-			err:    nil,
-			output: 1,
+			err:    common.DbDataError,
+			output: 0,
 		},
 		{
 			name: "delete 3 username",
 			input: models.Member{
 				Username: memberDbMembers[2].GetUsername(),
 			},
-			err:    nil,
-			output: 1,
+			err:    common.DbDataError,
+			output: 0,
 		},
 		{
 			name: "delete 4 password",
 			input: models.Member{
 				Password: memberDbMembers[3].GetPassword(),
 			},
-			err:    nil,
-			output: 1,
+			err:    common.DbDataError,
+			output: 0,
 		},
 		{
 			name:   "delete 5",
@@ -241,7 +245,7 @@ func TestDeleteMember(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := memberDb.DeleteMember(inputp)
+			output, err := IRedis.DeleteMember(inputp)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})

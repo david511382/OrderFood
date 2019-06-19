@@ -61,7 +61,7 @@ func (d *MemberDb) AddMember(member *models.Member) error {
 		return err
 	}
 
-	member.ID = int(id)
+	member.ID = int32(id)
 	return nil
 }
 

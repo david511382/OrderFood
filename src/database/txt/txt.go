@@ -6,7 +6,7 @@ import (
 	// "orderfood/src/database/txt/member"
 	// "orderfood/src/database/txt/menu"
 	"orderfood/src/database/txt/orm"
-	"orderfood/src/util"
+	//"orderfood/src/util"
 	"os"
 )
 
@@ -37,22 +37,23 @@ func (db *txtDb) Connect(filename string) (*os.File, error) {
 }
 
 func NewDb(dbCfg config.DbConfig) (*txtDb, error) {
-	path, err := util.GetFilePath(dbCfg.Domain)
-	if err != nil {
-		return nil, err
-	}
-	orm.Init(path)
+	// path, err := util.GetFilePath(dbCfg.Domain)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// orm.Init(path)
 
-	db := &txtDb{}
-	// db.member = &member.MemberDb{}
-	// db.menu = &menu.MenuDb{}
+	// db := &txtDb{}
+	// // db.member = &member.MemberDb{}
+	// // db.menu = &menu.MenuDb{}
 
-	//check db
-	if err := orm.CheckDb(); err != nil {
-		return db, err
-	}
+	// //check db
+	// if err := orm.CheckDb(); err != nil {
+	// 	return db, err
+	// }
 
-	return db, nil
+	// return db, nil
+	return nil, nil
 }
 
 func (d *txtDb) RebuildDb() error {
