@@ -1,4 +1,4 @@
-package redis
+package member
 
 import (
 	"orderfood/src/database/common"
@@ -9,8 +9,8 @@ import (
 	proto "github.com/golang/protobuf/proto"
 )
 
-func (redis *redisDb) GetMember(member *models.Member) ([]*models.Member, error) {
-	r := redis.r
+func (redis *RedisDb) GetMember(member *models.Member) ([]*models.Member, error) {
+	r := redis.R
 	members := make([]*models.Member, 0)
 	id := strconv.Itoa(int(member.GetID()))
 	if id != "0" {
@@ -83,13 +83,13 @@ func (redis *redisDb) GetMember(member *models.Member) ([]*models.Member, error)
 
 	return members, nil
 }
-func (redis *redisDb) AddMember(member *models.Member) error {
+func (redis *RedisDb) AddMember(member *models.Member) error {
 	data, err := proto.Marshal(member)
 	if err != nil {
 		return err
 	}
 
-	r := redis.r
+	r := redis.R
 	id := strconv.Itoa(int(member.GetID()))
 	v := r.HSetNX(common.MemberDt.Name(), id, data)
 	if !v.Val() {
@@ -97,8 +97,8 @@ func (redis *redisDb) AddMember(member *models.Member) error {
 	}
 	return nil
 }
-func (redis *redisDb) UpdateMember(member *models.Member) (int64, error) {
-	r := redis.r
+func (redis *RedisDb) UpdateMember(member *models.Member) (int64, error) {
+	r := redis.R
 	id := strconv.Itoa(int(member.GetID()))
 	v := r.HExists(common.MemberDt.Name(), id)
 	err := v.Err()
@@ -124,8 +124,8 @@ func (redis *redisDb) UpdateMember(member *models.Member) (int64, error) {
 	}
 	return 1, nil
 }
-func (redis *redisDb) DeleteMember(member *models.Member) (int64, error) {
-	r := redis.r
+func (redis *RedisDb) DeleteMember(member *models.Member) (int64, error) {
+	r := redis.R
 	id := strconv.Itoa(int(member.GetID()))
 	if id == "0" {
 		return 0, common.DbDataError

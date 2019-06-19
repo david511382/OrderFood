@@ -64,9 +64,11 @@ type IMenu interface {
 	GetOptionSelectionView(*models.OptionSelectionView) ([]*models.OptionSelectionView, error)
 }
 
-type IRedis interface {
+type IRedisMember interface {
 	IMember
+}
 
+type IRedisMenu interface {
 	// Shop 。
 	ishop
 }

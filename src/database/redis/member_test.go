@@ -45,7 +45,7 @@ func TestAddMember(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := *flag.input
 			data := &input
-			err := IRedis.AddMember(data)
+			err := memberDb.AddMember(data)
 			assert.Equal(t, flag.err, err)
 
 			output := []interface{}{data.GetID(), data.GetName(), data.GetUsername(), data.GetPassword()}
@@ -113,7 +113,7 @@ func TestGetMember(t *testing.T) {
 	for _, flag := range flagtests {
 		t.Run(flag.name, func(t *testing.T) {
 			input := *flag.input
-			output, err := IRedis.GetMember(&input)
+			output, err := memberDb.GetMember(&input)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -180,7 +180,7 @@ func TestUpdateMember(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := IRedis.UpdateMember(inputp)
+			output, err := memberDb.UpdateMember(inputp)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -245,7 +245,7 @@ func TestDeleteMember(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := IRedis.DeleteMember(inputp)
+			output, err := memberDb.DeleteMember(inputp)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})

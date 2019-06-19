@@ -10,7 +10,8 @@ type Config struct {
 	MySQLdbm    DbConfig `yaml:"mysql_dbm"`
 	MySQLMember DbConfig `yaml:"mysql_member"`
 	MySQLMenu   DbConfig `yaml:"mysql_menu"`
-	Redis       DbConfig `yaml:"redis"`
+	RedisMember       DbConfig `yaml:"redis_member"`
+	RedisMenu       DbConfig `yaml:"redis_menu"`
 	Txt         DbConfig `yaml:"txt"`
 }
 

@@ -6,13 +6,12 @@ import (
 	"orderfood/tags"
 	"strconv"
 	"testing"
-
+	"orderfood/src/database/redis/member"
+	"orderfood/src/database/redis/menu"
 	proto "github.com/golang/protobuf/proto"
+	
+	"github.com/go-redis/redis"
 )
-
-type testDBM struct {
-	*redisDb
-}
 
 const (
 	i1 int32 = 1
@@ -32,7 +31,8 @@ const (
 )
 
 var (
-	IRedis common.IRedis
+	memberDb common.IRedisMember
+	menuDb common.IRedisMenu
 
 	memberDbMembers = []models.Member{
 		models.Member{
@@ -186,63 +186,81 @@ var (
 func TestMain(m *testing.M) {
 	cfg, _ := tags.InitConfig("../../config/test-config.yml")
 
-	r, err := connect(cfg.Redis)
+	rm, err := connect(cfg.RedisMember)
 	if err != nil {
 		panic(err)
 	}
-	defer r.Close()
+	defer rm.Close()
 
-	v := r.FlushAll()
-	err = v.Err()
+	rdsM :=&member.RedisDb{rm}
+	err = initMemberDb(rdsM.R)
+	if err!=nil{
+		panic(err)
+	}
+	memberDb = rdsM
+
+
+	rmn, err := connect(cfg.RedisMenu)
 	if err != nil {
 		panic(err)
 	}
+	defer rmn.Close()
 
-	rds := testDBM{&redisDb{r}}
-
-	rds.initDb()
-
-	IRedis = rds
+	rdsMn :=&menu.RedisDb{rmn}
+	err= initMenuDb(rdsMn.R)
+	if err!=nil{
+		panic(err)
+	}
+	menuDb = rdsMn
 
 	m.Run()
-
-	// v := r.FlushAll()
-	// err = v.Err()
-	// if err != nil {
-	// 	panic(err)
-	// }
 }
 
-func (db *testDBM) initDb() {
-	r := db.r
+func initMemberDb(r *redis.Client) error {
+	v := r.FlushDb()
+	err := v.Err()
+	if err != nil {
+		return err
+	}
 
 	for _, member := range memberDbMembers {
 		data, err := proto.Marshal(&member)
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		id := strconv.Itoa(int(member.GetID()))
 		v := r.HSetNX(common.MemberDt.Name(), id, data)
 		err = v.Err()
 		if err != nil {
-			panic(err)
+			return err
 		}
+	}
 
+	return nil
+}
+
+func initMenuDb(r *redis.Client) error{
+	v := r.FlushDb()
+	err := v.Err()
+	if err != nil {
+		return err
 	}
 
 	for _, shop := range menuDbShops {
 		data, err := proto.Marshal(&shop)
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		id := strconv.Itoa(int(shop.GetID()))
 		v := r.HSetNX(common.ShopDt.Name(), id, data)
 		err = v.Err()
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 	}
+
+	return nil
 }

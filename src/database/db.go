@@ -16,13 +16,15 @@ type db struct {
 	menu   common.IMenu
 	dbm    common.IDBM
 
-	redis common.IRedis
+	redisMember common.IRedisMember
+	redisMenu common.IRedisMenu
 }
 
 var Db common.IDb
 
 func InitMysql(cfg *config.Config) error {
-	redisDb, _ := redis.New(cfg.Redis)
+	redisMemberDb, _ := redis.NewMemberDb(cfg.RedisMember)
+	redisMenuDb, _ := redis.NewMenuDb(cfg.RedisMenu)
 
 	memberDb := mysql.NewMemberDb(cfg.MySQLMember)
 	menuDb := mysql.NewMenuDb(cfg.MySQLMenu)
@@ -31,7 +33,8 @@ func InitMysql(cfg *config.Config) error {
 		member: memberDb,
 		menu:   menuDb,
 		dbm:    dbmDb,
-		redis:  redisDb,
+		redisMember:  redisMemberDb,
+		redisMenu:  redisMenuDb,
 	}
 
 	//check db

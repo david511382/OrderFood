@@ -21,7 +21,11 @@ mysql_menu:
   database: "orderfood_menu"
   param: "charset=utf8mb4&parseTime=true"
 
-redis:
+redis_member:
+  address: "172.19.0.10:6380"
+  password: "root"
+  database: "0"
+redis_menu:
   address: "172.19.0.10:6380"
   password: "root"
   database: "1"
