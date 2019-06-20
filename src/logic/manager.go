@@ -89,7 +89,7 @@ func menuTree(shops []*models.Shop) string {
 	result := `
 	<ul id="myUL">
 	<li onclick="toHome()">Home</li>
-	<li><a onclick="toManageShop()">Manage Shop</a>
+	<li><a onclick="toManageShop()">Manage Menu</a>
 	  <ul>
 		%s
 	  </ul>
@@ -105,7 +105,7 @@ func menuTree(shops []*models.Shop) string {
 		}
 
 		function toManageShop(o){
-			var url =  "/manager/manageshop?shopID=";
+			var url =  "/manager/managemenu?shopID=";
 			if (o !== undefined) {
 				url += o.innerHTML;
 			}
@@ -128,7 +128,7 @@ func menuTree(shops []*models.Shop) string {
 	return result
 }
 
-func ManageShopView(shopID int) (string, error) {
+func ManageMenuView(shopID int) (string, error) {
 	html := `
     <!DOCTYPE html>
     <html>

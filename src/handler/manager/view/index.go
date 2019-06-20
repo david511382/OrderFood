@@ -30,7 +30,7 @@ func Home(c *gin.Context) {
 	c.Writer.WriteHeader(http.StatusOK)
 }
 
-func ManageShop(c *gin.Context) {
+func ManageMenu(c *gin.Context) {
 	// v, ok := c.Get("username")
 	// if !ok {
 	//     c.AbortWithError(http.StatusBadRequest, nil)
@@ -44,7 +44,7 @@ func ManageShop(c *gin.Context) {
 		shopID = 0
 	}
 
-	data, err := logic.ManageShopView(shopID)
+	data, err := logic.ManageMenuView(shopID)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return

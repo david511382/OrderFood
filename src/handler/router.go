@@ -53,7 +53,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 		middleware.Verify,
 	)
 	mangr.GET("", managerView.Home)
-	mangr.GET("/manageshop", managerView.ManageShop)
+	mangr.GET("/managemenu", managerView.ManageMenu)
 	mangr.PUT("/changeshop", manager.ChangeView)
 
 	api := router.Group("api")
