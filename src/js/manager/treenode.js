@@ -60,10 +60,11 @@ function updatePage(updateView){
                 }
 
                 // add
-                let fileref=document.createElement(targetelement);
-                fileref.setAttribute("type","text/javascript");
-                fileref.setAttribute(targetattr, name);
-                fileref.src = data;
+                let js=document.createElement(targetelement);
+                js.setAttribute("type","text/javascript");
+                js.setAttribute(targetattr, name);
+                js.src = data;
+                document.head.appendChild(js);
             }
         }
     }
@@ -94,11 +95,12 @@ function updatePage(updateView){
                 }
 
                 // add
-                let fileref=document.createElement(targetelement);
-                fileref.setAttribute("rel", "stylesheet");
-                fileref.setAttribute("type", "text/css");
-                fileref.setAttribute(targetattr, name);
-                fileref.src = data;
+                let style=document.createElement(targetelement);
+                style.setAttribute("rel", "stylesheet");
+                style.setAttribute("type", "text/css");
+                style.setAttribute(targetattr, name);
+                style.src = data;
+                document.head.appendChild(style);
             }
         }
     }

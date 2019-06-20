@@ -3,7 +3,7 @@ var shopData;
 
 $.ajax({
     type:"GET",
-    url: "/menu/shopmenu"
+    url: "/api/menu/shopmenu"
 }).done(init);
 
 function init(data){
