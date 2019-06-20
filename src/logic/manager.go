@@ -141,9 +141,84 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 		shopName = shops[0].GetName()
 	}
 
+	bodyHTML := `
+		</br>	
+		<a>商店</a>
+		<textarea id="shopNameTextarea">%s</textarea>
+		<button id="addShopButton">+</button>
+		<button id="removeShopButton">-</button>
+		</br>
+		</br>
+
+		<a>選單</a>
+		<a>小,大</a>
+		</br>
+		</br>
+
+		<button id="allOptionButton">所有</button>
+		<button id="noneOptionButton">無</button>
+		<button id="addOptionButton">+</button>
+		</br>
+		</br>
+
+		<a>商品</a>
+		<table border="1">
+			<tr>
+				<td>所屬選單</td>
+				<td>品名</td>
+				<td>價格</td>
+				<td>操作</td>
+			</tr>
+			<tr>
+				<td>小,大|辣油</td>
+				<td>炒麵</td>
+				<td>15</td>
+				<td><button>刪除</button></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><select id="newItemNameSelect"></select></td>
+				<td></td>
+				<td><button id="addItemButton">加入</button></td>
+			</tr>
+			<tr>
+				<td>小,大</td>
+				<td><textarea id="newItemNameTextarea"></textarea></td>
+				<td><textarea id="newItemPriceTextarea"></textarea></td>
+				<td><button id="addItemButton">新增</button></td>
+			</tr>
+		</table>
+		</br>
+		</br>
+
+		<a>選單選項</a>
+		<table border="1">
+			<tr>
+				<td>名稱</td>
+				<td>加價</td>
+				<td>操作</td>
+			</tr>
+			<tr>
+				<td>小</td>
+				<td>0</td>
+				<td><button>刪除</button></td>
+			</tr>
+			<tr>
+				<td>大</td>
+				<td>5</td>
+				<td><button>刪除</button></td>
+			</tr>
+			<tr>
+				<td><textarea id="newSelectionNameTextarea"></textarea></td>
+				<td><textarea id="newSelectionPriceTextarea"></textarea></td>
+				<td><button id="addSelectionButton">新增</button></td>
+			</tr>
+		</table>
+		`
+	bodyHTML = fmt.Sprintf(bodyHTML, shopName)
 	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
 		Key:  "Body",
-		Data: "<h2>商店 " + shopName + "</h2>",
+		Data: bodyHTML,
 	})
 
 	updateView.Script = append(updateView.Script, &resp.KeyValue{
