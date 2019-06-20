@@ -3,13 +3,14 @@ package redis
 import (
 	"orderfood/src/database/common"
 	"orderfood/src/database/models"
+	"orderfood/src/database/redis/member"
+	"orderfood/src/database/redis/menu"
 	"orderfood/tags"
 	"strconv"
 	"testing"
-	"orderfood/src/database/redis/member"
-	"orderfood/src/database/redis/menu"
+
 	proto "github.com/golang/protobuf/proto"
-	
+
 	"github.com/go-redis/redis"
 )
 
@@ -32,7 +33,7 @@ const (
 
 var (
 	memberDb common.IRedisMember
-	menuDb common.IRedisMenu
+	menuDb   common.IRedisMenu
 
 	memberDbMembers = []models.Member{
 		models.Member{
@@ -192,13 +193,12 @@ func TestMain(m *testing.M) {
 	}
 	defer rm.Close()
 
-	rdsM :=&member.RedisDb{rm}
+	rdsM := &member.RedisDb{rm}
 	err = initMemberDb(rdsM.R)
-	if err!=nil{
+	if err != nil {
 		panic(err)
 	}
 	memberDb = rdsM
-
 
 	rmn, err := connect(cfg.RedisMenu)
 	if err != nil {
@@ -206,14 +206,16 @@ func TestMain(m *testing.M) {
 	}
 	defer rmn.Close()
 
-	rdsMn :=&menu.RedisDb{rmn}
-	err= initMenuDb(rdsMn.R)
-	if err!=nil{
+	rdsMn := &menu.RedisDb{rmn}
+	err = initMenuDb(rdsMn.R)
+	if err != nil {
 		panic(err)
 	}
 	menuDb = rdsMn
 
 	m.Run()
+
+	rm.FlushAll()
 }
 
 func initMemberDb(r *redis.Client) error {
@@ -240,7 +242,7 @@ func initMemberDb(r *redis.Client) error {
 	return nil
 }
 
-func initMenuDb(r *redis.Client) error{
+func initMenuDb(r *redis.Client) error {
 	v := r.FlushDb()
 	err := v.Err()
 	if err != nil {
