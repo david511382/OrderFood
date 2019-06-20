@@ -4,11 +4,11 @@ import (
 	"orderfood/src/database/models"
 )
 
-type shopDb struct {
+type shopDbSwitch struct {
 	redisStatus bool
 }
 
-func (d *shopDb) initRedis() error {
+func (d *shopDbSwitch) initRedis() error {
 	shops, err := redisMenuDb.GetShop(nil)
 	if err != nil {
 		d.redisStatus = false
@@ -35,7 +35,7 @@ func (d *shopDb) initRedis() error {
 	return nil
 }
 
-func (d *shopDb) GetShop(shop *models.Shop) ([]*models.Shop, error) {
+func (d *shopDbSwitch) GetShop(shop *models.Shop) ([]*models.Shop, error) {
 	if d.redisStatus {
 		result, err := redisMenuDb.GetShop(shop)
 		if err == nil {
@@ -49,7 +49,7 @@ func (d *shopDb) GetShop(shop *models.Shop) ([]*models.Shop, error) {
 	return result, err
 }
 
-func (d *shopDb) AddShop(shop *models.Shop) error {
+func (d *shopDbSwitch) AddShop(shop *models.Shop) error {
 	err := menuDb.AddShop(shop)
 	if err != nil {
 		return err
@@ -63,7 +63,7 @@ func (d *shopDb) AddShop(shop *models.Shop) error {
 	}
 	return nil
 }
-func (d *shopDb) DeleteShop(shop *models.Shop) (int64, error) {
+func (d *shopDbSwitch) DeleteShop(shop *models.Shop) (int64, error) {
 	count, err := menuDb.DeleteShop(shop)
 	if err != nil {
 		return count, err
@@ -77,7 +77,7 @@ func (d *shopDb) DeleteShop(shop *models.Shop) (int64, error) {
 	}
 	return count, nil
 }
-func (d *shopDb) UpdateShop(shop *models.Shop) (int64, error) {
+func (d *shopDbSwitch) UpdateShop(shop *models.Shop) (int64, error) {
 	count, err := menuDb.UpdateShop(shop)
 	if err != nil {
 		return count, err

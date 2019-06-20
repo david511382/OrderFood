@@ -12,7 +12,7 @@ import (
 )
 
 type db struct {
-	shopDb *shopDb
+	shopDb *shopDbSwitch
 }
 
 var (
@@ -31,7 +31,7 @@ func InitMysql(cfg *config.Config) error {
 	menuDb = mysql.NewMenuDb(cfg.MySQLMenu)
 	dbmDb = mysql.NewDBMdb(cfg.MySQLdbm)
 
-	shopDb := &shopDb{}
+	shopDb := &shopDbSwitch{}
 	Db = &db{
 		shopDb: shopDb,
 	}
