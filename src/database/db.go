@@ -12,35 +12,46 @@ import (
 )
 
 type db struct {
-	member common.IMember
-	menu   common.IMenu
-	dbm    common.IDBM
-
-	redisMember common.IRedisMember
-	redisMenu common.IRedisMenu
+	shopDb *shopDb
 }
 
-var Db common.IDb
+var (
+	Db common.IDb
+
+	memberDb common.IMember
+	menuDb   common.IMenu
+	dbmDb    common.IDBM
+
+	redisMemberDb common.IRedisMember
+	redisMenuDb   common.IRedisMenu
+)
 
 func InitMysql(cfg *config.Config) error {
-	redisMemberDb, _ := redis.NewMemberDb(cfg.RedisMember)
-	redisMenuDb, _ := redis.NewMenuDb(cfg.RedisMenu)
+	memberDb = mysql.NewMemberDb(cfg.MySQLMember)
+	menuDb = mysql.NewMenuDb(cfg.MySQLMenu)
+	dbmDb = mysql.NewDBMdb(cfg.MySQLdbm)
 
-	memberDb := mysql.NewMemberDb(cfg.MySQLMember)
-	menuDb := mysql.NewMenuDb(cfg.MySQLMenu)
-	dbmDb := mysql.NewDBMdb(cfg.MySQLdbm)
+	shopDb := &shopDb{}
 	Db = &db{
-		member: memberDb,
-		menu:   menuDb,
-		dbm:    dbmDb,
-		redisMember:  redisMemberDb,
-		redisMenu:  redisMenuDb,
+		shopDb: shopDb,
 	}
 
 	//check db
 	err := Db.DBM().CheckDb()
 	if err != nil {
 		err = Db.DBM().RebuildDb()
+		if err != nil {
+			return err
+		}
+	}
+
+	redisMemberDb, _ = redis.NewMemberDb(cfg.RedisMember)
+
+	redisMenuDb, err = redis.NewMenuDb(cfg.RedisMenu)
+	if err != nil {
+		shopDb.redisStatus = false
+	} else {
+		err = shopDb.initRedis()
 		if err != nil {
 			return err
 		}
@@ -72,19 +83,23 @@ func InitTxt(dbCfg config.DbConfig) error {
 		}
 	}
 
-	Db = d
+	//Db = d
 
 	return err
 }
 
 func (d *db) Member() common.IMember {
-	return d.member
+	return memberDb
 }
 
 func (d *db) Menu() common.IMenu {
-	return d.menu
+	return menuDb
+}
+
+func (d *db) MenuShop() common.IShop {
+	return d.shopDb
 }
 
 func (d *db) DBM() common.IDBM {
-	return d.dbm
+	return dbmDb
 }

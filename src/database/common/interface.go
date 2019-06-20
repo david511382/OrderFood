@@ -7,6 +7,7 @@ import (
 type IDb interface {
 	Member() IMember
 	Menu() IMenu
+	MenuShop() IShop
 	DBM() IDBM
 }
 
@@ -22,7 +23,7 @@ type IMember interface {
 	DeleteMember(*models.Member) (int64, error)
 }
 
-type ishop interface {
+type IShop interface {
 	GetShop(*models.Shop) ([]*models.Shop, error)
 	AddShop(*models.Shop) error
 	DeleteShop(*models.Shop) (int64, error)
@@ -31,7 +32,7 @@ type ishop interface {
 
 type IMenu interface {
 	// Shop 。
-	ishop
+	IShop
 
 	// Item 。
 	GetItem(*models.Item) ([]*models.Item, error)
@@ -70,5 +71,5 @@ type IRedisMember interface {
 
 type IRedisMenu interface {
 	// Shop 。
-	ishop
+	IShop
 }

@@ -18,7 +18,7 @@ func GetMenu(shopName string) (menu *resp.ShopMenu, err error) {
 	// shop := &models.Shop{
 	// 	Name: shopName,
 	// }
-	// shops, err := db.GetShop(shop)
+	// shops, err := GetShop(shop)
 	// if err != nil {
 	// 	return
 	// } else if len(shops) == 0 {
@@ -265,7 +265,7 @@ func getMenuOptions()([]*resp.MenuOption,  error){
 }
 
 func AddShop(name string) (*models.Shop, error) {
-	db := database.Db.Menu()
+	db := database.Db.MenuShop()
 	shop := &models.Shop{
 		Name: name,
 	}
@@ -279,7 +279,7 @@ func AddShop(name string) (*models.Shop, error) {
 }
 
 func GetShop(id int32, name string) ([]*models.Shop, error) {
-	db := database.Db.Menu()
+	db := database.Db.MenuShop()
 	shop := &models.Shop{
 		ID:   id,
 		Name: name,
@@ -289,7 +289,7 @@ func GetShop(id int32, name string) ([]*models.Shop, error) {
 }
 
 func UpdateShop(id int32, name string) (bool, error) {
-	db := database.Db.Menu()
+	db := database.Db.MenuShop()
 	shop := &models.Shop{
 		ID:   id,
 		Name: name,
@@ -305,7 +305,7 @@ func UpdateShop(id int32, name string) (bool, error) {
 }
 
 func DeleteShop(id int32) (bool, error) {
-	db := database.Db.Menu()
+	db := database.Db.MenuShop()
 	shop := &models.Shop{
 		ID: id,
 	}
