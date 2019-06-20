@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"orderfood/src/database"
 	"orderfood/src/database/models"
+	"orderfood/src/handler/models/resp"
 	"strconv"
 
 	linq "github.com/ahmetb/go-linq"
@@ -48,7 +49,7 @@ func ManagerView(username string) (string, error) {
         <script src="/src/js/post.js"></script>
         <script src="/src/js/websocket.js"></script>
 		<script src="/src/js/manager.js"></script>
-		%s
+		<script src="%s"></script>
     </body>
     </html>
     `
@@ -116,100 +117,47 @@ func menuTree(shops []*models.Shop) (html string, js string) {
 		shopStr,
 	)
 
-	js = `
-	<script>
-	function toHome(){
-		$.ajax({
-			type:"GET",
-			url: "/manager"
-		}).done(changePage);
-	}
-
-	function toManageShop(shopID){
-		var url =  "/manager/managemenu?shopID=";
-		if (shopID !== undefined) {
-			url += shopID;
-		}
-		
-		$.ajax({
-			type:"GET",
-			url: url
-		}).done(changePage);
-	}
-
-	function changePage(html){
-		document.body.innerHTML = html;
-	}
-	</script>
-	`
+	js = "/src/js/manager/treenode.js"
 
 	return
 }
 
-func ManageMenuView(shopID int32) (string, error) {
-	html := `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>%s</title>
+func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
+	updateView := newUpdateView()
 
-        <link rel="stylesheet" type="text/css" href="/css/managerHome.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    </head>
-	<body>		
-		<div id="Header">
-        	<h1>%s</h1>
-		</div>
-
-		<div id="Sidebar">
-		%s
-		</div>
-		
-		<div id="Body">
-			<h2>商店 %s</h2>
-		</div>
-
-		<script>
-			var shopData;
-			var selectedShopID = %d;
-
-			$.ajax({
-				type:"GET",
-				url: "/menu/shopmenu"
-			}).done(init);
-
-			function init(data){
-				shopData = data
-			}
-		</script>
-		%s
-    </body>
-    </html>
-    `
+	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
+		Key:  "Header",
+		Data: "<h1>Manage Menu</h1>",
+	})
 
 	db := database.Db.MenuShop()
-	shops, err := db.GetShop(nil)
+	shops, err := db.GetShop(&models.Shop{ID: shopID})
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-
-	treeHTML, treeJS := menuTree(shops)
 
 	shopName := ""
-	for _, shop := range shops {
-		if shopID == 0 || shop.GetID() == shopID {
-			shopName = shop.GetName()
-			break
-		}
+	if len(shops) != 0 {
+		shopName = shops[0].GetName()
 	}
 
-	html = fmt.Sprintf(html,
-		"OrderFood後台",
-		"Manage Menu",
-		treeHTML,
-		shopName,
-		shopID,
-		treeJS,
-	)
-	return html, nil
+	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
+		Key:  "Body",
+		Data: "<h2>商店 " + shopName + "</h2>",
+	})
+
+	updateView.Script = append(updateView.Script, &resp.KeyValue{
+		Key:  "src/js/manager/manageMenuMain.js",
+		Data: "src/js/manager/manageMenuMain.js",
+	})
+
+	return updateView, nil
+}
+
+func newUpdateView() *resp.UpdateView {
+	return &resp.UpdateView{
+		HTML:   make([]*resp.KeyValue, 0),
+		Script: make([]*resp.KeyValue, 0),
+		Css:    make([]*resp.KeyValue, 0),
+	}
 }

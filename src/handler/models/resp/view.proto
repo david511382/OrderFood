@@ -1,0 +1,15 @@
+// 撰寫格式是 Proto v3。
+syntax = "proto3";  
+// 生成的程式在 Golang 中將會屬於 `resp` 套件。
+package resp;
+
+message UpdateView {
+	repeated KeyValue HTML = 1; 
+	repeated KeyValue Script = 2; 
+	repeated KeyValue Css = 3; 
+}
+
+message KeyValue {
+	string Key = 1; 
+	string Data = 2;
+}

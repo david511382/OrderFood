@@ -44,7 +44,7 @@ func ManageMenu(c *gin.Context) {
 		shopID = 0
 	}
 
-	data, err := logic.ManageMenuView(int32(shopID))
+	view, err := logic.ManageMenuView(int32(shopID))
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -54,6 +54,7 @@ func ManageMenu(c *gin.Context) {
 	// 	"title": "後台",
 	// })
 
-	c.Writer.Write([]byte(data))
-	c.Writer.WriteHeader(http.StatusOK)
+	c.JSON(http.StatusOK, view)
+	// c.Writer.Write([]byte(view))
+	// c.Writer.WriteHeader(http.StatusOK)
 }
