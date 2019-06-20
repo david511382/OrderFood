@@ -12,7 +12,8 @@ import (
 )
 
 type db struct {
-	shopDb *shopDbSwitch
+	shopDb   *shopDbSwitch
+	memberDb *memberDbSwitch
 }
 
 var (
@@ -31,9 +32,11 @@ func InitMysql(cfg *config.Config) error {
 	menuDb = mysql.NewMenuDb(cfg.MySQLMenu)
 	dbmDb = mysql.NewDBMdb(cfg.MySQLdbm)
 
-	shopDb := &shopDbSwitch{}
+	memberSwitcher := &memberDbSwitch{}
+	shopSwitcher := &shopDbSwitch{}
 	Db = &db{
-		shopDb: shopDb,
+		shopDb:   shopSwitcher,
+		memberDb: memberSwitcher,
 	}
 
 	//check db
@@ -45,13 +48,21 @@ func InitMysql(cfg *config.Config) error {
 		}
 	}
 
-	redisMemberDb, _ = redis.NewMemberDb(cfg.RedisMember)
+	redisMemberDb, err = redis.NewMemberDb(cfg.RedisMember)
+	if err != nil {
+		memberSwitcher.redisStatus = false
+	} else {
+		err = memberSwitcher.initRedis()
+		if err != nil {
+			return err
+		}
+	}
 
 	redisMenuDb, err = redis.NewMenuDb(cfg.RedisMenu)
 	if err != nil {
-		shopDb.redisStatus = false
+		shopSwitcher.redisStatus = false
 	} else {
-		err = shopDb.initRedis()
+		err = shopSwitcher.initRedis()
 		if err != nil {
 			return err
 		}
@@ -89,7 +100,7 @@ func InitTxt(dbCfg config.DbConfig) error {
 }
 
 func (d *db) Member() common.IMember {
-	return memberDb
+	return d.memberDb
 }
 
 func (d *db) Menu() common.IMenu {
