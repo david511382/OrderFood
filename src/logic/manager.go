@@ -5,6 +5,8 @@ import (
 	"orderfood/src/database"
 	"orderfood/src/database/models"
 	"strconv"
+
+	linq "github.com/ahmetb/go-linq"
 )
 
 func ManagerView(username string) (string, error) {
@@ -81,6 +83,11 @@ func viewSelect(shops []*models.Shop) string {
 }
 
 func menuTree(shops []*models.Shop) string {
+	linq.From(shops).OrderBy(func(m interface{}) interface{} {
+		shop := m.(*models.Shop)
+		return shop.GetID()
+	}).ToSlice(&shops)
+
 	shopStr := ""
 	for _, shop := range shops {
 		shopStr += `<li onclick="toManageShop(` + strconv.Itoa(int(shop.GetID())) + `)">` + shop.GetName() + "</li>"
@@ -104,10 +111,10 @@ func menuTree(shops []*models.Shop) string {
 			}).done(changePage);
 		}
 
-		function toManageShop(o){
+		function toManageShop(shopID){
 			var url =  "/manager/managemenu?shopID=";
-			if (o !== undefined) {
-				url += o.innerHTML;
+			if (shopID !== undefined) {
+				url += shopID;
 			}
 			
 			$.ajax({
@@ -128,7 +135,7 @@ func menuTree(shops []*models.Shop) string {
 	return result
 }
 
-func ManageMenuView(shopID int) (string, error) {
+func ManageMenuView(shopID int32) (string, error) {
 	html := `
     <!DOCTYPE html>
     <html>
@@ -159,7 +166,7 @@ func ManageMenuView(shopID int) (string, error) {
     </html>
     `
 
-	db := database.Db.Menu()
+	db := database.Db.MenuShop()
 	shops, err := db.GetShop(nil)
 	if err != nil {
 		return "", err
@@ -167,9 +174,17 @@ func ManageMenuView(shopID int) (string, error) {
 
 	tree := menuTree(shops)
 
+	shopName := ""
+	for _, shop := range shops {
+		if shopID == 0 || shop.GetID() == shopID {
+			shopName = shop.GetName()
+			break
+		}
+	}
+
 	html = fmt.Sprintf(html,
 		"OrderFood後台",
-		"test",
+		shopName,
 		tree,
 		shopID,
 	)

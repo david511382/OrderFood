@@ -44,7 +44,7 @@ func ManageMenu(c *gin.Context) {
 		shopID = 0
 	}
 
-	data, err := logic.ManageMenuView(shopID)
+	data, err := logic.ManageMenuView(int32(shopID))
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
