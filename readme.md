@@ -8,6 +8,7 @@ go build -tags release
 
 go test -v -count=1 ./src/database/mysql
 go test -v -count=1 ./src/database/redis
+go test -v -count=1 ./src/database/redis ./src/database/mysql
 
 docker
 docker-compose -f ./docker/docker-compose.yml up -d --build
