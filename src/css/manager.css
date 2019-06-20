@@ -1,0 +1,112 @@
+h1{
+  margin: 0px auto;
+  width: 230;
+}
+
+textarea.list {
+  width: 350px;
+  height: 400px;
+  border-radius: 20px;
+}
+
+/*
+區塊排版
+width - 設定 DIV 寬度
+height - 設定 DIV 高度
+text-align - 設定 DIV 內的文字對齊
+line-height - 設定 DIV 內的文字行高
+font-size - 設定 DIV 內的文字大小
+color - 設定 DIV 內的文字顏色
+font-weight - 設定 DIV 內的文字粗細
+background-color - 設定 DIV 區塊的背景顏色
+*/
+#Header{
+  width:790px;
+  height:80px;
+  text-align:center;
+  font-size:15px;
+  color:#fffaf3;
+  font-weight:bold;
+  background-color:#f9c81e;
+}
+
+#Sidebar{
+  width:150px;
+  float:left;
+  height:600px;
+  text-align:center;
+  font-size:15px;
+  color:#ffffff;
+  font-weight:bold;
+  background-color:#cecece;
+}
+
+#Body{
+  width:640px;
+  height:600px;
+  text-align:center;
+  font-size:15px;
+  color:#f9c81e;
+  font-weight:bold;
+  background-color:#fffaf3;
+  float:left;
+}
+
+#Footer{
+  width:790px;
+  height:80px;
+  text-align:center;
+  font-size:15px;
+  color:#fffaf3;
+  font-weight:bold;
+  background-color:#f9c81e;
+}
+
+/*
+tree node
+width - 設定 DIV 寬度
+height - 設定 DIV 高度
+text-align - 設定 DIV 內的文字對齊
+line-height - 設定 DIV 內的文字行高
+font-size - 設定 DIV 內的文字大小
+color - 設定 DIV 內的文字顏色
+font-weight - 設定 DIV 內的文字粗細
+background-color - 設定 DIV 區塊的背景顏色
+*/
+ul, #myUL {
+  list-style-type: none;
+}
+
+#myUL {
+  margin: 0;
+  padding: 0;
+}
+
+.caret {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+}
+
+.caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down::before {
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Safari */
+  transform: rotate(90deg);  
+}
+
+.nested {
+  display: none;
+}
+
+.active {
+  display: block;
+}

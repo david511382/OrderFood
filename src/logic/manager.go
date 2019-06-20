@@ -20,28 +20,35 @@ func ManagerView(username string) (string, error) {
     <head>
         <title>%s</title>
 
-        <link rel="stylesheet" type="text/css" href="/css/managerHome.css">
+        <link rel="stylesheet" type="text/css" href="/css/manager.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
-    <body>
-        <h1>%s</h1>
-		
+	<body>
+		<div id="Header">
+        	<h1>%s</h1>
+		</div>
+
+		<div id="Sidebar">
 		%s
+		</div>
 
-        <form id="selectViewForm">
-           %s
-        </form>
+		<div id="Body">
+			<form id="selectViewForm">
+			%s
+			</form>
+		
+			users order</br>
+			<textarea class="list" id="userOrders" readonly></textarea>
+			</br>
 
-        users order</br>
-        <textarea class="list" id="userOrders" readonly></textarea>
-        </br>
-
-        total</br>
-        <textarea class="list" id="result" readonly></textarea>
+			total</br>
+			<textarea class="list" id="result" readonly></textarea>
+		</div>
 
         <script src="/src/js/post.js"></script>
         <script src="/src/js/websocket.js"></script>
-        <script src="/src/js/manager.js"></script>
+		<script src="/src/js/manager.js"></script>
+		%s
     </body>
     </html>
     `
@@ -54,13 +61,14 @@ func ManagerView(username string) (string, error) {
 
 	viewSelect := viewSelect(shops)
 
-	tree := menuTree(shops)
+	treeHTML, treeJS := menuTree(shops)
 
 	html = fmt.Sprintf(html,
 		"OrderFood後台",
 		"後台",
+		treeHTML,
 		viewSelect,
-		tree,
+		treeJS,
 	)
 	return html, nil
 }
@@ -82,7 +90,7 @@ func viewSelect(shops []*models.Shop) string {
 	return result
 }
 
-func menuTree(shops []*models.Shop) string {
+func menuTree(shops []*models.Shop) (html string, js string) {
 	linq.From(shops).OrderBy(func(m interface{}) interface{} {
 		shop := m.(*models.Shop)
 		return shop.GetID()
@@ -93,7 +101,7 @@ func menuTree(shops []*models.Shop) string {
 		shopStr += `<li onclick="toManageShop(` + strconv.Itoa(int(shop.GetID())) + `)">` + shop.GetName() + "</li>"
 	}
 
-	result := `
+	html = `
 	<ul id="myUL">
 	<li onclick="toHome()">Home</li>
 	<li><a onclick="toManageShop()">Manage Menu</a>
@@ -102,37 +110,40 @@ func menuTree(shops []*models.Shop) string {
 	  </ul>
 	</li>
 	</ul>
+	`
 
+	html = fmt.Sprintf(html,
+		shopStr,
+	)
+
+	js = `
 	<script>
-		function toHome(){
-			$.ajax({
-				type:"GET",
-				url: "/manager"
-			}).done(changePage);
-		}
+	function toHome(){
+		$.ajax({
+			type:"GET",
+			url: "/manager"
+		}).done(changePage);
+	}
 
-		function toManageShop(shopID){
-			var url =  "/manager/managemenu?shopID=";
-			if (shopID !== undefined) {
-				url += shopID;
-			}
-			
-			$.ajax({
-				type:"GET",
-				url: url
-			}).done(changePage);
+	function toManageShop(shopID){
+		var url =  "/manager/managemenu?shopID=";
+		if (shopID !== undefined) {
+			url += shopID;
 		}
+		
+		$.ajax({
+			type:"GET",
+			url: url
+		}).done(changePage);
+	}
 
-		function changePage(html){
-			document.body.innerHTML = html;
-		}
+	function changePage(html){
+		document.body.innerHTML = html;
+	}
 	</script>
 	`
 
-	result = fmt.Sprintf(result,
-		shopStr,
-	)
-	return result
+	return
 }
 
 func ManageMenuView(shopID int32) (string, error) {
@@ -145,9 +156,18 @@ func ManageMenuView(shopID int32) (string, error) {
         <link rel="stylesheet" type="text/css" href="/css/managerHome.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
-    <body>
-        <h2>商店 %s</h2>
+	<body>		
+		<div id="Header">
+        	<h1>%s</h1>
+		</div>
+
+		<div id="Sidebar">
 		%s
+		</div>
+		
+		<div id="Body">
+			<h2>商店 %s</h2>
+		</div>
 
 		<script>
 			var shopData;
@@ -162,6 +182,7 @@ func ManageMenuView(shopID int32) (string, error) {
 				shopData = data
 			}
 		</script>
+		%s
     </body>
     </html>
     `
@@ -172,7 +193,7 @@ func ManageMenuView(shopID int32) (string, error) {
 		return "", err
 	}
 
-	tree := menuTree(shops)
+	treeHTML, treeJS := menuTree(shops)
 
 	shopName := ""
 	for _, shop := range shops {
@@ -184,9 +205,11 @@ func ManageMenuView(shopID int32) (string, error) {
 
 	html = fmt.Sprintf(html,
 		"OrderFood後台",
+		"Manage Menu",
+		treeHTML,
 		shopName,
-		tree,
 		shopID,
+		treeJS,
 	)
 	return html, nil
 }

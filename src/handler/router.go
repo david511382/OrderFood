@@ -33,8 +33,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 
 	// css
 	router.StaticFile("src/css/style.css", "src/css/style.css")
-	router.StaticFile("src/css/managerStyle.css", "src/css/managerStyle.css")
-	router.StaticFile("css/managerHome.css", "src/css/managerHome.css")
+	router.StaticFile("css/manager.css", "src/css/manager.css")
 
 	// js
 	router.StaticFile("src/js/menu.js", "src/js/menu.js")
