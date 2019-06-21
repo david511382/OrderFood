@@ -49,6 +49,7 @@ func ManagerView(username string) (string, error) {
         <script src="/src/js/post.js"></script>
         <script src="/src/js/websocket.js"></script>
 		<script src="/src/js/manager.js"></script>
+		<script src="/src/js/manager/api.js"></script>
 		<script src="%s"></script>
     </body>
     </html>
@@ -91,6 +92,30 @@ func viewSelect(shops []*models.Shop) string {
 	return result
 }
 
+func MenuTreeView() (*resp.UpdateView, error) {
+	db := database.Db.Menu()
+	shops, err := db.GetShop(nil)
+	if err != nil {
+		return nil, err
+	}
+
+	treeHTML, treeJS := menuTree(shops)
+
+	updateView := newUpdateView()
+
+	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
+		Key:  "Sidebar",
+		Data: treeHTML,
+	})
+
+	updateView.Script = append(updateView.Script, &resp.KeyValue{
+		Key:  treeJS,
+		Data: treeJS,
+	})
+
+	return updateView, nil
+}
+
 func menuTree(shops []*models.Shop) (html string, js string) {
 	linq.From(shops).OrderBy(func(m interface{}) interface{} {
 		shop := m.(*models.Shop)
@@ -105,7 +130,7 @@ func menuTree(shops []*models.Shop) (html string, js string) {
 	html = `
 	<ul id="myUL">
 	<li onclick="toHome()">Home</li>
-	<li><a onclick="toManageShop()">Manage Menu</a>
+	<li><a onclick="toNewShop()">New Shop</a>
 	  <ul>
 		%s
 	  </ul>
@@ -224,6 +249,28 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 	updateView.Script = append(updateView.Script, &resp.KeyValue{
 		Key:  "src/js/manager/manageMenuMain.js",
 		Data: "src/js/manager/manageMenuMain.js",
+	})
+
+	return updateView, nil
+}
+
+func NewShopView() (*resp.UpdateView, error) {
+	updateView := newUpdateView()
+
+	bodyHTML := `
+		</br>	
+		<a>商店</a>
+		<textarea id="shopNameTextarea"></textarea>
+		<button onclick="NewShopButtonClick()">新增</button>
+		`
+	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
+		Key:  "Body",
+		Data: bodyHTML,
+	})
+
+	updateView.Script = append(updateView.Script, &resp.KeyValue{
+		Key:  "src/js/manager/newshop.js",
+		Data: "src/js/manager/newshop.js",
 	})
 
 	return updateView, nil

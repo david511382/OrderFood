@@ -5,6 +5,15 @@ function toHome(){
     }).done(changeWholePage);
 }
 
+function toNewShop(){
+    var url =  "/manager/newshop";
+    
+    $.ajax({
+        type:"GET",
+        url: url
+    }).done(updatePage);
+}
+
 function toManageShop(shopID){
     var url =  "/manager/managemenu?shopID=";
     if (shopID !== undefined) {

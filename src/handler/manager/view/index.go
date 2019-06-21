@@ -30,6 +30,26 @@ func Home(c *gin.Context) {
 	c.Writer.WriteHeader(http.StatusOK)
 }
 
+func MenuTree(c *gin.Context) {
+	view, err := logic.MenuTreeView()
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, view)
+}
+
+func NewShop(c *gin.Context) {
+	view, err := logic.NewShopView()
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, view)
+}
+
 func ManageMenu(c *gin.Context) {
 	// v, ok := c.Get("username")
 	// if !ok {

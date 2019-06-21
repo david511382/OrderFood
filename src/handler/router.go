@@ -42,6 +42,8 @@ func Init(isReleaseMode bool) *gin.Engine {
 	router.StaticFile("src/js/manager.js", "src/js/manager.js")
 	router.StaticFile("src/js/manager/treenode.js", "src/js/manager/treenode.js")
 	router.StaticFile("src/js/manager/manageMenuMain.js", "src/js/manager/manageMenuMain.js")
+	router.StaticFile("src/js/manager/api.js", "src/js/manager/api.js")
+	router.StaticFile("src/js/manager/newshop.js", "src/js/manager/newshop.js")
 	router.StaticFile("src/js/websocket.js", "src/js/websocket.js")
 
 	router.GET("", user.Index)
@@ -54,6 +56,8 @@ func Init(isReleaseMode bool) *gin.Engine {
 		middleware.Verify,
 	)
 	mangr.GET("", managerView.Home)
+	mangr.GET("/menutree", managerView.MenuTree)
+	mangr.GET("/newshop", managerView.NewShop)
 	mangr.GET("/managemenu", managerView.ManageMenu)
 	mangr.PUT("/changeshop", manager.ChangeView)
 
