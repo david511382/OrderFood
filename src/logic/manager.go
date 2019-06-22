@@ -46,6 +46,7 @@ func ManagerView(username string) (string, error) {
 			<textarea class="list" id="result" readonly></textarea>
 		</div>
 
+		<script src="/src/js/ajax.js"></script>
         <script src="/src/js/post.js"></script>
         <script src="/src/js/websocket.js"></script>
 		<script src="/src/js/manager.js"></script>
@@ -169,9 +170,8 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 	bodyHTML := `
 		</br>	
 		<a>商店</a>
-		<textarea id="shopNameTextarea">%s</textarea>
-		<button id="addShopButton">+</button>
-		<button id="removeShopButton">-</button>
+		<input id="shopNameInput" type="text" value=%s onkeypress="ShopNameInputKeyPress(%d,this.value)" onfocus="this.select()"></input>			
+		<button onclick="RemoveShopButtonClick(%d)">刪除</button>
 		</br>
 		</br>
 
@@ -240,15 +240,20 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 			</tr>
 		</table>
 		`
-	bodyHTML = fmt.Sprintf(bodyHTML, shopName)
+	bodyHTML = fmt.Sprintf(
+		bodyHTML,
+		shopName,
+		shopID,
+		shopID,
+	)
 	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
 		Key:  "Body",
 		Data: bodyHTML,
 	})
 
 	updateView.Script = append(updateView.Script, &resp.KeyValue{
-		Key:  "src/js/manager/manageMenuMain.js",
-		Data: "src/js/manager/manageMenuMain.js",
+		Key:  "src/js/manager/manageMenu.js",
+		Data: "src/js/manager/manageMenu.js",
 	})
 
 	return updateView, nil

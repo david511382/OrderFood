@@ -39,11 +39,13 @@ func Init(isReleaseMode bool) *gin.Engine {
 	router.StaticFile("src/js/menu.js", "src/js/menu.js")
 	router.StaticFile("src/js/menuView.js", "src/js/menuView.js")
 	router.StaticFile("src/js/post.js", "src/js/post.js")
+	router.StaticFile("src/js/ajax.js", "src/js/ajax.js")
 	router.StaticFile("src/js/manager.js", "src/js/manager.js")
 	router.StaticFile("src/js/manager/treenode.js", "src/js/manager/treenode.js")
-	router.StaticFile("src/js/manager/manageMenuMain.js", "src/js/manager/manageMenuMain.js")
+	router.StaticFile("src/js/manager/manageMenu.js", "src/js/manager/manageMenu.js")
 	router.StaticFile("src/js/manager/api.js", "src/js/manager/api.js")
 	router.StaticFile("src/js/manager/newshop.js", "src/js/manager/newshop.js")
+
 	router.StaticFile("src/js/websocket.js", "src/js/websocket.js")
 
 	router.GET("", user.Index)

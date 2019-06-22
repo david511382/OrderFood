@@ -12,7 +12,7 @@ function NewShopButtonClick(){
             $.ajax({
                 type:'GET',
                 url: url
-            }).done(updatePage);
+            }).done(UpdatePage);
 
             alert('新增商店 ' + result.Name + ' 成功!');
             toManageShop(result.ID);
