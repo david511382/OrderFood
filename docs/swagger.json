@@ -825,7 +825,7 @@
                 }
             }
         },
-        "/menu/shopmenu": {
+        "/menu/shopmenu/{shopID}": {
             "get": {
                 "description": "取得菜單",
                 "produces": [
@@ -835,14 +835,21 @@
                     "menu"
                 ],
                 "summary": "取得菜單",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商店",
+                        "name": "shopID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "菜單",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/resp.ShopMenu"
-                            }
+                            "type": "object",
+                            "$ref": "#/definitions/resp.ShopMenu"
                         }
                     },
                     "500": {
@@ -1031,13 +1038,13 @@
                 "ID": {
                     "type": "integer"
                 },
+                "Name": {
+                    "type": "string"
+                },
                 "Password": {
                     "type": "string"
                 },
                 "Username": {
-                    "type": "string"
-                },
-                "name": {
                     "type": "string"
                 }
             }

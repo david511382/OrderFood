@@ -4,11 +4,11 @@ definitions:
     properties:
       ID:
         type: integer
+      Name:
+        type: string
       Password:
         type: string
       Username:
-        type: string
-      name:
         type: string
     type: object
   reqs.ModifyUser:
@@ -637,18 +637,23 @@ paths:
       summary: 修改商店
       tags:
       - menu
-  /menu/shopmenu:
+  /menu/shopmenu/{shopID}:
     get:
       description: 取得菜單
+      parameters:
+      - description: 商店
+        in: path
+        name: shopID
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: 菜單
           schema:
-            items:
-              $ref: '#/definitions/resp.ShopMenu'
-            type: array
+            $ref: '#/definitions/resp.ShopMenu'
+            type: object
         "500":
           description: 内部错误
           schema:

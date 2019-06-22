@@ -3,6 +3,7 @@ package menu
 import (
 	"net/http"
 	"orderfood/src/logic"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,11 +34,19 @@ func GetMenu(c *gin.Context) {
 // @Summary 取得菜單
 // @Description 取得菜單
 // @Produce  json
-// @Success 200 {array} resp.ShopMenu "菜單"
+// @Param shopID path string true "商店"
+// @Success 200 {object} resp.ShopMenu "菜單"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/shopmenu [get]
+// @Router /menu/shopmenu/{shopID} [get]
 func GetShopMenu(c *gin.Context) {
-	data, err := logic.GetShopMenu()
+	shopIDStr := c.Param("shopID")
+	shopID, err := strconv.Atoi(shopIDStr)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	data, err := logic.GetShopMenu(shopID)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return

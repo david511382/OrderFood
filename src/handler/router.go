@@ -74,7 +74,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 	me.GET("", user.GetMenu)
 	me.GET("/menu/:shop", menu.GetMenu)
 
-	me.GET("/shopmenu", menu.GetShopMenu)
+	me.GET("/shopmenu/:shopID", menu.GetShopMenu)
 
 	me.POST("/shop", menu.AddShop)
 	me.GET("/shop", menu.GetShop)
