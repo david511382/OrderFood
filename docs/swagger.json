@@ -310,7 +310,7 @@
                 }
             }
         },
-        "/menu/itemOption": {
+        "/menu/itemoption": {
             "post": {
                 "description": "商品加入選單",
                 "consumes": [
@@ -356,7 +356,7 @@
                 }
             }
         },
-        "/menu/itemOption/{id}": {
+        "/menu/itemoption/{id}": {
             "delete": {
                 "description": "刪除選單的商品",
                 "produces": [
@@ -475,21 +475,21 @@
             }
         },
         "/menu/option/{id}": {
-            "get": {
-                "description": "刪除商品選單",
+            "put": {
+                "description": "修改商品選單",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "menu"
                 ],
-                "summary": "刪除商品選單",
+                "summary": "修改商品選單",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "ID",
-                        "name": "id",
-                        "in": "path",
+                        "description": "商品選單",
+                        "name": "selectNum",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -508,21 +508,21 @@
                     }
                 }
             },
-            "put": {
-                "description": "修改商品選單",
+            "delete": {
+                "description": "刪除商品選單",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "menu"
                 ],
-                "summary": "修改商品選單",
+                "summary": "刪除商品選單",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "商品選單",
-                        "name": "selectNum",
-                        "in": "formData",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],

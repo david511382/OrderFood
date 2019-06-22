@@ -19,7 +19,7 @@ import (
 // @Param optionID formData int true "選單編號"
 // @Success 200 {object} resp.ItemOption "結果"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/itemOption [post]
+// @Router /menu/itemoption [post]
 func AddItemOption(c *gin.Context) {
 	itemIDstr := c.PostForm("itemID")
 	itemID, err := strconv.Atoi(itemIDstr)
@@ -57,7 +57,7 @@ func AddItemOption(c *gin.Context) {
 // @Param id path int true "ID"
 // @Success 200 {string} result "成功"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/itemOption/{id} [delete]
+// @Router /menu/itemoption/{id} [delete]
 func DeleteItemOption(c *gin.Context) {
 	itemOptionIDStr := c.Param("id")
 	itemOptionID, err := strconv.Atoi(itemOptionIDStr)

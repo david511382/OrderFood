@@ -91,7 +91,7 @@ func UpdateOption(c *gin.Context) {
 // @Param id path int true "ID"
 // @Success 200 {string} result "成功"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/option/{id} [get]
+// @Router /menu/option/{id} [delete]
 func DeleteOption(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)

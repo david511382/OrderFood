@@ -295,7 +295,7 @@ paths:
       summary: 取得商品
       tags:
       - menu
-  /menu/itemOption:
+  /menu/itemoption:
     post:
       consumes:
       - application/x-www-form-urlencoded
@@ -326,7 +326,7 @@ paths:
       summary: 商品加入選單
       tags:
       - menu
-  /menu/itemOption/{id}:
+  /menu/itemoption/{id}:
     delete:
       description: 刪除選單的商品
       parameters:
@@ -405,7 +405,7 @@ paths:
       tags:
       - menu
   /menu/option/{id}:
-    get:
+    delete:
       description: 刪除商品選單
       parameters:
       - description: ID
