@@ -151,101 +151,100 @@ func menuTree(shops []*models.Shop) (html string, js string) {
 func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 	updateView := newUpdateView()
 
+	updateView.Data = strconv.Itoa(int(shopID))
+
 	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
 		Key:  "Header",
 		Data: "<h1>Manage Menu</h1>",
 	})
 
-	db := database.Db.MenuShop()
-	shops, err := db.GetShop(&models.Shop{ID: shopID})
-	if err != nil {
-		return nil, err
-	}
-
-	shopName := ""
-	if len(shops) != 0 {
-		shopName = shops[0].GetName()
-	}
-
 	bodyHTML := `
 		</br>	
 		<a>商店</a>
-		<input id="shopNameInput" type="text" value=%s onkeypress="ShopNameInputKeyPress(%d,this.value)" onfocus="this.select()"></input>			
-		<button onclick="RemoveShopButtonClick(%d)">刪除</button>
+		<input id="shopNameInput" type="text" onkeypress="shopNameInputKeyPress(this.value)" onfocus="this.select()"></input>			
+		<button onclick="removeShopButtonClick()">刪除</button>
 		</br>
 		</br>
 
-		<a>選單</a>
-		<a>小,大</a>
-		</br>
-		</br>
-
-		<button id="allOptionButton">所有</button>
-		<button id="noneOptionButton">無</button>
-		<button id="addOptionButton">+</button>
-		</br>
-		</br>
-
-		<a>商品</a>
-		<table border="1">
+		<table border="0">
 			<tr>
-				<td>所屬選單</td>
-				<td>品名</td>
-				<td>價格</td>
-				<td>操作</td>
-			</tr>
-			<tr>
-				<td>小,大|辣油</td>
-				<td>炒麵</td>
-				<td>15</td>
-				<td><button>刪除</button></td>
-			</tr>
-			<tr>
+				<td><button id="allOptionButton">所有</button></td>
+				<td><div id="optionButtonDiv"></div></td>
+				<td><button id="addOptionButton" onclick="newOptionButtonClick()">+</button></td>
+			</tr>	
+			<tr id="optionTableTr">
 				<td></td>
-				<td><select id="newItemNameSelect"></select></td>
-				<td></td>
-				<td><button id="addItemButton">加入</button></td>
-			</tr>
-			<tr>
-				<td>小,大</td>
-				<td><textarea id="newItemNameTextarea"></textarea></td>
-				<td><textarea id="newItemPriceTextarea"></textarea></td>
-				<td><button id="addItemButton">新增</button></td>
-			</tr>
+			</tr>	
 		</table>
 		</br>
-		</br>
 
-		<a>選單選項</a>
-		<table border="1">
+		<table border="0">
 			<tr>
-				<td>名稱</td>
-				<td>加價</td>
-				<td>操作</td>
-			</tr>
+				<td>
+					<a>選單</a>
+					<a>所有</a>
+					</br></br>
+				</td>
+				<td></br></br></td>
+			</tr>	
 			<tr>
-				<td>小</td>
-				<td>0</td>
-				<td><button>刪除</button></td>
-			</tr>
-			<tr>
-				<td>大</td>
-				<td>5</td>
-				<td><button>刪除</button></td>
-			</tr>
-			<tr>
-				<td><textarea id="newSelectionNameTextarea"></textarea></td>
-				<td><textarea id="newSelectionPriceTextarea"></textarea></td>
-				<td><button id="addSelectionButton">新增</button></td>
-			</tr>
+				<td>
+					<a>商品</a>
+					<table border="1">
+						<tr>
+							<td>所屬選單</td>
+							<td>品名</td>
+							<td>價格</td>
+							<td>操作</td>
+						</tr>
+						<tr>
+							<td>小,大|辣油</td>
+							<td>炒麵</td>
+							<td>15</td>
+							<td><button>刪除</button></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><select id="newItemNameSelect"></select></td>
+							<td></td>
+							<td><button id="addItemButton">加入</button></td>
+						</tr>
+						<tr>
+							<td>小,大</td>
+							<td><input id="newItemNameInput"></input></td>
+							<td><input id="newItemPriceInput"></input></td>
+							<td><button id="addItemButton" onclick="newItem()">新增</button></td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<a>選單選項</a>
+					<table border="1">
+						<tr>
+							<td>名稱</td>
+							<td>加價</td>
+							<td>操作</td>
+						</tr>
+						<tr>
+							<td>小</td>
+							<td>0</td>
+							<td><button>刪除</button></td>
+						</tr>
+						<tr>
+							<td>大</td>
+							<td>5</td>
+							<td><button>刪除</button></td>
+						</tr>
+						<tr>
+							<td><textarea id="newSelectionNameTextarea"></textarea></td>
+							<td><textarea id="newSelectionPriceTextarea"></textarea></td>
+							<td><button id="addSelectionButton">新增</button></td>
+						</tr>
+					</table>
+				</td>
+			</tr>	
 		</table>
 		`
-	bodyHTML = fmt.Sprintf(
-		bodyHTML,
-		shopName,
-		shopID,
-		shopID,
-	)
 	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
 		Key:  "Body",
 		Data: bodyHTML,

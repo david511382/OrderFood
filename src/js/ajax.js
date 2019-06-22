@@ -1,3 +1,5 @@
+var ResopnseData;
+
 function UpdatePage(updateView){
     var htmlArr = updateView.HTML;
     if (htmlArr !== undefined){
@@ -81,4 +83,6 @@ function UpdatePage(updateView){
             }
         }
     }
+
+    ResopnseData = updateView.Data;
 }
