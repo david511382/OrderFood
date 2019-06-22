@@ -262,10 +262,15 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 func NewShopView() (*resp.UpdateView, error) {
 	updateView := newUpdateView()
 
+	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
+		Key:  "Header",
+		Data: "<h1>New Shop</h1>",
+	})
+
 	bodyHTML := `
 		</br>	
 		<a>商店</a>
-		<textarea id="shopNameTextarea"></textarea>
+		<input id="shopNameInput" type="text"></input>
 		<button onclick="NewShopButtonClick()">新增</button>
 		`
 	updateView.HTML = append(updateView.HTML, &resp.KeyValue{

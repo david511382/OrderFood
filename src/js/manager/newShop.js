@@ -1,6 +1,6 @@
 function NewShopButtonClick(){
     AddShop(
-        document.getElementById("shopNameTextarea").value,
+        document.getElementById("shopNameInput").value,
         function(result){
             if (!result){
                 alert('fail');
