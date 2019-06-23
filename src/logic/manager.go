@@ -49,7 +49,7 @@ func ManagerView(username string) (string, error) {
 		<script src="/src/js/ajax.js"></script>
         <script src="/src/js/post.js"></script>
         <script src="/src/js/websocket.js"></script>
-		<script src="/src/js/manager.js"></script>
+		<script src="/src/js/manager/home/main.js"></script>
 		<script src="/src/js/manager/api.js"></script>
 		<script src="%s"></script>
     </body>
@@ -251,8 +251,8 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 	})
 
 	updateView.Script = append(updateView.Script, &resp.KeyValue{
-		Key:  "src/js/manager/manageMenu.js",
-		Data: "src/js/manager/manageMenu.js",
+		Key:  "src/js/manager/manageMenu/main.js",
+		Data: "src/js/manager/manageMenu/main.js",
 	})
 
 	return updateView, nil
@@ -278,8 +278,8 @@ func NewShopView() (*resp.UpdateView, error) {
 	})
 
 	updateView.Script = append(updateView.Script, &resp.KeyValue{
-		Key:  "src/js/manager/newshop.js",
-		Data: "src/js/manager/newshop.js",
+		Key:  "src/js/manager/newshop/main.js",
+		Data: "src/js/manager/newshop/main.js",
 	})
 
 	return updateView, nil
