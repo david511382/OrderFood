@@ -159,24 +159,26 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 	})
 
 	bodyHTML := `
-		</br>	
-		<a>商店</a>
-		<input id="shopNameInput" type="text" onkeypress="shopNameInputKeyPress(this.value)" onfocus="this.select()"></input>			
-		<button onclick="removeShopButtonClick()">刪除</button>
-		</br>
-		</br>
+		<div id="menuHead">
+			</br>	
+			<a>商店</a>
+			<input id="shopNameInput" type="text" onkeypress="shopNameInputKeyPress(this.value)" onfocus="this.select()"></input>			
+			<button onclick="removeShopButtonClick()">刪除</button>
+			</br>
+			</br>
 
-		<table border="0">
-			<tr>
-				<td><button id="allOptionButton">所有</button></td>
-				<td><div id="optionButtonDiv"></div></td>
-				<td><button id="addOptionButton" onclick="newOptionButtonClick()">+</button></td>
-			</tr>	
-			<tr id="optionTableTr">
-				<td></td>
-			</tr>	
-		</table>
-		</br>
+			<table border="0">
+				<tr>
+					<td><button id="allOptionButton">所有</button></td>
+					<td><div id="optionButtonDiv"></div></td>
+					<td><button id="addOptionButton" onclick="newOptionButtonClick()">+</button></td>
+				</tr>	
+				<tr id="optionTableTr">
+					<td></td>
+				</tr>	
+			</table>
+			</br>
+		</div>
 
 		<table border="0">
 			<tr>
@@ -185,7 +187,7 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 					<a>所有</a>
 					</br></br>
 				</td>
-				<td></br></br></td>
+				<td id="optionSelectTd"></td>
 			</tr>	
 			<tr>
 				<td>
@@ -244,6 +246,8 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 				</td>
 			</tr>	
 		</table>
+
+		<div id="forOptionDiv"></div>
 		`
 	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
 		Key:  "Body",
@@ -280,6 +284,43 @@ func NewShopView() (*resp.UpdateView, error) {
 	updateView.Script = append(updateView.Script, &resp.KeyValue{
 		Key:  "src/js/manager/newshop/main.js",
 		Data: "src/js/manager/newshop/main.js",
+	})
+
+	return updateView, nil
+}
+
+func NewOptionView() (*resp.UpdateView, error) {
+	updateView := newUpdateView()
+
+	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
+		Key:  "Header",
+		Data: "<h1>New Option</h1>",
+	})
+
+	headHTML := `
+		</br>	
+		<a>商店</a>
+		<a id="shopNameInput"></a>			
+		</br>
+		</br>
+		`
+	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
+		Key:  "menuHead",
+		Data: headHTML,
+	})
+
+	bodyHTML := `
+		<button onclick="doneButtonClick()">完成</button>
+		<button onclick="cancelButtonClick()">取消</button>
+		`
+	updateView.HTML = append(updateView.HTML, &resp.KeyValue{
+		Key:  "forOptionDiv",
+		Data: bodyHTML,
+	})
+
+	updateView.Script = append(updateView.Script, &resp.KeyValue{
+		Key:  "src/js/manager/newoption/main.js",
+		Data: "src/js/manager/newoption/main.js",
 	})
 
 	return updateView, nil

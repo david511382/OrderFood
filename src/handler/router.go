@@ -45,6 +45,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 	router.StaticFile("src/js/manager/home/main.js", "src/js/manager/home/main.js")
 	router.StaticFile("src/js/manager/manageMenu/main.js", "src/js/manager/manageMenu/main.js")
 	router.StaticFile("src/js/manager/newshop/main.js", "src/js/manager/newshop/main.js")
+	router.StaticFile("src/js/manager/newoption/main.js", "src/js/manager/newoption/main.js")
 
 	router.StaticFile("src/js/websocket.js", "src/js/websocket.js")
 
@@ -61,6 +62,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 	mangr.GET("/menutree", managerView.MenuTree)
 	mangr.GET("/newshop", managerView.NewShop)
 	mangr.GET("/managemenu", managerView.ManageMenu)
+	mangr.GET("/newoption", managerView.NewOption)
 	mangr.PUT("/changeshop", manager.ChangeView)
 
 	api := router.Group("api")
