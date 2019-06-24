@@ -88,9 +88,11 @@ function CreateOptionNumSelect(){
 }
 
 function initOptionNumSelect(){
+    // clear
+    var optionSelectTd = document.getElementById('optionSelectTd');
+    optionSelectTd.innerHTML = "";
+        
     if (selectedOptionIndex === -1){
-        var optionSelectTd = document.getElementById('optionSelectTd');
-        optionSelectTd.innerHTML = "";
         return;
     }
 
