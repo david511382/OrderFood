@@ -197,7 +197,7 @@ function initSelectionTable(){
     var selectionTable = document.getElementById('selectionTable');
     
     // clear 
-    for (;1< selectionTable.childNodes.length;){
+    for (;2< selectionTable.childNodes.length;){
         selectionTable.removeChild(selectionTable.lastChild);
     }
 
@@ -211,7 +211,8 @@ function initSelectionTable(){
         newTr.appendChild(newTd);
 
         newTd = document.createElement('td');
-        newTd.innerHTML = selection.Price;
+        var price = (selection.Price)? selection.Price : 0;
+        newTd.innerHTML = price;
         newTr.appendChild(newTd);
 
         newTd = document.createElement('td');
