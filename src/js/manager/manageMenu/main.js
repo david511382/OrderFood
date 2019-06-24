@@ -13,6 +13,7 @@ function init(){
         InitShopName();
         initOptionButton();
         initOptionNumSelect();
+        initItemTable();
     });
 }
 
@@ -90,15 +91,40 @@ function initOptionNumSelect(){
     }    
 }
 
-function newOptionButtonClick(){
-    var url = 'manager/newoption';
-    $.ajax({
-            type:'GET',
-            url: url
-        }).done(UpdatePage);
+function initItemTable(){
+    var itemTable = document.getElementById('itemTable');
+    
+    // clear 
+    for (;2< itemTable.childNodes.length;){
+        itemTable.removeChild(itemTable.lastChild);
+    }
+
+    menuOption = menuData.Options[selectedOptionID];
+    menuOption.Items.forEach(function(item) {
+        var newTr = document.createElement('tr');
+        itemTable.appendChild(newTr);
+
+        var newTd = document.createElement('td');
+        newTd.innerHTML = item.Options;
+        newTr.appendChild(newTd);
+
+        newTd = document.createElement('td');
+        newTd.innerHTML = item.Name;
+        newTr.appendChild(newTd);
+
+        newTd = document.createElement('td');
+        newTd.innerHTML = item.Price;
+        newTr.appendChild(newTd);
+
+        newTd = document.createElement('td');
+        var newButton = document.createElement('button');
+        newButton.innerHTML ="刪除";
+        newButton.onclick ="function t(" + item.ID + ")";
+        newTr.appendChild(newButton);
+      }); 
 }
 
-function newItem(){
+function newItemButtonClick(){
     var itemNameInput = document.getElementById('newItemNameInput');
     var name = itemNameInput.value;
     if (!name){
@@ -125,10 +151,11 @@ function newItem(){
             url: url,
             data: data
         }).done(function(data){
+            init();
         });
 }
 
-// function newSelection(){
+// function newSelectionButtonClick(){
 //     // @Param optionID formData int true "選單編號"
 // // @Param name formData string true "名稱"
 // // @Param price formData int false "價格"
@@ -164,6 +191,14 @@ function newItem(){
 //         }).done(function(data){
 //         });
 // }
+
+function newOptionButtonClick(){
+    var url = 'manager/newoption';
+    $.ajax({
+            type:'GET',
+            url: url
+        }).done(UpdatePage);
+}
 
 function shopNameInputKeyPress(shopName){
     if (window.event.keyCode==13){

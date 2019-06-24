@@ -192,7 +192,7 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 			<tr>
 				<td>
 					<a>商品</a>
-					<table border="1">
+					<table id="itemTable" border="1">
 						<tr>
 							<td>所屬選單</td>
 							<td>品名</td>
@@ -200,22 +200,16 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 							<td>操作</td>
 						</tr>
 						<tr>
-							<td>小,大|辣油</td>
-							<td>炒麵</td>
-							<td>15</td>
-							<td><button>刪除</button></td>
+							<td>小,大</td>
+							<td><input id="newItemNameInput"></input></td>
+							<td><input id="newItemPriceInput"></input></td>
+							<td><button id="addItemButton" onclick="newItemButtonClick()">新增</button></td>
 						</tr>
 						<tr>
 							<td></td>
 							<td><select id="newItemNameSelect"></select></td>
 							<td></td>
 							<td><button id="addItemButton">加入</button></td>
-						</tr>
-						<tr>
-							<td>小,大</td>
-							<td><input id="newItemNameInput"></input></td>
-							<td><input id="newItemPriceInput"></input></td>
-							<td><button id="addItemButton" onclick="newItem()">新增</button></td>
 						</tr>
 					</table>
 				</td>
