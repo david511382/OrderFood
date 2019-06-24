@@ -155,42 +155,35 @@ function newItemButtonClick(){
         });
 }
 
-// function newSelectionButtonClick(){
-//     // @Param optionID formData int true "選單編號"
-// // @Param name formData string true "名稱"
-// // @Param price formData int false "價格"
-// // @Success 200 {object} resp.MenuSelection "菜單"
-// // @Failure 500 {string} string "内部错误"
-// // @Router /menu/selection [post]
+function newSelectionButtonClick(){
+    var selectionNameInput = document.getElementById('newSelectionNameInput');
+    var name = selectionNameInput.value;
+    if (!name){
+        alert("please input name!");
+        return ;
+    }
 
-//     var itemNameInput = document.getElementById('newItemNameInput');
-//     var name = itemNameInput.value;
-//     if (!name){
-//         alert("please input name!");
-//         return ;
-//     }
+    var selectionPriceInput = document.getElementById('newSelectionPriceInput');
+    var price =parseInt(selectionPriceInput.value);
+    if (isNaN(price)){
+        alert("please input integer price");
+        return;
+    }
 
-//     var itemPriceInput = document.getElementById('newItemPriceInput');
-//     var price =parseInt(itemPriceInput.value);
-//     if (isNaN(price)){
-//         alert("please input integer price");
-//         return;
-//     }
-
-    
-//     var url = 'api/menu/item';
-//     var data = {
-//         shopID: menuData.Shop.ID,
-//         name: name,
-//         price: price
-//     };
-//     $.ajax({
-//             type:'POST',
-//             url: url,
-//             data: data
-//         }).done(function(data){
-//         });
-// }
+    var url = 'api/menu/selection';
+    var data = {
+        optionID: menuData.Shop.ID,
+        name: name,
+        price: price
+    };
+    $.ajax({
+            type:'POST',
+            url: url,
+            data: data
+        }).done(function(data){
+            init();
+        });
+}
 
 function newOptionButtonClick(){
     var url = 'manager/newoption';

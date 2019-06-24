@@ -232,9 +232,9 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 							<td><button>刪除</button></td>
 						</tr>
 						<tr>
-							<td><textarea id="newSelectionNameTextarea"></textarea></td>
-							<td><textarea id="newSelectionPriceTextarea"></textarea></td>
-							<td><button id="addSelectionButton">新增</button></td>
+							<td><input id="newSelectionNameInput"></input></td>
+							<td><input id="newSelectionPriceInput"></input></td>
+							<td><button id="addSelectionButton" onclick="newSelectionButtonClick()">新增</button></td>
 						</tr>
 					</table>
 				</td>
