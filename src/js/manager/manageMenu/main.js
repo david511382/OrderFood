@@ -155,6 +155,35 @@ function newItemButtonClick(){
         });
 }
 
+function initSelectionTable(){
+    var selectionTable = document.getElementById('selectionTable');
+    
+    // clear 
+    for (;1< selectionTable.childNodes.length;){
+        selectionTable.removeChild(selectionTable.lastChild);
+    }
+
+    menuOption = menuData.Options[selectedOptionID];
+    menuOption.Selections.forEach(function(selection) {
+        var newTr = document.createElement('tr');
+        selectionTable.appendChild(newTr);
+
+        var newTd = document.createElement('td');
+        newTd.innerHTML = selection.Name;
+        newTr.appendChild(newTd);
+
+        newTd = document.createElement('td');
+        newTd.innerHTML = selection.Price;
+        newTr.appendChild(newTd);
+
+        newTd = document.createElement('td');
+        var newButton = document.createElement('button');
+        newButton.innerHTML ="刪除";
+        newButton.onclick ="function t(" + selection.ID + ")";
+        newTr.appendChild(newButton);
+      }); 
+}
+
 function newSelectionButtonClick(){
     var selectionNameInput = document.getElementById('newSelectionNameInput');
     var name = selectionNameInput.value;

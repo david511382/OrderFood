@@ -215,21 +215,11 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 				</td>
 				<td>
 					<a>選單選項</a>
-					<table border="1">
+					<table id="selectionTable" border="1">
 						<tr>
 							<td>名稱</td>
 							<td>加價</td>
 							<td>操作</td>
-						</tr>
-						<tr>
-							<td>小</td>
-							<td>0</td>
-							<td><button>刪除</button></td>
-						</tr>
-						<tr>
-							<td>大</td>
-							<td>5</td>
-							<td><button>刪除</button></td>
 						</tr>
 						<tr>
 							<td><input id="newSelectionNameInput"></input></td>
