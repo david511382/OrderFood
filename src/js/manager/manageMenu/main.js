@@ -90,7 +90,6 @@ function initOptionNumSelect(){
     }    
 }
 
-
 function newOptionButtonClick(){
     var url = 'manager/newoption';
     $.ajax({
@@ -101,17 +100,19 @@ function newOptionButtonClick(){
 
 function newItem(){
     var itemNameInput = document.getElementById('newItemNameInput');
-    var itemPriceInput = document.getElementById('newItemPriceInput');
-    var name = itemPriceInput.value;
-    var price = itemPriceInput.value;
-
+    var name = itemNameInput.value;
     if (!name){
         alert("please input name!");
         return ;
     }
-    if (!price){
-        price = 0;
+
+    var itemPriceInput = document.getElementById('newItemPriceInput');
+    var price =parseInt(itemPriceInput.value);
+    if (isNaN(price)){
+        alert("please input integer price");
+        return;
     }
+
 
     var url = 'api/menu/item';
     var data = {
@@ -126,6 +127,43 @@ function newItem(){
         }).done(function(data){
         });
 }
+
+// function newSelection(){
+//     // @Param optionID formData int true "選單編號"
+// // @Param name formData string true "名稱"
+// // @Param price formData int false "價格"
+// // @Success 200 {object} resp.MenuSelection "菜單"
+// // @Failure 500 {string} string "内部错误"
+// // @Router /menu/selection [post]
+
+//     var itemNameInput = document.getElementById('newItemNameInput');
+//     var name = itemNameInput.value;
+//     if (!name){
+//         alert("please input name!");
+//         return ;
+//     }
+
+//     var itemPriceInput = document.getElementById('newItemPriceInput');
+//     var price =parseInt(itemPriceInput.value);
+//     if (isNaN(price)){
+//         alert("please input integer price");
+//         return;
+//     }
+
+    
+//     var url = 'api/menu/item';
+//     var data = {
+//         shopID: menuData.Shop.ID,
+//         name: name,
+//         price: price
+//     };
+//     $.ajax({
+//             type:'POST',
+//             url: url,
+//             data: data
+//         }).done(function(data){
+//         });
+// }
 
 function shopNameInputKeyPress(shopName){
     if (window.event.keyCode==13){
