@@ -1,5 +1,5 @@
 var menuData;
-var selectedOptionID;
+var selectedOptionIndex;
 init();
 
 function init(){
@@ -9,11 +9,13 @@ function init(){
         url: url
     }).done(function(data){
         menuData = data;
-        selectedOptionID = 0;
+        selectedOptionIndex = -1;
         InitShopName();
+        initCurrentOptionName();
         initOptionButton();
         initOptionNumSelect();
         initItemTable();
+        initSelectionTable();
     });
 }
 
@@ -28,7 +30,8 @@ function initOptionButton(){
     if (!menuData.Options){
         return 
     }
-    menuData.Options.forEach(function(menuOption) {
+    for (let index = 0; index < menuData.Options.length;index++){
+        let menuOption = menuData.Options[index];
         var newTd = document.createElement('td');
         optionTableTr.appendChild(newTd);
         
@@ -36,22 +39,33 @@ function initOptionButton(){
         var newButton = document.createElement('button');
         
         var id= 'none';
-        if (menuOption.Option){
-            id = menuOption.Option.ID;      
-            
+        if (menuOption.Option){            
             // add remove option button to td
             var newRmButton = document.createElement('button');
             newRmButton.innerHTML = "-";
             newTd.appendChild(newRmButton)
+
+            id = index;
         }
         newButton.Name = id + "OptionButton";
         newButton.innerHTML = menuOption.Name;
-        optionButtonDiv.appendChild(newButton);
-      }); 
+        newButton.addEventListener('click',function(){
+            optionButtonClick(index);
+        });
 
+        optionButtonDiv.appendChild(newButton);
+    }
     
     var tdForAddOption = document.createElement('td');
     optionTableTr.appendChild(tdForAddOption);
+}
+
+function optionButtonClick(optionID){
+    selectedOptionIndex = optionID
+    initCurrentOptionName();
+    initOptionNumSelect();
+    initItemTable();
+    initSelectionTable();
 }
 
 function CreateOptionNumSelect(){
@@ -74,14 +88,14 @@ function CreateOptionNumSelect(){
 }
 
 function initOptionNumSelect(){
-    if (selectedOptionID == 0){
+    if (selectedOptionIndex === -1){
         var optionSelectTd = document.getElementById('optionSelectTd');
         optionSelectTd.innerHTML = "";
         return;
     }
 
     var select = CreateOptionNumSelect();
-    menuOption = menuData.Options[selectedOptionID];
+    menuOption = menuData.Options[selectedOptionIndex];
     menuSelections = menuOption.Selections;
     for (let i = 1; i <= menuSelections.length; i++){
         let option = document.createElement('option');
@@ -92,6 +106,11 @@ function initOptionNumSelect(){
 }
 
 function initItemTable(){
+     // for now 
+     if (selectedOptionIndex===-1){
+        return;
+    }
+    
     var itemTable = document.getElementById('itemTable');
     
     // clear 
@@ -99,7 +118,7 @@ function initItemTable(){
         itemTable.removeChild(itemTable.lastChild);
     }
 
-    menuOption = menuData.Options[selectedOptionID];
+    menuOption = menuData.Options[selectedOptionIndex];
     menuOption.Items.forEach(function(item) {
         var newTr = document.createElement('tr');
         itemTable.appendChild(newTr);
@@ -124,6 +143,18 @@ function initItemTable(){
       }); 
 }
 
+function initCurrentOptionName(){
+    var currentOptionNameA = document.getElementById('currentOptionNameA');
+    var name;
+    if (selectedOptionIndex === -1){
+        name = "所有";
+    }else{
+        menuOption = menuData.Options[selectedOptionIndex];
+        name = menuOption.Name;
+    }
+
+    currentOptionNameA.innerHTML = name;
+}
 function newItemButtonClick(){
     var itemNameInput = document.getElementById('newItemNameInput');
     var name = itemNameInput.value;
@@ -156,6 +187,11 @@ function newItemButtonClick(){
 }
 
 function initSelectionTable(){
+    // for now 
+    if (selectedOptionIndex===-1){
+        return;
+    }
+
     var selectionTable = document.getElementById('selectionTable');
     
     // clear 
@@ -163,7 +199,7 @@ function initSelectionTable(){
         selectionTable.removeChild(selectionTable.lastChild);
     }
 
-    menuOption = menuData.Options[selectedOptionID];
+    menuOption = menuData.Options[selectedOptionIndex];
     menuOption.Selections.forEach(function(selection) {
         var newTr = document.createElement('tr');
         selectionTable.appendChild(newTr);

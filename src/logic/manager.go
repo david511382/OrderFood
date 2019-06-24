@@ -184,7 +184,7 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 			<tr>
 				<td>
 					<a>選單</a>
-					<a>所有</a>
+					<a id="currentOptionNameA">所有</a>
 					</br></br>
 				</td>
 				<td id="optionSelectTd"></td>
