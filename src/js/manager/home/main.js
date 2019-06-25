@@ -6,19 +6,12 @@ var viewSelect = $( "#viewSelect" );
 form.submit(changeView);
 viewSelect.bind("change",changeView);
 
-getUserOrders();
+GetUserOrders(showUserOrders);
 
 function reciveWsHandler(evt){
-    getUserOrders();
+    GetUserOrders(showUserOrders);
 
     showTotalOrders(evt.data);
-}
-
-function getUserOrders(){
-    $.ajax({
-        type:"GET",
-        url: "/api/order",  
-    }).done(showUserOrders);
 }
 
 function showUserOrders(data){
@@ -30,12 +23,8 @@ function changeView(event){
     if (event !==undefined)
         event.preventDefault();    
     
-    var data = {view:viewSelect.val()};
-    $.ajax({
-        type:"PUT",
-        url: "api/manager/changeshop",  
-        data:data
-    }).done(function(data){
+    var shopID = viewSelect.val();
+    ChangeView(shopID,function(data){
         alert("修改為"+ data);
     });
 }

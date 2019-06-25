@@ -3,9 +3,9 @@ package manager
 import (
 	"fmt"
 	"orderfood/src/database"
-	"orderfood/src/logic"
 	"orderfood/src/database/models"
 	"orderfood/src/handler/models/resp"
+	"orderfood/src/logic"
 	"strconv"
 
 	linq "github.com/ahmetb/go-linq"
@@ -47,11 +47,11 @@ func ManagerView(username string) (string, error) {
 			<textarea class="list" id="result" readonly></textarea>
 		</div>
 
+		<script src="/src/js/manager/api.js"></script>
 		<script src="/src/js/ajax.js"></script>
         <script src="/src/js/post.js"></script>
         <script src="/src/js/websocket.js"></script>
 		<script src="/src/js/manager/home/main.js"></script>
-		<script src="/src/js/manager/api.js"></script>
 		<script src="%s"></script>
     </body>
     </html>

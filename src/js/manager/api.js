@@ -1,3 +1,27 @@
+function GetUserOrders(handler){
+    $.ajax({
+        type:"GET",
+        url: "/api/order",  
+    }).done(handler);
+}
+
+function ChangeView(shopID, handler){
+    var data = {view:shopID};
+    $.ajax({
+        type:"PUT",
+        url: "api/manager/changeshop",  
+        data:data
+    }).done(handler);
+}
+
+function GetShopMenu(shopID, handler){
+    var url = 'api/manager/menu/shopmenu/' + shopID; // from treenode
+    $.ajax({
+        type:'GET',
+        url: url
+    }).done(handler);
+}
+
 function AddShop(shopName, handler){
     if (!shopName || shopName === ""){
         alert("please input shop name!");
@@ -28,4 +52,32 @@ function DeleteShop(shopID, handler){
         type:"DELETE",
         url: url
     }).done(handler);
+}
+
+function AddItem(shopID,name,price,handler){
+    var url = 'api/manager/menu/item';
+    var data = {
+        shopID: shopID,
+        name: name,
+        price: price
+    };
+    $.ajax({
+            type:'POST',
+            url: url,
+            data: data
+        }).done(handler);
+}
+
+function AddSelection(optionID, name, price, handler){
+    var url = 'api/manager/menu/selection';
+    var data = {
+        optionID: optionID,
+        name: name,
+        price: price
+    };
+    $.ajax({
+            type:'POST',
+            url: url,
+            data: data
+        }).done(handler);
 }

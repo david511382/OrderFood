@@ -7,11 +7,7 @@ var selectedOptionIndex;
 init();
 
 function init(){
-    var url = 'api/manager/menu/shopmenu/' + ResopnseData; // from treenode
-    $.ajax({
-        type:'GET',
-        url: url
-    }).done(function(data){
+    GetShopMenu(ResopnseData,function(data){
         menuData = data;
         selectedOptionIndex = 0;
         initShopName();
@@ -196,19 +192,9 @@ function newItemButtonClick(){
     }
 
 
-    var url = 'api/manager/menu/item';
-    var data = {
-        shopID: menuData.Shop.ID,
-        name: name,
-        price: price
-    };
-    $.ajax({
-            type:'POST',
-            url: url,
-            data: data
-        }).done(function(data){
-            init();
-        });
+    AddItem(menuData.Shop.ID,name,price,function(data){
+        init();
+    });
 }
 
 function InitSelectionTable(selectedOptionIndex,selections, newSelectionButtonClick){
@@ -323,19 +309,9 @@ function newSelectionButtonClick(){
         return;
     }
 
-    var url = 'api/manager/menu/selection';
-    var data = {
-        optionID: menuData.Shop.ID,
-        name: name,
-        price: price
-    };
-    $.ajax({
-            type:'POST',
-            url: url,
-            data: data
-        }).done(function(data){
-            init();
-        });
+    AddSelection(menuData.Shop.ID,name,price,function(data){
+        init();
+    });
 }
 
 function newOptionButtonClick(){
