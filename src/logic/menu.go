@@ -82,7 +82,6 @@ func GetMenu(shopName string) (menu *resp.ShopMenu, err error) {
 	return
 }
 
-
 func GetShopMenu(shopID int) (*resp.ShopMenu, error) {
 	const (
 		noneOptionName = "無"

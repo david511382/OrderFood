@@ -113,7 +113,14 @@ function initOptionNumSelect(){
     }    
 }
 
-function InitItemTable(items){    
+function InitItemTable(items,addItemButtonClick){    
+    var addItemButton = document.getElementById('addItemButton');
+    if (addItemButtonClick===undefined){
+        addItemButton.onclick="newItemButtonClick()";
+    }else{
+        addItemButton.onclick=addItemButtonClick;
+    }
+
     var itemTable = document.getElementById('itemTable');
     
     // clear 
@@ -125,27 +132,33 @@ function InitItemTable(items){
         return;
     }
     items.forEach(function(item) {
-        var newTr = document.createElement('tr');
+        var newTr = NewItemTableTr(item,null);
         itemTable.appendChild(newTr);
+    }); 
+}
 
-        var newTd = document.createElement('td');
-        newTd.innerHTML = item.Options;
-        newTr.appendChild(newTd);
+function NewItemTableTr(item, deleteButtonClick){
+    var newTr = document.createElement('tr');
 
-        newTd = document.createElement('td');
-        newTd.innerHTML = item.Name;
-        newTr.appendChild(newTd);
+    var newTd = document.createElement('td');
+    newTd.innerHTML = item.Options;
+    newTr.appendChild(newTd);
 
-        newTd = document.createElement('td');
-        newTd.innerHTML = item.Price;
-        newTr.appendChild(newTd);
+    newTd = document.createElement('td');
+    newTd.innerHTML = item.Name;
+    newTr.appendChild(newTd);
 
-        newTd = document.createElement('td');
-        var newButton = document.createElement('button');
-        newButton.innerHTML ="刪除";
-        newButton.onclick ="function t(" + item.ID + ")";
-        newTr.appendChild(newButton);
-      }); 
+    newTd = document.createElement('td');
+    newTd.innerHTML = item.Price;
+    newTr.appendChild(newTd);
+
+    newTd = document.createElement('td');
+    var newButton = document.createElement('button');
+    newButton.innerHTML ="刪除";
+    newButton.onclick = deleteButtonClick;
+    newTr.appendChild(newButton);
+
+    return newTr;
 }
 
 function InitCurrentOptionName(name){
