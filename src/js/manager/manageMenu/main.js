@@ -1,3 +1,7 @@
+// selectedOptionIndex -1 : new option mode
+// selectedOptionIndex 0 : all option mode
+// selectedOptionIndex 1+ : normal option mode
+
 var menuData;
 var selectedOptionIndex;
 init();
@@ -16,7 +20,7 @@ function init(){
         initOptionNumSelect();
         menuOption = menuData.Options[selectedOptionIndex]
         InitItemTable(menuOption.Items);
-        InitSelectionTable(menuOption.Selections);
+        InitSelectionTable(selectedOptionIndex,menuOption.Selections);
     });
 }
 
@@ -67,7 +71,7 @@ function optionButtonClick(index){
     initOptionNumSelect();
     menuOption = menuData.Options[selectedOptionIndex]
     InitItemTable(menuOption.Items);
-    InitSelectionTable(menuOption.Selections);
+    InitSelectionTable(selectedOptionIndex, menuOption.Selections);
 }
 
 function CreateOptionNumSelect(){
@@ -194,13 +198,62 @@ function newItemButtonClick(){
         });
 }
 
-function InitSelectionTable(selections){
-    var selectionTable = document.getElementById('selectionTable');
-    
+function InitSelectionTable(selectedOptionIndex,selections){
+    var selectionTableTd = document.getElementById('selectionTableTd');
     // clear 
-    for (;2< selectionTable.childNodes.length;){
-        selectionTable.removeChild(selectionTable.lastChild);
+    selectionTableTd.innerHTML = "";
+
+    if (selectedOptionIndex === 0){
+        return ;
     }
+
+    // init
+    var a = document.createElement('a');
+    a.innerHTML = "選單選項";
+    selectionTableTd.appendChild(a);
+    var selectionTable = document.createElement('table');
+    selectionTableTd.appendChild(selectionTable);
+
+    // first row
+    var newTr = document.createElement('tr');
+    selectionTable.appendChild(newTr);
+    
+    var newTd = document.createElement('td');
+    newTd.innerHTML = "名稱";
+    newTr.appendChild(newTd);
+
+    newTd = document.createElement('td');
+    newTd.innerHTML = "加價";
+    newTr.appendChild(newTd);
+
+    newTd = document.createElement('td');
+    newTd.innerHTML = "操作";
+    newTr.appendChild(newTd);
+
+    // second row
+    newTr = document.createElement('tr');
+    selectionTable.appendChild(newTr);
+    
+    newTd = document.createElement('td');
+    var newInput = document.createElement('input');
+    newInput.id = "newSelectionNameInput";
+    newTd.appendChild(newInput);
+    newTr.appendChild(newTd);
+
+    newTd = document.createElement('td');
+    newInput = document.createElement('input');
+    newInput.id = "newSelectionPriceInput";
+    newTd.appendChild(newInput);
+    newTr.appendChild(newTd);
+
+    newTd = document.createElement('td');
+    var newButton = document.createElement('button');
+    newButton.id = "addSelectionButton";
+    newButton.innerHTML="新增";
+    newButton.onclick ="newSelectionButtonClick()";
+    newTd.appendChild(newButton);
+    newTr.appendChild(newTd);
+
 
     if (!selections){
         return;
@@ -218,7 +271,6 @@ function InitSelectionTable(selections){
         newTd.innerHTML = price;
         newTr.appendChild(newTd);
 
-        newTd = document.createElement('td');
         var newButton = document.createElement('button');
         newButton.innerHTML ="刪除";
         newButton.onclick ="function t(" + selection.ID + ")";

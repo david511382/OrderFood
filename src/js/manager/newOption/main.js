@@ -1,11 +1,12 @@
 init();
 
 function init(){
+    var newOptionIndex = -1;
     initShopName();
     InitCurrentOptionName("新選單");
     var select = CreateOptionNumSelect();
     InitItemTable();
-    InitSelectionTable();
+    InitSelectionTable(newOptionIndex,);
 }
 
 function initShopName(){
