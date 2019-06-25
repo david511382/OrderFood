@@ -63,9 +63,18 @@ func Init(isReleaseMode bool) *gin.Engine {
 	mangr.GET("/newshop", managerView.NewShop)
 	mangr.GET("/managemenu", managerView.ManageMenu)
 	mangr.GET("/newoption", managerView.NewOption)
+
 	mangr.PUT("/changeshop", manager.ChangeView)
 
 	api := router.Group("api")
+
+	// manager api
+	apiManager := api.Group("/manager")
+	apiManager.Use(
+		middleware.Verify,
+	)
+
+	apiManager.POST("/newoption", manager.AddOption)
 
 	// menu
 	me := api.Group("/menu")
