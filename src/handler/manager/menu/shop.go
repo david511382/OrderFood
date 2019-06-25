@@ -3,7 +3,7 @@ package menu
 import (
 	"net/http"
 	"orderfood/src/handler/models/resp"
-	"orderfood/src/logic"
+	managerLgc "orderfood/src/logic/manager"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +26,7 @@ func AddShop(c *gin.Context) {
 		return
 	}
 
-	data, err := logic.AddShop(shopName)
+	data, err := managerLgc.AddShop(shopName)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -53,7 +53,7 @@ func GetShop(c *gin.Context) {
 	}
 	shopName := c.Query("name")
 
-	data, err := logic.GetShop(int32(shopID), shopName)
+	data, err := managerLgc.GetShop(int32(shopID), shopName)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -88,7 +88,7 @@ func UpdateShop(c *gin.Context) {
 	}
 	shopName := c.PostForm("name")
 
-	success, err := logic.UpdateShop(int32(shopID), shopName)
+	success, err := managerLgc.UpdateShop(int32(shopID), shopName)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -114,7 +114,7 @@ func DeleteShop(c *gin.Context) {
 		return
 	}
 
-	success, err := logic.DeleteShop(int32(shopID))
+	success, err := managerLgc.DeleteShop(int32(shopID))
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return

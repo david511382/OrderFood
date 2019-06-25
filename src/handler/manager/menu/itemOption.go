@@ -3,7 +3,7 @@ package menu
 import (
 	"net/http"
 	"orderfood/src/handler/models/resp"
-	"orderfood/src/logic"
+	managerLgc "orderfood/src/logic/manager"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -34,7 +34,7 @@ func AddItemOption(c *gin.Context) {
 		return
 	}
 
-	data, err := logic.AddItemOption(itemID, optionID)
+	data, err := managerLgc.AddItemOption(itemID, optionID)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -66,7 +66,7 @@ func DeleteItemOption(c *gin.Context) {
 		return
 	}
 
-	success, err := logic.DeleteItemOption(itemOptionID)
+	success, err := managerLgc.DeleteItemOption(itemOptionID)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return

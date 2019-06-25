@@ -2,7 +2,7 @@ package menu
 
 import (
 	"net/http"
-	"orderfood/src/logic"
+	managerLgc "orderfood/src/logic/manager"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +20,7 @@ import (
 func GetMenu(c *gin.Context) {
 	shop := c.Param("shop")
 
-	data, err := logic.GetMenu(shop)
+	data, err := managerLgc.GetMenu(shop)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -46,7 +46,7 @@ func GetShopMenu(c *gin.Context) {
 		return
 	}
 
-	data, err := logic.GetShopMenu(shopID)
+	data, err := managerLgc.GetShopMenu(shopID)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return

@@ -2,7 +2,7 @@ package view
 
 import (
 	"net/http"
-	"orderfood/src/logic"
+	managerLgc "orderfood/src/logic/manager"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +16,7 @@ func Home(c *gin.Context) {
 	}
 	username := v.(string)
 
-	data, err := logic.ManagerView(username)
+	data, err := managerLgc.ManagerView(username)
 	if err != nil {
 		c.String(http.StatusOK, data)
 		return
@@ -31,7 +31,7 @@ func Home(c *gin.Context) {
 }
 
 func MenuTree(c *gin.Context) {
-	view, err := logic.MenuTreeView()
+	view, err := managerLgc.MenuTreeView()
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -41,7 +41,7 @@ func MenuTree(c *gin.Context) {
 }
 
 func NewShop(c *gin.Context) {
-	view, err := logic.NewShopView()
+	view, err := managerLgc.NewShopView()
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -51,7 +51,7 @@ func NewShop(c *gin.Context) {
 }
 
 func NewOption(c *gin.Context) {
-	view, err := logic.NewOptionView()
+	view, err := managerLgc.NewOptionView()
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
@@ -74,7 +74,7 @@ func ManageMenu(c *gin.Context) {
 		shopID = 0
 	}
 
-	view, err := logic.ManageMenuView(int32(shopID))
+	view, err := managerLgc.ManageMenuView(int32(shopID))
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return

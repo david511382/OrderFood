@@ -4,7 +4,7 @@ import (
 	"orderfood/src/handler/auth"
 	"orderfood/src/handler/manager"
 	managerView "orderfood/src/handler/manager/view"
-	"orderfood/src/handler/menu"
+	managerMenu "orderfood/src/handler/manager/menu"
 	"orderfood/src/handler/middleware"
 	"orderfood/src/handler/order"
 	"orderfood/src/handler/swag"
@@ -83,30 +83,30 @@ func Init(isReleaseMode bool) *gin.Engine {
 	)
 
 	me.GET("", user.GetMenu)
-	me.GET("/menu/:shop", menu.GetMenu)
+	me.GET("/menu/:shop", managerMenu.GetMenu)
 
-	me.GET("/shopmenu/:shopID", menu.GetShopMenu)
+	me.GET("/shopmenu/:shopID", managerMenu.GetShopMenu)
 
-	me.POST("/shop", menu.AddShop)
-	me.GET("/shop", menu.GetShop)
-	me.PUT("/shop/:id", menu.UpdateShop)
-	me.DELETE("/shop/:id", menu.DeleteShop)
+	me.POST("/shop", managerMenu.AddShop)
+	me.GET("/shop", managerMenu.GetShop)
+	me.PUT("/shop/:id", managerMenu.UpdateShop)
+	me.DELETE("/shop/:id", managerMenu.DeleteShop)
 
-	me.POST("/item", menu.AddItem)
-	me.GET("/item/:shopID", menu.GetItem)
-	me.PUT("/item/:id", menu.UpdateItem)
-	me.DELETE("/item/:id", menu.DeleteItem)
+	me.POST("/item", managerMenu.AddItem)
+	me.GET("/item/:shopID", managerMenu.GetItem)
+	me.PUT("/item/:id", managerMenu.UpdateItem)
+	me.DELETE("/item/:id", managerMenu.DeleteItem)
 
-	me.POST("/itemoption", menu.AddItemOption)
-	me.DELETE("/itemoption/:id", menu.DeleteItemOption)
+	me.POST("/itemoption", managerMenu.AddItemOption)
+	me.DELETE("/itemoption/:id", managerMenu.DeleteItemOption)
 
-	me.POST("/option", menu.AddOption)
-	me.PUT("/option/:id", menu.UpdateOption)
-	me.DELETE("/option/:id", menu.DeleteOption)
+	me.POST("/option", managerMenu.AddOption)
+	me.PUT("/option/:id", managerMenu.UpdateOption)
+	me.DELETE("/option/:id", managerMenu.DeleteOption)
 
-	me.POST("/selection", menu.AddSelection)
-	me.PUT("/selection/:id", menu.UpdateSelection)
-	me.DELETE("/selection/:id", menu.DeleteSelection)
+	me.POST("/selection", managerMenu.AddSelection)
+	me.PUT("/selection/:id", managerMenu.UpdateSelection)
+	me.DELETE("/selection/:id", managerMenu.DeleteSelection)
 
 	// auth
 	au := api.Group("auth")

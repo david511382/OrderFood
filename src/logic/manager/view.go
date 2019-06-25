@@ -1,8 +1,9 @@
-package logic
+package manager
 
 import (
 	"fmt"
 	"orderfood/src/database"
+	"orderfood/src/logic"
 	"orderfood/src/database/models"
 	"orderfood/src/handler/models/resp"
 	"strconv"
@@ -12,7 +13,7 @@ import (
 
 func ManagerView(username string) (string, error) {
 	if username != "localhost" {
-		return username + " 禁止進入!!", DenyError
+		return username + " 禁止進入!!", logic.DenyError
 	}
 
 	html := `

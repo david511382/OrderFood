@@ -1,7 +1,8 @@
-package logic
+package manager
 
 import (
 	"orderfood/src/database"
+	"orderfood/src/logic"
 	"orderfood/src/database/models"
 	"orderfood/src/handler/models/resp"
 	"strconv"
@@ -93,7 +94,7 @@ func GetShopMenu(shopID int) (*resp.ShopMenu, error) {
 		return nil, err
 	}
 	if len(shops) == 0{
-		return nil, NoDataError
+		return nil, logic.NoDataError
 	}
 	shopMenu:=&resp.ShopMenu{
 		Shop:&resp.Shop{
@@ -497,7 +498,7 @@ func DeleteItem(id int) (bool, error) {
 	if err != nil {
 		return false, err
 	} else if count == 0 {
-		return false, NoDataError
+		return false, logic.NoDataError
 	} else {
 		return true, nil
 	}
