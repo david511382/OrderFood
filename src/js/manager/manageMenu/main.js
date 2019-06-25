@@ -9,7 +9,7 @@ function init(){
         url: url
     }).done(function(data){
         menuData = data;
-        selectedOptionIndex = -1;
+        selectedOptionIndex = 0;
         InitShopName();
         initCurrentOptionName();
         initOptionButton();
@@ -60,8 +60,8 @@ function initOptionButton(){
     optionTableTr.appendChild(tdForAddOption);
 }
 
-function optionButtonClick(optionID){
-    selectedOptionIndex = optionID
+function optionButtonClick(index){
+    selectedOptionIndex = index
     initCurrentOptionName();
     initOptionNumSelect();
     initItemTable();
@@ -91,14 +91,14 @@ function initOptionNumSelect(){
     // clear
     var optionSelectTd = document.getElementById('optionSelectTd');
     optionSelectTd.innerHTML = "";
-        
-    if (selectedOptionIndex === -1){
-        return;
-    }
-
-    var select = CreateOptionNumSelect();
+            
     menuOption = menuData.Options[selectedOptionIndex];
     menuSelections = menuOption.Selections;
+    if (!menuSelections){
+        return ;
+    }
+    
+    var select = CreateOptionNumSelect();
     for (let i = 1; i <= menuSelections.length; i++){
         let option = document.createElement('option');
         option.value = i;
@@ -107,12 +107,7 @@ function initOptionNumSelect(){
     }    
 }
 
-function initItemTable(){
-     // for now 
-     if (selectedOptionIndex===-1){
-        return;
-    }
-    
+function initItemTable(){    
     var itemTable = document.getElementById('itemTable');
     
     // clear 
@@ -147,15 +142,18 @@ function initItemTable(){
 
 function initCurrentOptionName(){
     var currentOptionNameA = document.getElementById('currentOptionNameA');
-    var name;
-    if (selectedOptionIndex === -1){
-        name = "所有";
-    }else{
-        menuOption = menuData.Options[selectedOptionIndex];
-        name = menuOption.Name;
-    }
+    var itemOptionNameTd = document.getElementById('newItemOptionNameTd');
+    
+    menuOption = menuData.Options[selectedOptionIndex];
+    var name = menuOption.Name;
 
     currentOptionNameA.innerHTML = name;
+    
+    if (menuOption.Option){
+        itemOptionNameTd.innerHTML = name;
+    }else{
+        itemOptionNameTd.innerHTML = "";
+    }
 }
 function newItemButtonClick(){
     var itemNameInput = document.getElementById('newItemNameInput');
@@ -189,11 +187,6 @@ function newItemButtonClick(){
 }
 
 function initSelectionTable(){
-    // for now 
-    if (selectedOptionIndex===-1){
-        return;
-    }
-
     var selectionTable = document.getElementById('selectionTable');
     
     // clear 
@@ -202,6 +195,9 @@ function initSelectionTable(){
     }
 
     menuOption = menuData.Options[selectedOptionIndex];
+    if (!menuOption.Selections){
+        return;
+    }
     menuOption.Selections.forEach(function(selection) {
         var newTr = document.createElement('tr');
         selectionTable.appendChild(newTr);

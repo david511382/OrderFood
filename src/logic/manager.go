@@ -169,7 +169,6 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 
 			<table border="0">
 				<tr>
-					<td><button id="allOptionButton">所有</button></td>
 					<td><div id="optionButtonDiv"></div></td>
 					<td><button id="addOptionButton" onclick="newOptionButtonClick()">+</button></td>
 				</tr>	
@@ -184,7 +183,7 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 			<tr>
 				<td>
 					<a>選單</a>
-					<a id="currentOptionNameA">所有</a>
+					<a id="currentOptionNameA"></a>
 					</br></br>
 				</td>
 				<td id="optionSelectTd"></td>
@@ -200,7 +199,7 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 							<td>操作</td>
 						</tr>
 						<tr>
-							<td>小,大</td>
+							<td id="newItemOptionNameTd">小,大</td>
 							<td><input id="newItemNameInput"></input></td>
 							<td><input id="newItemPriceInput"></input></td>
 							<td><button id="addItemButton" onclick="newItemButtonClick()">新增</button></td>

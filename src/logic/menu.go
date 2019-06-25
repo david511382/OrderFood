@@ -84,6 +84,11 @@ func GetMenu(shopName string) (menu *resp.ShopMenu, err error) {
 
 
 func GetShopMenu(shopID int) (*resp.ShopMenu, error) {
+	const (
+		noneOptionName = "無"
+	 	allOptionName = "所有"
+	)
+	
 	shops,err:= GetShop(int32(shopID),"")
 	if err != nil {
 		return nil, err
@@ -153,19 +158,41 @@ func GetShopMenu(shopID int) (*resp.ShopMenu, error) {
 	itemOptionNameMap := make(map[int]string)
 	for itemID,names:=range itemOptionNamesMap{
 		name:= strings.Join(names,"|")
+		if name == ""{
+			name =noneOptionName
+		}
 		itemOptionNameMap[itemID] = name
 	}
 
+	// add 所有
+	firstMenuOption:=resp.MenuOption{
+		Option :nil,
+		Name :allOptionName,
+		Items :make([]*resp.Item,0),
+		Selections:nil,
+	}
+	for _,itemOptionView:=range itemOptionViews{
+		itemID:=itemOptionView.GetItem_ID()
+		firstMenuOption.Items = append(firstMenuOption.Items ,&resp.Item{
+			ID                   :int32(itemID),
+			Name                 :itemOptionView.GetName(),
+			Price               :int32(itemOptionView.GetPrice()),
+			Options:itemOptionNameMap[itemID],
+		})
+	}
+	shopMenu.Options = append(shopMenu.Options,&firstMenuOption)
+
 	// combine
 	lastOptionID:=-1
-	ShopMenuOptionIndex:=-1
+	ShopMenuOptionIndex:=0
 	for _,itemOptionView:=range itemOptionViews{
 		if itemOptionView.GetShop_ID()!=shopID{
 			continue
 		}
 		
-		optionID:=0
-		if itemOptionView.GetOption_ID() !=nil{
+		itemHasOption:=itemOptionView.GetOption_ID() !=nil
+		optionID:=0 
+		if itemHasOption{
 			optionID=*itemOptionView.GetOption_ID()
 		}
 		
@@ -175,11 +202,11 @@ func GetShopMenu(shopID int) (*resp.ShopMenu, error) {
 			
 			newMenuOption:=resp.MenuOption{
 				Option :nil,
-				Name :"無",
+				Name :noneOptionName,
 				Items :make([]*resp.Item,0),
 				Selections:nil,
 			}
-			if optionID32!=0{
+			if itemHasOption{
 				newMenuOption.Option = &resp.Option{
 					ID:optionID32,
 				}
