@@ -10,16 +10,17 @@ function init(){
     }).done(function(data){
         menuData = data;
         selectedOptionIndex = 0;
-        InitShopName();
-        initCurrentOptionName();
+        initShopName();
+        InitCurrentOptionName();
         initOptionButton();
         initOptionNumSelect();
-        initItemTable();
-        initSelectionTable();
+        menuOption = menuData.Options[selectedOptionIndex]
+        InitItemTable(menuOption.Items);
+        InitSelectionTable(menuOption.Selections);
     });
 }
 
-function InitShopName(){
+function initShopName(){
     document.getElementById('shopNameInput').value = menuData.Shop.Name;   
 }
 
@@ -62,10 +63,11 @@ function initOptionButton(){
 
 function optionButtonClick(index){
     selectedOptionIndex = index
-    initCurrentOptionName();
+    InitCurrentOptionName();
     initOptionNumSelect();
-    initItemTable();
-    initSelectionTable();
+    menuOption = menuData.Options[selectedOptionIndex]
+    InitItemTable(menuOption.Items);
+    InitSelectionTable(menuOption.Selections);
 }
 
 function CreateOptionNumSelect(){
@@ -107,7 +109,7 @@ function initOptionNumSelect(){
     }    
 }
 
-function initItemTable(){    
+function InitItemTable(items){    
     var itemTable = document.getElementById('itemTable');
     
     // clear 
@@ -115,8 +117,10 @@ function initItemTable(){
         itemTable.removeChild(itemTable.lastChild);
     }
 
-    menuOption = menuData.Options[selectedOptionIndex];
-    menuOption.Items.forEach(function(item) {
+    if (!items){
+        return;
+    }
+    items.forEach(function(item) {
         var newTr = document.createElement('tr');
         itemTable.appendChild(newTr);
 
@@ -140,20 +144,24 @@ function initItemTable(){
       }); 
 }
 
-function initCurrentOptionName(){
+function InitCurrentOptionName(name){
     var currentOptionNameA = document.getElementById('currentOptionNameA');
     var itemOptionNameTd = document.getElementById('newItemOptionNameTd');
     
-    menuOption = menuData.Options[selectedOptionIndex];
-    var name = menuOption.Name;
+    var itemOptionName = name;
+    if (name === undefined){
+        menuOption = menuData.Options[selectedOptionIndex];
+        name = menuOption.Name;
+
+        if (menuOption.Option){
+            itemOptionName = name;
+        }else{
+            itemOptionName = "";
+        }
+    }
 
     currentOptionNameA.innerHTML = name;
-    
-    if (menuOption.Option){
-        itemOptionNameTd.innerHTML = name;
-    }else{
-        itemOptionNameTd.innerHTML = "";
-    }
+    itemOptionNameTd.innerHTML = itemOptionName;
 }
 function newItemButtonClick(){
     var itemNameInput = document.getElementById('newItemNameInput');
@@ -186,7 +194,7 @@ function newItemButtonClick(){
         });
 }
 
-function initSelectionTable(){
+function InitSelectionTable(selections){
     var selectionTable = document.getElementById('selectionTable');
     
     // clear 
@@ -194,11 +202,10 @@ function initSelectionTable(){
         selectionTable.removeChild(selectionTable.lastChild);
     }
 
-    menuOption = menuData.Options[selectedOptionIndex];
-    if (!menuOption.Selections){
+    if (!selections){
         return;
     }
-    menuOption.Selections.forEach(function(selection) {
+    selections.forEach(function(selection) {
         var newTr = document.createElement('tr');
         selectionTable.appendChild(newTr);
 

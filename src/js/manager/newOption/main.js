@@ -1,8 +1,15 @@
 init();
 
 function init(){
-    InitShopName();
+    initShopName();
+    InitCurrentOptionName("新選單");
     var select = CreateOptionNumSelect();
+    InitItemTable();
+    InitSelectionTable();
+}
+
+function initShopName(){
+    document.getElementById('shopNameInput').innerHTML = menuData.Shop.Name;   
 }
 
 function doneButtonClick(){
