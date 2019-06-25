@@ -18,7 +18,7 @@ import (
 // @Param name formData string true "商名"
 // @Success 200 {object} resp.Shop "菜單"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/shop [post]
+// @Router /manager/menu/shop [post]
 func AddShop(c *gin.Context) {
 	shopName := c.PostForm("name")
 	if shopName == "" {
@@ -44,7 +44,7 @@ func AddShop(c *gin.Context) {
 // @Param name query string false "商名"
 // @Success 200 {array} resp.Shop "菜單"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/shop [get]
+// @Router /manager/menu/shop [get]
 func GetShop(c *gin.Context) {
 	shopIDStr := c.Query("id")
 	shopID, err := strconv.Atoi(shopIDStr)
@@ -79,7 +79,7 @@ func GetShop(c *gin.Context) {
 // @Param name formData string true "店名"
 // @Success 200 {string} string "結果"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/shop/{id} [put]
+// @Router /manager/menu/shop/{id} [put]
 func UpdateShop(c *gin.Context) {
 	shopIDStr := c.Param("id")
 	shopID, err := strconv.Atoi(shopIDStr)
@@ -105,7 +105,7 @@ func UpdateShop(c *gin.Context) {
 // @Param id path int true "編號"
 // @Success 200 {string} result "成功"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/shop/{id} [delete]
+// @Router /manager/menu/shop/{id} [delete]
 func DeleteShop(c *gin.Context) {
 	shopIDStr := c.Param("id")
 	shopID, err := strconv.Atoi(shopIDStr)

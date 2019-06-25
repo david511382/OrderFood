@@ -17,7 +17,7 @@ import (
 // @Success 200 {string} string "商店"
 // @Failure 500 {string} string "内部错误"
 // @Security ApiKeyAuth
-// @Router /changeshop [put]
+// @Router /manager/changeshop [put]
 func ChangeView(c *gin.Context) {
 	view := c.PostForm("view")
 

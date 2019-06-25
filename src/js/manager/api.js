@@ -7,13 +7,13 @@ function AddShop(shopName, handler){
     var data = {name:shopName};
     $.ajax({
         type: "POST",
-        url: "/api/menu/shop",  
+        url: "/api/manager/menu/shop",  
         data: data
     }).done(handler);
 }
 
 function UpdateShop(shopID, shopName, handler){
-    var url =  "/api/menu/shop/" + shopID;
+    var url =  "/api/manager/menu/shop/" + shopID;
     var data = {name:shopName}
     $.ajax({
         type:"PUT",
@@ -23,7 +23,7 @@ function UpdateShop(shopID, shopName, handler){
 }
 
 function DeleteShop(shopID, handler){
-    var url =  "/api/menu/shop/" + shopID;
+    var url =  "/api/manager/menu/shop/" + shopID;
     $.ajax({
         type:"DELETE",
         url: url

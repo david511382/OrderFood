@@ -3,8 +3,8 @@ package handler
 import (
 	"orderfood/src/handler/auth"
 	"orderfood/src/handler/manager"
-	managerView "orderfood/src/handler/manager/view"
 	managerMenu "orderfood/src/handler/manager/menu"
+	managerView "orderfood/src/handler/manager/view"
 	"orderfood/src/handler/middleware"
 	"orderfood/src/handler/order"
 	"orderfood/src/handler/swag"
@@ -64,8 +64,6 @@ func Init(isReleaseMode bool) *gin.Engine {
 	mangr.GET("/managemenu", managerView.ManageMenu)
 	mangr.GET("/newoption", managerView.NewOption)
 
-	mangr.PUT("/changeshop", manager.ChangeView)
-
 	api := router.Group("api")
 
 	// manager api
@@ -74,39 +72,36 @@ func Init(isReleaseMode bool) *gin.Engine {
 		middleware.Verify,
 	)
 
-	apiManager.POST("/newoption", manager.AddOption)
+	apiManager.PUT("/changeshop", manager.ChangeView)
 
-	// menu
-	me := api.Group("/menu")
-	me.Use(
-		middleware.Verify,
-	)
+	managerMenuGroup := apiManager.Group("/menu")
+	// manager menu
+	managerMenuGroup.GET("", user.GetMenu)
+	managerMenuGroup.GET("/menu/:shop", managerMenu.GetMenu)
 
-	me.GET("", user.GetMenu)
-	me.GET("/menu/:shop", managerMenu.GetMenu)
+	managerMenuGroup.GET("/shopmenu/:shopID", managerMenu.GetShopMenu)
 
-	me.GET("/shopmenu/:shopID", managerMenu.GetShopMenu)
+	managerMenuGroup.POST("/shop", managerMenu.AddShop)
+	managerMenuGroup.GET("/shop", managerMenu.GetShop)
+	managerMenuGroup.PUT("/shop/:id", managerMenu.UpdateShop)
+	managerMenuGroup.DELETE("/shop/:id", managerMenu.DeleteShop)
 
-	me.POST("/shop", managerMenu.AddShop)
-	me.GET("/shop", managerMenu.GetShop)
-	me.PUT("/shop/:id", managerMenu.UpdateShop)
-	me.DELETE("/shop/:id", managerMenu.DeleteShop)
+	managerMenuGroup.POST("/item", managerMenu.AddItem)
+	managerMenuGroup.GET("/item/:shopID", managerMenu.GetItem)
+	managerMenuGroup.PUT("/item/:id", managerMenu.UpdateItem)
+	managerMenuGroup.DELETE("/item/:id", managerMenu.DeleteItem)
 
-	me.POST("/item", managerMenu.AddItem)
-	me.GET("/item/:shopID", managerMenu.GetItem)
-	me.PUT("/item/:id", managerMenu.UpdateItem)
-	me.DELETE("/item/:id", managerMenu.DeleteItem)
+	managerMenuGroup.POST("/itemoption", managerMenu.AddItemOption)
+	managerMenuGroup.DELETE("/itemoption/:id", managerMenu.DeleteItemOption)
 
-	me.POST("/itemoption", managerMenu.AddItemOption)
-	me.DELETE("/itemoption/:id", managerMenu.DeleteItemOption)
+	managerMenuGroup.POST("/newoption", manager.AddOption)
+	managerMenuGroup.POST("/option", managerMenu.AddOption)
+	managerMenuGroup.PUT("/option/:id", managerMenu.UpdateOption)
+	managerMenuGroup.DELETE("/option/:id", managerMenu.DeleteOption)
 
-	me.POST("/option", managerMenu.AddOption)
-	me.PUT("/option/:id", managerMenu.UpdateOption)
-	me.DELETE("/option/:id", managerMenu.DeleteOption)
-
-	me.POST("/selection", managerMenu.AddSelection)
-	me.PUT("/selection/:id", managerMenu.UpdateSelection)
-	me.DELETE("/selection/:id", managerMenu.DeleteSelection)
+	managerMenuGroup.POST("/selection", managerMenu.AddSelection)
+	managerMenuGroup.PUT("/selection/:id", managerMenu.UpdateSelection)
+	managerMenuGroup.DELETE("/selection/:id", managerMenu.DeleteSelection)
 
 	// auth
 	au := api.Group("auth")

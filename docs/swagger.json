@@ -62,7 +62,7 @@
                 }
             }
         },
-        "/changeshop": {
+        "/manager/changeshop": {
             "put": {
                 "security": [
                     {
@@ -105,50 +105,7 @@
                 }
             }
         },
-        "/manager/newoption": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "建立新選單",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "manager"
-                ],
-                "summary": "建立新選單",
-                "parameters": [
-                    {
-                        "type": "MenuOption",
-                        "description": "新選單",
-                        "name": "data",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "商店",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/menu": {
+        "/manager/menu": {
             "get": {
                 "description": "取得菜單",
                 "produces": [
@@ -174,7 +131,7 @@
                 }
             }
         },
-        "/menu/item": {
+        "/manager/menu/item": {
             "post": {
                 "description": "新增商品",
                 "consumes": [
@@ -226,7 +183,7 @@
                 }
             }
         },
-        "/menu/item/{id}": {
+        "/manager/menu/item/{id}": {
             "put": {
                 "description": "修改商品",
                 "consumes": [
@@ -309,7 +266,7 @@
                 }
             }
         },
-        "/menu/item/{shopID}": {
+        "/manager/menu/item/{shopID}": {
             "get": {
                 "description": "取得商品",
                 "produces": [
@@ -353,7 +310,7 @@
                 }
             }
         },
-        "/menu/itemoption": {
+        "/manager/menu/itemoption": {
             "post": {
                 "description": "商品加入選單",
                 "consumes": [
@@ -399,7 +356,7 @@
                 }
             }
         },
-        "/menu/itemoption/{id}": {
+        "/manager/menu/itemoption/{id}": {
             "delete": {
                 "description": "刪除選單的商品",
                 "produces": [
@@ -434,7 +391,7 @@
                 }
             }
         },
-        "/menu/menu/{shop}": {
+        "/manager/menu/menu/{shop}": {
             "get": {
                 "description": "取得菜單",
                 "produces": [
@@ -472,7 +429,50 @@
                 }
             }
         },
-        "/menu/option": {
+        "/manager/menu/newoption": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "建立新選單",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "manager"
+                ],
+                "summary": "建立新選單",
+                "parameters": [
+                    {
+                        "type": "MenuOption",
+                        "description": "新選單",
+                        "name": "data",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "商店",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/manager/menu/option": {
             "post": {
                 "description": "新增商品選單",
                 "consumes": [
@@ -517,7 +517,7 @@
                 }
             }
         },
-        "/menu/option/{id}": {
+        "/manager/menu/option/{id}": {
             "put": {
                 "description": "修改商品選單",
                 "produces": [
@@ -585,7 +585,7 @@
                 }
             }
         },
-        "/menu/selection": {
+        "/manager/menu/selection": {
             "post": {
                 "description": "新增選單選項",
                 "consumes": [
@@ -637,7 +637,7 @@
                 }
             }
         },
-        "/menu/selection/{id}": {
+        "/manager/menu/selection/{id}": {
             "get": {
                 "description": "刪除選單選項",
                 "produces": [
@@ -710,7 +710,7 @@
                 }
             }
         },
-        "/menu/shop": {
+        "/manager/menu/shop": {
             "get": {
                 "description": "取得商店",
                 "produces": [
@@ -790,7 +790,7 @@
                 }
             }
         },
-        "/menu/shop/{id}": {
+        "/manager/menu/shop/{id}": {
             "put": {
                 "description": "修改商店",
                 "consumes": [
@@ -868,7 +868,7 @@
                 }
             }
         },
-        "/menu/shopmenu/{shopID}": {
+        "/manager/menu/shopmenu/{shopID}": {
             "get": {
                 "description": "取得菜單",
                 "produces": [

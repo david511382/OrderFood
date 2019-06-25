@@ -20,7 +20,7 @@ import (
 // @Param price formData int false "價格"
 // @Success 200 {object} resp.MenuSelection "菜單"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/selection [post]
+// @Router /manager/menu/selection [post]
 func AddSelection(c *gin.Context) {
 	optionIDStr := c.PostForm("optionID")
 	optionID, err := strconv.Atoi(optionIDStr)
@@ -65,7 +65,7 @@ func AddSelection(c *gin.Context) {
 // @Param price formData int false "價格"
 // @Success 200 {string} string "結果"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/selection/{id} [put]
+// @Router /manager/menu/selection/{id} [put]
 func UpdateSelection(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
@@ -104,7 +104,7 @@ func UpdateSelection(c *gin.Context) {
 // @Param id path int true "ID"
 // @Success 200 {string} result "成功"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/selection/{id} [get]
+// @Router /manager/menu/selection/{id} [get]
 func DeleteSelection(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)

@@ -33,7 +33,7 @@ function changeView(event){
     var data = {view:viewSelect.val()};
     $.ajax({
         type:"PUT",
-        url: "/manager/changeshop",  
+        url: "api/manager/changeshop",  
         data:data
     }).done(function(data){
         alert("修改為"+ data);

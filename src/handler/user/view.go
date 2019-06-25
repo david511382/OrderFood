@@ -26,7 +26,7 @@ func Index(c *gin.Context) {
 // @Produce  json
 // @Success 200 {string} string "菜單"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu [get]
+// @Router /manager/menu [get]
 func GetMenu(c *gin.Context) {
 	switch logic.GetView() {
 	case logic.R:

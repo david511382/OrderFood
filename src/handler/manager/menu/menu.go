@@ -16,7 +16,7 @@ import (
 // @Param shop path string true "商店"
 // @Success 200 {array} resp.ShopMenu "菜單"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/menu/{shop} [get]
+// @Router /manager/menu/menu/{shop} [get]
 func GetMenu(c *gin.Context) {
 	shop := c.Param("shop")
 
@@ -37,7 +37,7 @@ func GetMenu(c *gin.Context) {
 // @Param shopID path string true "商店"
 // @Success 200 {object} resp.ShopMenu "菜單"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/shopmenu/{shopID} [get]
+// @Router /manager/menu/shopmenu/{shopID} [get]
 func GetShopMenu(c *gin.Context) {
 	shopIDStr := c.Param("shopID")
 	shopID, err := strconv.Atoi(shopIDStr)

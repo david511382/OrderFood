@@ -19,7 +19,7 @@ import (
 // @Param selectNum formData int false "必選數"
 // @Success 200 {object} resp.Option "商品選單"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/option [post]
+// @Router /manager/menu/option [post]
 func AddOption(c *gin.Context) {
 	selectionName := c.PostForm("selectionName")
 	if selectionName == "" {
@@ -53,7 +53,7 @@ func AddOption(c *gin.Context) {
 // @Param selectNum formData int true "商品選單"
 // @Success 200 {string} string "成功"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/option/{id} [put]
+// @Router /manager/menu/option/{id} [put]
 func UpdateOption(c *gin.Context) {
 	selectNumStr := c.Param("id")
 	selectNum, err := strconv.Atoi(selectNumStr)
@@ -91,7 +91,7 @@ func UpdateOption(c *gin.Context) {
 // @Param id path int true "ID"
 // @Success 200 {string} result "成功"
 // @Failure 500 {string} string "内部错误"
-// @Router /menu/option/{id} [delete]
+// @Router /manager/menu/option/{id} [delete]
 func DeleteOption(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)

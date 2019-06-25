@@ -7,7 +7,7 @@ var selectedOptionIndex;
 init();
 
 function init(){
-    var url = 'api/menu/shopmenu/' + ResopnseData; // from treenode
+    var url = 'api/manager/menu/shopmenu/' + ResopnseData; // from treenode
     $.ajax({
         type:'GET',
         url: url
@@ -196,7 +196,7 @@ function newItemButtonClick(){
     }
 
 
-    var url = 'api/menu/item';
+    var url = 'api/manager/menu/item';
     var data = {
         shopID: menuData.Shop.ID,
         name: name,
@@ -323,7 +323,7 @@ function newSelectionButtonClick(){
         return;
     }
 
-    var url = 'api/menu/selection';
+    var url = 'api/manager/menu/selection';
     var data = {
         optionID: menuData.Shop.ID,
         name: name,

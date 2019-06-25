@@ -132,7 +132,7 @@ paths:
       summary: 註冊
       tags:
       - auth
-  /changeshop:
+  /manager/changeshop:
     put:
       consumes:
       - application/x-www-form-urlencoded
@@ -159,34 +159,7 @@ paths:
       summary: 更改商店
       tags:
       - manager
-  /manager/newoption:
-    post:
-      consumes:
-      - application/x-www-form-urlencoded
-      description: 建立新選單
-      parameters:
-      - description: 新選單
-        in: formData
-        name: data
-        required: true
-        type: MenuOption
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 商店
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: 建立新選單
-      tags:
-      - manager
-  /menu:
+  /manager/menu:
     get:
       description: 取得菜單
       produces:
@@ -203,7 +176,7 @@ paths:
       summary: 取得菜單
       tags:
       - shop
-  /menu/item:
+  /manager/menu/item:
     post:
       consumes:
       - application/x-www-form-urlencoded
@@ -238,7 +211,7 @@ paths:
       summary: 新增商品
       tags:
       - menu
-  /menu/item/{id}:
+  /manager/menu/item/{id}:
     delete:
       description: 刪除商品
       parameters:
@@ -293,7 +266,7 @@ paths:
       summary: 修改商品
       tags:
       - menu
-  /menu/item/{shopID}:
+  /manager/menu/item/{shopID}:
     get:
       description: 取得商品
       parameters:
@@ -322,7 +295,7 @@ paths:
       summary: 取得商品
       tags:
       - menu
-  /menu/itemoption:
+  /manager/menu/itemoption:
     post:
       consumes:
       - application/x-www-form-urlencoded
@@ -353,7 +326,7 @@ paths:
       summary: 商品加入選單
       tags:
       - menu
-  /menu/itemoption/{id}:
+  /manager/menu/itemoption/{id}:
     delete:
       description: 刪除選單的商品
       parameters:
@@ -376,7 +349,7 @@ paths:
       summary: 刪除選單的商品
       tags:
       - menu
-  /menu/menu/{shop}:
+  /manager/menu/menu/{shop}:
     get:
       description: 取得菜單
       parameters:
@@ -401,7 +374,34 @@ paths:
       summary: 取得菜單
       tags:
       - menu
-  /menu/option:
+  /manager/menu/newoption:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: 建立新選單
+      parameters:
+      - description: 新選單
+        in: formData
+        name: data
+        required: true
+        type: MenuOption
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 商店
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 建立新選單
+      tags:
+      - manager
+  /manager/menu/option:
     post:
       consumes:
       - application/x-www-form-urlencoded
@@ -431,7 +431,7 @@ paths:
       summary: 新增商品選單
       tags:
       - menu
-  /menu/option/{id}:
+  /manager/menu/option/{id}:
     delete:
       description: 刪除商品選單
       parameters:
@@ -476,7 +476,7 @@ paths:
       summary: 修改商品選單
       tags:
       - menu
-  /menu/selection:
+  /manager/menu/selection:
     post:
       consumes:
       - application/x-www-form-urlencoded
@@ -511,7 +511,7 @@ paths:
       summary: 新增選單選項
       tags:
       - menu
-  /menu/selection/{id}:
+  /manager/menu/selection/{id}:
     get:
       description: 刪除選單選項
       parameters:
@@ -559,7 +559,7 @@ paths:
       summary: 修改選單選項
       tags:
       - menu
-  /menu/shop:
+  /manager/menu/shop:
     get:
       description: 取得商店
       parameters:
@@ -612,7 +612,7 @@ paths:
       summary: 新增商店
       tags:
       - menu
-  /menu/shop/{id}:
+  /manager/menu/shop/{id}:
     delete:
       description: 刪除商店
       parameters:
@@ -664,7 +664,7 @@ paths:
       summary: 修改商店
       tags:
       - menu
-  /menu/shopmenu/{shopID}:
+  /manager/menu/shopmenu/{shopID}:
     get:
       description: 取得菜單
       parameters:
