@@ -211,7 +211,7 @@ function newItemButtonClick(){
         });
 }
 
-function InitSelectionTable(selectedOptionIndex,selections){
+function InitSelectionTable(selectedOptionIndex,selections, newSelectionButtonClick){
     var selectionTableTd = document.getElementById('selectionTableTd');
     // clear 
     selectionTableTd.innerHTML = "";
@@ -225,6 +225,7 @@ function InitSelectionTable(selectedOptionIndex,selections){
     a.innerHTML = "選單選項";
     selectionTableTd.appendChild(a);
     var selectionTable = document.createElement('table');
+    selectionTable.id = "selectionTable"
     selectionTableTd.appendChild(selectionTable);
 
     // first row
@@ -263,7 +264,11 @@ function InitSelectionTable(selectedOptionIndex,selections){
     var newButton = document.createElement('button');
     newButton.id = "addSelectionButton";
     newButton.innerHTML="新增";
-    newButton.onclick ="newSelectionButtonClick()";
+    if (newSelectionButtonClick === undefined){
+        newButton.onclick =this.newSelectionButtonClick;    
+    }else{
+        newButton.onclick =newSelectionButtonClick;
+    }
     newTd.appendChild(newButton);
     newTr.appendChild(newTd);
 
@@ -272,23 +277,35 @@ function InitSelectionTable(selectedOptionIndex,selections){
         return;
     }
     selections.forEach(function(selection) {
-        var newTr = document.createElement('tr');
+        selection.Price = (selection.Price)? selection.Price : 0;
+        var newTr =NewSelectionTableTr(selection)
         selectionTable.appendChild(newTr);
+        }); 
+}
 
-        var newTd = document.createElement('td');
-        newTd.innerHTML = selection.Name;
-        newTr.appendChild(newTd);
 
-        newTd = document.createElement('td');
-        var price = (selection.Price)? selection.Price : 0;
-        newTd.innerHTML = price;
-        newTr.appendChild(newTd);
+function NewSelectionTableTr(selection, deleteButtonClick){
+    var newTr = document.createElement('tr');
 
-        var newButton = document.createElement('button');
-        newButton.innerHTML ="刪除";
-        newButton.onclick ="function t(" + selection.ID + ")";
-        newTr.appendChild(newButton);
-      }); 
+    var newTd = document.createElement('td');
+    newTd.innerHTML = selection.Name;
+    newTr.appendChild(newTd);
+
+    newTd = document.createElement('td');
+    var price = (selection.Price)? selection.Price : 0;
+    newTd.innerHTML = price;
+    newTr.appendChild(newTd);
+
+    var newButton = document.createElement('button');
+    newButton.innerHTML ="刪除";
+    if (deleteButtonClick === undefined){
+        newButton.onclick = this.deleteButtonClick;    
+    }else{
+        newButton.onclick = deleteButtonClick;
+    }
+    newTr.appendChild(newButton);
+
+    return newTr;
 }
 
 function newSelectionButtonClick(){

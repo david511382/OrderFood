@@ -7,7 +7,7 @@ function init(){
     InitCurrentOptionName(option.Name);
     var select = CreateOptionNumSelect();
     InitItemTable(null,newItemButtonClick);
-    InitSelectionTable(newOptionIndex,);
+    InitSelectionTable(newOptionIndex,null,newSelectionButtonClick);
 }
 
 function initShopName(){
@@ -35,13 +35,40 @@ function newItemButtonClick(){
     var item = {
         Options:option.Name,
         Name:name,
-        Price:price,
+        Price:price
     };
     var newTr = NewItemTableTr(item)
     itemTable.appendChild(newTr);
     
     itemNameInput.value = "";
     itemPriceInput.value = "";
+}
+
+function newSelectionButtonClick(){
+    var selectionNameInput = document.getElementById('newSelectionNameInput');
+    var name = selectionNameInput.value;
+    if (!name){
+        alert("please input name!");
+        return ;
+    }
+
+    var selectionPriceInput = document.getElementById('newSelectionPriceInput');
+    var price =parseInt(selectionPriceInput.value);
+    if (isNaN(price)){
+        alert("please input integer price");
+        return;
+    }
+
+    var selection = {
+        Name:name,
+        Price:price
+    };
+    var selectionTable = document.getElementById('selectionTable');
+    var newTr =NewSelectionTableTr(selection)
+    selectionTable.appendChild(newTr);
+    
+    selectionNameInput.value = "";
+    selectionPriceInput.value = "";
 }
 
 function doneButtonClick(){
