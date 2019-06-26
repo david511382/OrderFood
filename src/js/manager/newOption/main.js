@@ -1,10 +1,10 @@
-var option = {Name:"新選單"};
+const optionName = "新選單";
 init();
 
 function init(){
     var newOptionIndex = -1;
     initShopName();
-    InitCurrentOptionName(option.Name);
+    InitCurrentOptionName(optionName);
     var select = CreateOptionNumSelect();
     InitItemTable(null,newItemButtonClick);
     InitSelectionTable(newOptionIndex,null,newSelectionButtonClick);
@@ -33,7 +33,7 @@ function newItemButtonClick(){
     var itemTable = document.getElementById('itemTable');
     
     var item = {
-        Options:option.Name,
+        Options:optionName,
         Name:name,
         Price:price
     };
@@ -72,23 +72,60 @@ function newSelectionButtonClick(){
 }
 
 function doneButtonClick(){
-    AddShop(
-        document.getElementById("shopNameInput").value,
-        function(result){
-            if (!result){
+    var shopID = menuData.Shop.ID
+
+    var selectNumSelect = document.getElementById("selectNumSelect")
+
+    var itemTable = document.getElementById("itemTable")
+    var items = [];
+    for (i = 2;i < itemTable.childNodes.length;i++){
+        var tr = itemTable.childNodes[i];
+        var name = tr.childNodes[1].innerHTML;
+        var price = parseInt(tr.childNodes[2].innerHTML);
+        items.push({name:name,price:price});
+    }
+    if (items.length === 0){
+        alert("at least one item");
+        return ;
+    }
+
+    var selectionTable = document.getElementById("selectionTable")
+    var selections = [];
+    for (i = 2;i < selectionTable.childNodes.length;i++){
+        var tr = selectionTable.childNodes[i];
+        var name = tr.childNodes[0].innerHTML;
+        var price = parseInt(tr.childNodes[1].innerHTML);
+        selections.push({name:name,price:price});
+    }
+    if (selections.length === 0){
+        alert("at least one selection");
+        return ;
+    }
+
+    AddOption(
+        shopID,
+        selectNumSelect.value,
+        items,
+        selections,
+        function(menu){
+            if (!menu){
                 alert('fail');
                 return ;
             }
 
             var url = '/manager/menutree';
-
             $.ajax({
                 type:'GET',
                 url: url
             }).done(UpdatePage);
 
-            alert('新增商店 ' + result.Name + ' 成功!');
-            toManageShop(result.ID);
+            alert('成功!');
+
+            //menuData.Options.push(menu);
+            
+            // var newOptionIndex = menuData.Options.length - 1;
+            // LoadManageMenu(menuData, newOptionIndex);
+            toManageShop(shopID);
         }	
     );
 }

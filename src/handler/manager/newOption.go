@@ -1,6 +1,12 @@
 package manager
 
 import (
+	"net/http"
+	"orderfood/src/handler/models/reqs"
+	managerLgc "orderfood/src/logic/manager"
+
+	"encoding/json"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,15 +16,22 @@ import (
 // @Description 建立新選單
 // @Accept  x-www-form-urlencoded
 // @Produce  json
-// @Param data formData MenuOption true "新選單"
-// @Success 200 {string} string "商店"
+// @Param menuOptionJS formData string true "新選單reqs.MenuOption JSON"
+// @Success 200 {object} resp.OptionMenu  "選單"
 // @Failure 500 {string} string "内部错误"
 // @Security ApiKeyAuth
-// @Router /manager/menu/newoption [post]
+// @Router /manager/menu/option [post]
 func AddOption(c *gin.Context) {
-	// view := c.PostForm("view")
+	dataJS := c.PostForm("menuOptionJS")
 
-	// logic.SetView(view)
+	data := &reqs.MenuOption{}
+	json.Unmarshal([]byte(dataJS), &data)
 
-	// c.String(http.StatusOK, view)
+	result, err := managerLgc.CreateOption(data)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, result)
 }

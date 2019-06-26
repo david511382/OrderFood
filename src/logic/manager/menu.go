@@ -2,10 +2,10 @@ package manager
 
 import (
 	"orderfood/src/database"
-	"orderfood/src/logic"
 	"orderfood/src/database/models"
+	"orderfood/src/handler/models/reqs"
 	"orderfood/src/handler/models/resp"
-	"strconv"
+	"orderfood/src/logic"
 
 	"strings"
 
@@ -86,22 +86,22 @@ func GetMenu(shopName string) (menu *resp.ShopMenu, err error) {
 func GetShopMenu(shopID int) (*resp.ShopMenu, error) {
 	const (
 		noneOptionName = "無"
-	 	allOptionName = "所有"
+		allOptionName  = "所有"
 	)
-	
-	shops,err:= GetShop(int32(shopID),"")
+
+	shops, err := GetShop(int32(shopID), "")
 	if err != nil {
 		return nil, err
 	}
-	if len(shops) == 0{
+	if len(shops) == 0 {
 		return nil, logic.NoDataError
 	}
-	shopMenu:=&resp.ShopMenu{
-		Shop:&resp.Shop{
-			ID:shops[0].GetID(),
-			Name :shops[0].GetName(), 
+	shopMenu := &resp.ShopMenu{
+		Shop: &resp.Shop{
+			ID:   shops[0].GetID(),
+			Name: shops[0].GetName(),
 		},
-		Options:make([]*resp.MenuOption,0),
+		Options: make([]*resp.MenuOption, 0),
 	}
 
 	db := database.Db.Menu()
@@ -113,17 +113,17 @@ func GetShopMenu(shopID int) (*resp.ShopMenu, error) {
 	if err != nil {
 		return nil, err
 	}
-	linq.From(itemOptionViews).OrderBy(func (m interface{})interface{}{
-		v:= m.(*models.ItemOptionView)
-		if  v.GetOption_ID()==nil{
+	linq.From(itemOptionViews).OrderBy(func(m interface{}) interface{} {
+		v := m.(*models.ItemOptionView)
+		if v.GetOption_ID() == nil {
 			return 0
 		}
-		 return *v.GetOption_ID()
+		return *v.GetOption_ID()
 	}).ToSlice(&itemOptionViews)
 
-	menuOptions,err:= getMenuOptions()
-	linq.From(menuOptions).OrderBy(func (m interface{})interface{}{
-		v:= m.(*resp.MenuOption)
+	menuOptions, err := getMenuOptions()
+	linq.From(menuOptions).OrderBy(func(m interface{}) interface{} {
+		v := m.(*resp.MenuOption)
 		return v.GetOption().GetID()
 	}).ToSlice(&menuOptions)
 
@@ -138,15 +138,15 @@ func GetShopMenu(shopID int) (*resp.ShopMenu, error) {
 				arr = itemOptionNamesMap[itemID]
 			}
 
-			optionID32:=int32(*itemOptionView.GetOption_ID())
-			for si,ei:=0,len(menuOptions)-1;;{
-				k :=  int((ei-si)/2)+si
+			optionID32 := int32(*itemOptionView.GetOption_ID())
+			for si, ei := 0, len(menuOptions)-1; ; {
+				k := int((ei-si)/2) + si
 				id := menuOptions[k].GetOption().GetID()
-				if optionID32 < id{
+				if optionID32 < id {
 					ei = k
 				} else if optionID32 > id {
-					si = k+1
-				}else{
+					si = k + 1
+				} else {
 					arr = append(arr, menuOptions[k].GetName())
 					break
 				}
@@ -156,94 +156,94 @@ func GetShopMenu(shopID int) (*resp.ShopMenu, error) {
 		itemOptionNamesMap[itemID] = arr
 	}
 	itemOptionNameMap := make(map[int]string)
-	for itemID,names:=range itemOptionNamesMap{
-		name:= strings.Join(names,"|")
-		if name == ""{
-			name =noneOptionName
+	for itemID, names := range itemOptionNamesMap {
+		name := strings.Join(names, "|")
+		if name == "" {
+			name = noneOptionName
 		}
 		itemOptionNameMap[itemID] = name
 	}
 
 	// add 所有
-	firstMenuOption:=resp.MenuOption{
-		Option :nil,
-		Name :allOptionName,
-		Items :make([]*resp.Item,0),
-		Selections:nil,
+	firstMenuOption := resp.MenuOption{
+		Option:     nil,
+		Name:       allOptionName,
+		Items:      make([]*resp.Item, 0),
+		Selections: nil,
 	}
-	for _,itemOptionView:=range itemOptionViews{
-		itemID:=itemOptionView.GetItem_ID()
-		firstMenuOption.Items = append(firstMenuOption.Items ,&resp.Item{
-			ID                   :int32(itemID),
-			Name                 :itemOptionView.GetName(),
-			Price               :int32(itemOptionView.GetPrice()),
-			Options:itemOptionNameMap[itemID],
+	for _, itemOptionView := range itemOptionViews {
+		itemID := itemOptionView.GetItem_ID()
+		firstMenuOption.Items = append(firstMenuOption.Items, &resp.Item{
+			ID:      int32(itemID),
+			Name:    itemOptionView.GetName(),
+			Price:   int32(itemOptionView.GetPrice()),
+			Options: itemOptionNameMap[itemID],
 		})
 	}
-	shopMenu.Options = append(shopMenu.Options,&firstMenuOption)
+	shopMenu.Options = append(shopMenu.Options, &firstMenuOption)
 
 	// combine
-	lastOptionID:=-1
-	ShopMenuOptionIndex:=0
-	for _,itemOptionView:=range itemOptionViews{
-		if itemOptionView.GetShop_ID()!=shopID{
+	lastOptionID := -1
+	ShopMenuOptionIndex := 0
+	for _, itemOptionView := range itemOptionViews {
+		if itemOptionView.GetShop_ID() != shopID {
 			continue
 		}
-		
-		itemHasOption:=itemOptionView.GetOption_ID() !=nil
-		optionID:=0 
-		if itemHasOption{
-			optionID=*itemOptionView.GetOption_ID()
+
+		itemHasOption := itemOptionView.GetOption_ID() != nil
+		optionID := 0
+		if itemHasOption {
+			optionID = *itemOptionView.GetOption_ID()
 		}
-		
-		if optionID!=lastOptionID{
-			lastOptionID = optionID	
-			optionID32:=int32(optionID)
-			
-			newMenuOption:=resp.MenuOption{
-				Option :nil,
-				Name :noneOptionName,
-				Items :make([]*resp.Item,0),
-				Selections:nil,
+
+		if optionID != lastOptionID {
+			lastOptionID = optionID
+			optionID32 := int32(optionID)
+
+			newMenuOption := resp.MenuOption{
+				Option:     nil,
+				Name:       noneOptionName,
+				Items:      make([]*resp.Item, 0),
+				Selections: nil,
 			}
-			if itemHasOption{
+			if itemHasOption {
 				newMenuOption.Option = &resp.Option{
-					ID:optionID32,
+					ID: optionID32,
 				}
 
-				for _,menuOption:=range menuOptions{
-					menuOptionID:=menuOption.GetOption().GetID()
-					if menuOptionID==optionID32 {
+				for _, menuOption := range menuOptions {
+					menuOptionID := menuOption.GetOption().GetID()
+					if menuOptionID == optionID32 {
 						newMenuOption.Name = menuOption.Name
 						newMenuOption.Option.SelectNum = menuOption.GetOption().GetSelectNum()
-						newMenuOption.Selections =menuOption.GetSelections()
+						newMenuOption.Selections = menuOption.GetSelections()
 						break
 					}
 				}
 			}
 
-			shopMenu.Options = append(shopMenu.Options,&newMenuOption)
+			shopMenu.Options = append(shopMenu.Options, &newMenuOption)
 			ShopMenuOptionIndex++
 		}
-		
-		itemID:=itemOptionView.GetItem_ID()
+
+		itemID := itemOptionView.GetItem_ID()
 		shopMenu.Options[ShopMenuOptionIndex].Items = append(shopMenu.Options[ShopMenuOptionIndex].Items,
 			&resp.Item{
-				ID:int32(itemID),
-				Name:itemOptionView.GetName(),
-				Price:int32(itemOptionView.GetPrice()),
-				Options:itemOptionNameMap[itemID],
+				ID:      int32(itemID),
+				Name:    itemOptionView.GetName(),
+				Price:   int32(itemOptionView.GetPrice()),
+				Options: itemOptionNameMap[itemID],
 			},
 		)
 	}
 
-	return shopMenu,nil
+	return shopMenu, nil
 }
 
-func getMenuOptions()([]*resp.MenuOption,  error){
+func getMenuOptions() ([]*resp.MenuOption, error) {
 	db := database.Db.Menu()
-	
-	options,err:=db.GetOption(nil)
+
+	options, err := db.GetOption(nil)
 	if err != nil {
 		return nil, err
 	}
@@ -257,371 +257,121 @@ func getMenuOptions()([]*resp.MenuOption,  error){
 		return selection.GetName()
 	}).ToSlice(&selections)
 
-	result:=make([]*resp.MenuOption,0)
-	for _,option:=range options{
-		optionID:=option.GetID()
-		menuSelections := make([]*resp.MenuSelection,0)
-		selectionNames := make([]string,0)
-		for _,selection := range selections{
-			if selection.GetOption_ID() == optionID{
-				selectionName:=selection.GetName()
-				menuSelections = append(menuSelections,&resp.MenuSelection{
-					ID :int32(selection.GetID()),
-					Name :selectionName,
-					Price :int32(selection.GetPrice()),
+	result := make([]*resp.MenuOption, 0)
+	for _, option := range options {
+		optionID := option.GetID()
+		menuSelections := make([]*resp.MenuSelection, 0)
+		selectionNames := make([]string, 0)
+		for _, selection := range selections {
+			if selection.GetOption_ID() == optionID {
+				selectionName := selection.GetName()
+				menuSelections = append(menuSelections, &resp.MenuSelection{
+					ID:    int32(selection.GetID()),
+					Name:  selectionName,
+					Price: int32(selection.GetPrice()),
 				})
-				selectionNames = append(selectionNames,selectionName)
+				selectionNames = append(selectionNames, selectionName)
 			}
 		}
-		optionName := strings.Join(selectionNames, ",")
-			
-		result= append(result,&resp.MenuOption{
-			Option:&resp.Option{
-				ID:int32(optionID),
-				SelectNum:int32(option.GetSelect_Num()),
-			} , 
-			Name:optionName,
-			Selections:menuSelections,
+		optionName := getOptionName(selectionNames)
+
+		result = append(result, &resp.MenuOption{
+			Option: &resp.Option{
+				ID:        int32(optionID),
+				SelectNum: int32(option.GetSelect_Num()),
+			},
+			Name:       optionName,
+			Selections: menuSelections,
 		})
 	}
 
-	return result,nil
+	return result, nil
 }
 
-func AddShop(name string) (*models.Shop, error) {
-	db := database.Db.MenuShop()
-	shop := &models.Shop{
-		Name: name,
+func getOptionName(selectionNames []string) string {
+	return strings.Join(selectionNames, ",")
+}
+
+func CreateOption(menuOption *reqs.MenuOption) (*resp.OptionMenu, error) {
+	shopID32 := menuOption.ShopID
+	shopID := int(shopID32)
+	shops, err := GetShop(shopID32, "")
+	if err != nil {
+		return nil, err
+	} else if len(shops) == 0 {
+		return nil, logic.ParamError
 	}
 
-	err := db.AddShop(shop)
+	selectionLen := len(menuOption.Selections)
+	if int(menuOption.SelectNum) > selectionLen {
+		return nil, logic.ParamError
+	}
+
+	itemLen := len(menuOption.Items)
+	if selectionLen == 0 || itemLen == 0 {
+		return nil, logic.ParamError
+	}
+
+	// insert option
+	newOption, err := AddOption(int(menuOption.SelectNum))
 	if err != nil {
 		return nil, err
 	}
+	optionID := int(newOption.GetID())
 
-	return shop, nil
-}
-
-func GetShop(id int32, name string) ([]*models.Shop, error) {
-	db := database.Db.MenuShop()
-	shop := &models.Shop{
-		ID:   id,
-		Name: name,
-	}
-	shops, err := db.GetShop(shop)
-	return shops, err
-}
-
-func UpdateShop(id int32, name string) (bool, error) {
-	db := database.Db.MenuShop()
-	shop := &models.Shop{
-		ID:   id,
-		Name: name,
-	}
-	count, err := db.UpdateShop(shop)
-	if err != nil {
-		return false, err
-	} else if count == 0 {
-		return false, nil
-	} else {
-		return true, nil
-	}
-}
-
-func DeleteShop(id int32) (bool, error) {
-	db := database.Db.MenuShop()
-	shop := &models.Shop{
-		ID: id,
-	}
-	count, err := db.DeleteShop(shop)
-	if err != nil {
-		return false, err
-	} else if count == 0 {
-		return false, nil
-	} else {
-		return true, nil
-	}
-}
-
-func AddItem(shopID int, name string, price int) (*models.Item, error) {
-	db := database.Db.Menu()
-	item := &models.Item{
-		Name:    name,
-		Shop_ID: shopID,
-		Price:   price,
-	}
-	err := db.AddItem(item)
-	return item, err
-}
-
-func GetItem(shopID, optionID int) ([]*resp.Item, error) {
-	db := database.Db.Menu()
-	itemOptionView := &models.ItemOptionView{
-		Shop_ID: shopID,
-		Price:   -1,
-	}
-	itemOptionViews, err := db.GetItemOptionView(itemOptionView)
-	if err != nil {
-		return nil, err
+	result := &resp.OptionMenu{
+		ShopID: shopID32,
+		MenuOption: &resp.MenuOption{
+			Option: &resp.Option{
+				ID:        int32(optionID),
+				SelectNum: menuOption.SelectNum,
+			},
+			Name:       "",
+			Items:      make([]*resp.Item, 0),
+			Selections: make([]*resp.MenuSelection, 0),
+		},
 	}
 
-	selections, err := db.GetSelection(nil)
-	if err != nil {
-		return nil, err
-	}
-
-	// make option selection
-	linq.From(selections).OrderBy(func(m interface{}) interface{} {
-		selection := m.(*models.Selection)
-		return selection.GetName()
-	}).ToSlice(&selections)
-
-	optionNameMap := make(map[int][]string)
-	for _, selection := range selections {
-		oi := selection.GetOption_ID()
-		arr := make([]string, 0)
-		if optionNameMap[oi] != nil {
-			arr = optionNameMap[oi]
-		}
-		optionNameMap[oi] = append(arr, selection.GetName())
-	}
-
-	optionNames := make(map[int]string)
-	for optionID, names := range optionNameMap {
-		optionName := strings.Join(names, ",")
-		optionNames[optionID] = optionName
-	}
-
-	linq.From(itemOptionViews).OrderBy(func(m interface{}) interface{} {
-		itemOption := m.(*models.ItemOptionView)
-		v := 0
-		if itemOption.GetOption_ID() != nil {
-			v = *itemOption.GetOption_ID()
-		}
-		return v
-	}).ToSlice(&itemOptionViews)
-
-	// find item ids
-	itemIDs := make([]int, 0)
-	linq.From(itemOptionViews).Where(
-		func(m interface{}) bool {
-			itemOption := m.(*models.ItemOptionView)
-			if optionID == 0 {
-				return true
-			}
-			if itemOption.GetOption_ID() != nil && optionID == *itemOption.GetOption_ID() {
-				return true
-			}
-			return false
-		}).Select(func(m interface{}) interface{} {
-		itemOption := m.(*models.ItemOptionView)
-		return itemOption.GetItem_ID()
-	}).Distinct().ToSlice(&itemIDs)
-
-	// make item option
-	itemOptionIDMap := make(map[int][]int)
-	for _, itemID := range itemIDs {
-		for _, itemOption := range itemOptionViews {
-			iID := itemOption.GetItem_ID()
-			if iID != itemID {
-				continue
-			}
-
-			arr := make([]int, 0)
-			if itemOption.GetOption_ID() != nil {
-				if itemOptionIDMap[itemID] != nil {
-					arr = itemOptionIDMap[itemID]
-				}
-				arr = append(arr, *itemOption.GetOption_ID())
-			}
-
-			itemOptionIDMap[itemID] = arr
-		}
-	}
-
-	items := make([]*resp.Item, 0)
-	for itemID, optionIDs := range itemOptionIDMap {
-		optionNameArr := make([]string, 0)
-		for _, optionID := range optionIDs {
-			name := optionNames[optionID]
-			if name == "" {
-				name = "no selection OptionID:" + strconv.Itoa(optionID)
-			}
-			optionNameArr = append(optionNameArr, name)
-		}
-		optionName := strings.Join(optionNameArr, "|")
-		if optionName == "" {
-			optionName = "無"
+	// insert selection
+	selectionNames := make([]string, 0)
+	for _, selection := range menuOption.Selections {
+		newSelection, err := AddSelection(optionID, int(selection.GetPrice()), selection.GetName())
+		if err != nil {
+			return nil, err
 		}
 
-		for _, itemOption := range itemOptionViews {
-			if itemOption.GetItem_ID() == itemID {
-				item := &resp.Item{
-					ID:      int32(itemID),
-					Options: optionName,
-					Name:    itemOption.GetName(),
-					Price:   int32(itemOption.GetPrice()),
-				}
-				items = append(items, item)
-				break
-			}
+		selectionName := newSelection.GetName()
+		selectionNames = append(selectionNames, selectionName)
+
+		result.MenuOption.Selections = append(result.MenuOption.Selections, &resp.MenuSelection{
+			ID:    int32(newSelection.GetID()),
+			Name:  selectionName,
+			Price: int32(newSelection.GetPrice()),
+		})
+	}
+
+	// insert item
+	for _, item := range menuOption.Items {
+		newItem, err := AddItem(shopID, item.GetName(), int(item.GetPrice()))
+		if err != nil {
+			// maybe name duplicate
+			return nil, err
 		}
+
+		_, err = AddItemOption(newItem.GetID(), optionID)
+		if err != nil {
+			return nil, err
+		}
+
+		result.MenuOption.Items = append(result.MenuOption.Items, &resp.Item{
+			ID:    int32(newItem.GetID()),
+			Name:  newItem.GetName(),
+			Price: int32(newItem.GetPrice()),
+		})
 	}
 
-	return items, err
-}
+	// make option name
+	result.MenuOption.Name = getOptionName(selectionNames)
 
-func UpdateItem(id int, name string, price int) (bool, error) {
-	db := database.Db.Menu()
-	item := &models.Item{
-		ID:    id,
-		Name:  name,
-		Price: price,
-	}
-	count, err := db.UpdateItem(item)
-	if err != nil {
-		return false, err
-	} else if count == 0 {
-		return false, nil
-	} else {
-		return true, nil
-	}
-}
-
-func DeleteItem(id int) (bool, error) {
-	db := database.Db.Menu()
-	item := &models.Item{
-		ID:    id,
-		Price: -1,
-	}
-	count, err := db.DeleteItem(item)
-	if err != nil {
-		return false, err
-	} else if count == 0 {
-		return false, logic.NoDataError
-	} else {
-		return true, nil
-	}
-}
-
-func AddItemOption(itemID, optionID int) (*models.ItemOption, error) {
-	db := database.Db.Menu()
-	itemOption := &models.ItemOption{
-		Item_ID:   itemID,
-		Option_ID: optionID,
-	}
-	err := db.AddItemOption(itemOption)
-	return itemOption, err
-}
-
-func DeleteItemOption(id int) (bool, error) {
-	db := database.Db.Menu()
-	itemOption := &models.ItemOption{
-		ID: id,
-	}
-	count, err := db.DeleteItemOption(itemOption)
-	if err != nil {
-		return false, err
-	} else if count == 0 {
-		return false, nil
-	} else {
-		return true, nil
-	}
-}
-
-func AddOption(selectNum int, selectionName string) (*models.Option, error) {
-	db := database.Db.Menu()
-	option := &models.Option{
-		Select_Num: selectNum,
-	}
-	err := db.AddOption(option)
-	if err != nil {
-		return nil, err
-	}
-
-	_,err= AddSelection( option.GetID(),0,selectionName)
-	if err != nil {
-		db.DeleteOption(option)
-		return nil, err
-	}
-
-	return option, nil
-}
-
-func UpdateOption(id, selectNum int) (bool, error) {
-	db := database.Db.Menu()
-	option := &models.Option{
-		ID:         id,
-		Select_Num: selectNum,
-	}
-	count, err := db.UpdateOption(option)
-	if err != nil {
-		return false, err
-	} else if count == 0 {
-		return false, nil
-	} else {
-		return true, nil
-	}
-}
-
-func DeleteOption(id int) (bool, error) {
-	db := database.Db.Menu()
-	option := &models.Option{
-		ID: id,
-	}
-	count, err := db.DeleteOption(option)
-	if err != nil {
-		return false, err
-	} else if count == 0 {
-		return false, nil
-	} else {
-		return true, nil
-	}
-}
-
-func AddSelection(optionID,price int, name string) (*models.Selection, error) {
-	db := database.Db.Menu()
-	selection := &models.Selection{
-		Name:      name,
-		Option_ID:optionID,
-		Price:     price,
-	}
-	err := db.AddSelection(selection)
-	if err != nil {
-		return nil, err
-	}
-
-	return selection, nil
-}
-
-func UpdateSelection(id, price int,name string) (bool, error) {
-	db := database.Db.Menu()
-	selection := &models.Selection{
-		ID:id,
-		Name:      name,		
-		Price:     price,
-	}
-	count, err := db.UpdateSelection(selection)
-	if err != nil {
-		return false, err
-	} else if count == 0 {
-		return false, nil
-	} else {
-		return true, nil
-	}
-}
-
-func DeleteSelection(id int) (bool, error) {
-	db := database.Db.Menu()
-	selection := &models.Selection{
-		ID: id,
-	}
-	count, err := db.DeleteSelection(selection)
-	if err != nil {
-		return false, err
-	} else if count == 0 {
-		return false, nil
-	} else {
-		return true, nil
-	}
+	return result, nil
 }

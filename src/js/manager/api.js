@@ -68,6 +68,22 @@ function AddItem(shopID,name,price,handler){
         }).done(handler);
 }
 
+function AddOption(shopID,selectNum,items,selections,handler){
+    var url = 'api/manager/menu/option';
+    var data = {
+        menuOptionJS:JSON.stringify({
+        ShopID: shopID,
+        SelectNum: selectNum,
+        Items: items,
+        Selections: selections
+    })};
+    $.ajax({
+            type:'POST',
+            url: url,
+            data: data
+        }).done(handler);
+}
+
 function AddSelection(optionID, name, price, handler){
     var url = 'api/manager/menu/selection';
     var data = {

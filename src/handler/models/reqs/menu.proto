@@ -1,0 +1,21 @@
+// 撰寫格式是 Proto v3。
+syntax = "proto3";  
+// 生成的程式在 Golang 中將會屬於 `resp` 套件。
+package reqs;
+
+message MenuSelection {
+	string Name = 1;
+	int32 Price = 2;
+}
+
+message MenuItem {
+	string Name = 1; 
+	int32 Price = 2;
+}
+
+message MenuOption {
+	int32 ShopID = 1;
+	int32 SelectNum = 2;	
+	repeated MenuItem Items = 3;
+	repeated MenuSelection Selections = 4;
+}

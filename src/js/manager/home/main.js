@@ -1,4 +1,3 @@
-
 ws.onmessage = reciveWsHandler;  
 
 var form = $( "#selectViewForm" );

@@ -72,6 +72,14 @@ definitions:
       SelectNum:
         type: integer
     type: object
+  resp.OptionMenu:
+    properties:
+      MenuOption:
+        $ref: '#/definitions/resp.MenuOption'
+        type: object
+      ShopID:
+        type: integer
+    type: object
   resp.Shop:
     properties:
       ID:
@@ -374,24 +382,25 @@ paths:
       summary: 取得菜單
       tags:
       - menu
-  /manager/menu/newoption:
+  /manager/menu/option:
     post:
       consumes:
       - application/x-www-form-urlencoded
       description: 建立新選單
       parameters:
-      - description: 新選單
+      - description: 新選單reqs.MenuOption JSON
         in: formData
-        name: data
+        name: menuOptionJS
         required: true
-        type: MenuOption
+        type: string
       produces:
       - application/json
       responses:
         "200":
-          description: 商店
+          description: 選單
           schema:
-            type: string
+            $ref: '#/definitions/resp.OptionMenu'
+            type: object
         "500":
           description: 内部错误
           schema:
@@ -401,36 +410,6 @@ paths:
       summary: 建立新選單
       tags:
       - manager
-  /manager/menu/option:
-    post:
-      consumes:
-      - application/x-www-form-urlencoded
-      description: 新增商品選單
-      parameters:
-      - description: 選單選項
-        in: formData
-        name: selectionName
-        required: true
-        type: string
-      - description: 必選數
-        in: formData
-        name: selectNum
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 商品選單
-          schema:
-            $ref: '#/definitions/resp.Option'
-            type: object
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 新增商品選單
-      tags:
-      - menu
   /manager/menu/option/{id}:
     delete:
       description: 刪除商品選單

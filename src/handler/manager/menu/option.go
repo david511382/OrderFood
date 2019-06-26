@@ -2,48 +2,11 @@ package menu
 
 import (
 	"net/http"
-	"orderfood/src/handler/models/resp"
 	managerLgc "orderfood/src/logic/manager"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
-
-// AddOption 新增商品選單
-// @Tags menu
-// @Summary 新增商品選單
-// @Description 新增商品選單
-// @Accept  x-www-form-urlencoded
-// @Produce  json
-// @Param selectionName formData string true "選單選項"
-// @Param selectNum formData int false "必選數"
-// @Success 200 {object} resp.Option "商品選單"
-// @Failure 500 {string} string "内部错误"
-// @Router /manager/menu/option [post]
-func AddOption(c *gin.Context) {
-	selectionName := c.PostForm("selectionName")
-	if selectionName == "" {
-		c.AbortWithError(http.StatusBadRequest, nil)
-		return
-	}
-	selectNumStr := c.PostForm("selectNum")
-	selectNum, err := strconv.Atoi(selectNumStr)
-	if err != nil {
-		selectNum = 0
-	}
-
-	data, err := managerLgc.AddOption(selectNum,selectionName)
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
-		return
-	}
-
-	result := &resp.Option{
-		ID:        int32(data.GetID()),
-		SelectNum: int32(data.GetSelect_Num()),
-	}
-	c.JSON(http.StatusOK, result)
-}
 
 // UpdateOption 修改商品選單
 // @Tags menu

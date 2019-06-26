@@ -9,15 +9,19 @@ init();
 function init(){
     GetShopMenu(ResopnseData,function(data){
         menuData = data;
-        selectedOptionIndex = 0;
+        changeOption(0);
         initShopName();
-        InitCurrentOptionName();
         initOptionButton();
-        initOptionNumSelect();
-        menuOption = menuData.Options[selectedOptionIndex]
-        InitItemTable(menuOption.Items);
-        InitSelectionTable(selectedOptionIndex,menuOption.Selections);
     });
+}
+
+function changeOption(index){
+    selectedOptionIndex = index
+    InitCurrentOptionName();
+    initOptionNumSelect();
+    menuOption = menuData.Options[selectedOptionIndex]
+    InitItemTable(menuOption.Items);
+    InitSelectionTable(selectedOptionIndex, menuOption.Selections);
 }
 
 function initShopName(){
@@ -51,7 +55,7 @@ function initOptionButton(){
         newButton.Name = id + "OptionButton";
         newButton.innerHTML = menuOption.Name;
         newButton.addEventListener('click',function(){
-            optionButtonClick(index);
+            changeOption(index);
         });
 
         optionButtonDiv.appendChild(newButton);
@@ -59,15 +63,6 @@ function initOptionButton(){
     
     var tdForAddOption = document.createElement('td');
     optionTableTr.appendChild(tdForAddOption);
-}
-
-function optionButtonClick(index){
-    selectedOptionIndex = index
-    InitCurrentOptionName();
-    initOptionNumSelect();
-    menuOption = menuData.Options[selectedOptionIndex]
-    InitItemTable(menuOption.Items);
-    InitSelectionTable(selectedOptionIndex, menuOption.Selections);
 }
 
 function CreateOptionNumSelect(){
@@ -79,6 +74,7 @@ function CreateOptionNumSelect(){
 
     var select = document.createElement('select');
     select.innerHTML = "必選數量";
+    select.id = "selectNumSelect"
     optionSelectTd.appendChild(select);
 
     var option = document.createElement('option');

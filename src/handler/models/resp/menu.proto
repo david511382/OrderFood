@@ -16,6 +16,11 @@ message MenuOption {
 	repeated MenuSelection Selections = 4;
 }
 
+message OptionMenu {
+	int32 ShopID = 1;
+	MenuOption MenuOption = 2;
+}
+
 message ShopMenu {
 	Shop Shop = 1;
 	repeated MenuOption Options = 2;

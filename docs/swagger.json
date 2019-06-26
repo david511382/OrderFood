@@ -429,7 +429,7 @@
                 }
             }
         },
-        "/manager/menu/newoption": {
+        "/manager/menu/option": {
             "post": {
                 "security": [
                     {
@@ -449,63 +449,19 @@
                 "summary": "建立新選單",
                 "parameters": [
                     {
-                        "type": "MenuOption",
-                        "description": "新選單",
-                        "name": "data",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "商店",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/manager/menu/option": {
-            "post": {
-                "description": "新增商品選單",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "menu"
-                ],
-                "summary": "新增商品選單",
-                "parameters": [
-                    {
                         "type": "string",
-                        "description": "選單選項",
-                        "name": "selectionName",
+                        "description": "新選單reqs.MenuOption JSON",
+                        "name": "menuOptionJS",
                         "in": "formData",
                         "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "必選數",
-                        "name": "selectNum",
-                        "in": "formData"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "商品選單",
+                        "description": "選單",
                         "schema": {
                             "type": "object",
-                            "$ref": "#/definitions/resp.Option"
+                            "$ref": "#/definitions/resp.OptionMenu"
                         }
                     },
                     "500": {
@@ -1182,6 +1138,18 @@
                     "type": "integer"
                 },
                 "SelectNum": {
+                    "type": "integer"
+                }
+            }
+        },
+        "resp.OptionMenu": {
+            "type": "object",
+            "properties": {
+                "MenuOption": {
+                    "type": "object",
+                    "$ref": "#/definitions/resp.MenuOption"
+                },
+                "ShopID": {
                     "type": "integer"
                 }
             }

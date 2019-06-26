@@ -36,6 +36,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 	router.StaticFile("css/manager.css", "src/css/manager.css")
 
 	// js
+	router.StaticFile("src/js/models/reqs", "src/js/models/reqs")
 	router.StaticFile("src/js/menu.js", "src/js/menu.js")
 	router.StaticFile("src/js/menuView.js", "src/js/menuView.js")
 	router.StaticFile("src/js/post.js", "src/js/post.js")
@@ -94,8 +95,7 @@ func Init(isReleaseMode bool) *gin.Engine {
 	managerMenuGroup.POST("/itemoption", managerMenu.AddItemOption)
 	managerMenuGroup.DELETE("/itemoption/:id", managerMenu.DeleteItemOption)
 
-	managerMenuGroup.POST("/newoption", manager.AddOption)
-	managerMenuGroup.POST("/option", managerMenu.AddOption)
+	managerMenuGroup.POST("/option", manager.AddOption)
 	managerMenuGroup.PUT("/option/:id", managerMenu.UpdateOption)
 	managerMenuGroup.DELETE("/option/:id", managerMenu.DeleteOption)
 
