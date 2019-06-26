@@ -29,26 +29,32 @@ function initShopName(){
 }
 
 function initOptionButton(){
-    var optionButtonDiv = document.getElementById('optionButtonDiv');
-    var optionTableTr = document.getElementById('optionTableTr');    
-    
-    if (!menuData.Options){
-        return 
-    }
-    for (let index = 0; index < menuData.Options.length;index++){
+    var optionTable = document.getElementById('optionTable');
+    var optionButtonTr = document.createElement('tr');
+    optionTable.appendChild(optionButtonTr)    
+
+    var optionRmButtonTr = document.createElement('tr');
+    optionTable.appendChild(optionRmButtonTr);
+        
+    for (let index = 0;menuData.Options && index < menuData.Options.length;index++){
         let menuOption = menuData.Options[index];
-        var newTd = document.createElement('td');
-        optionTableTr.appendChild(newTd);
+
+        var newOptionButtonTd = document.createElement('td');
+        optionButtonTr.appendChild(newOptionButtonTd);
+
+        var newRmButtonTd = document.createElement('td');
+        optionRmButtonTr.appendChild(newRmButtonTd);
         
         // add button
         var newButton = document.createElement('button');
-        
+        newOptionButtonTd.appendChild(newButton);
+
         var id= 'none';
         if (menuOption.Option){            
             // add remove option button to td
             var newRmButton = document.createElement('button');
             newRmButton.innerHTML = "-";
-            newTd.appendChild(newRmButton)
+            newRmButtonTd.appendChild(newRmButton)
 
             id = index;
         }
@@ -57,12 +63,19 @@ function initOptionButton(){
         newButton.addEventListener('click',function(){
             changeOption(index);
         });
-
-        optionButtonDiv.appendChild(newButton);
     }
     
+    // add option button
+    var addOptionTd = document.createElement('td');
+    optionButtonTr.appendChild(addOptionTd);
+    var addOptionButton = document.createElement('button');
+    addOptionButton.id = "addOptionButton";
+    addOptionButton.innerHTML = "+";
+    addOptionButton.onclick =newOptionButtonClick;
+    addOptionTd.appendChild(addOptionButton);
+
     var tdForAddOption = document.createElement('td');
-    optionTableTr.appendChild(tdForAddOption);
+    optionRmButtonTr.appendChild(tdForAddOption);
 }
 
 function CreateOptionNumSelect(){

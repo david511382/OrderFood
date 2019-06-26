@@ -168,14 +168,7 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 			</br>
 			</br>
 
-			<table border="0">
-				<tr>
-					<td><div id="optionButtonDiv"></div></td>
-					<td><button id="addOptionButton" onclick="newOptionButtonClick()">+</button></td>
-				</tr>	
-				<tr id="optionTableTr">
-					<td></td>
-				</tr>	
+			<table id="optionTable" border="0">
 			</table>
 			</br>
 		</div>
