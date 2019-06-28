@@ -84,6 +84,14 @@ function AddOption(shopID,selectNum,items,selections,handler){
         }).done(handler);
 }
 
+function DeleteOption(optionID, handler){
+    var url =  "/api/manager/menu/option/" + optionID;
+    $.ajax({
+        type:"DELETE",
+        url: url
+    }).done(handler);
+}
+
 function AddSelection(optionID, name, price, handler){
     var url = 'api/manager/menu/selection';
     var data = {

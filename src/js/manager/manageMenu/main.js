@@ -30,6 +30,8 @@ function initShopName(){
 
 function initOptionButton(){
     var optionTable = document.getElementById('optionTable');
+    optionTable.innerHTML=""
+    
     var optionButtonTr = document.createElement('tr');
     optionTable.appendChild(optionButtonTr)    
 
@@ -54,6 +56,9 @@ function initOptionButton(){
             // add remove option button to td
             var newRmButton = document.createElement('button');
             newRmButton.innerHTML = "-";
+            newRmButton.addEventListener('click',function(){
+                removeOptionClick(index);
+            });
             newRmButtonTd.appendChild(newRmButton)
 
             id = index;
@@ -76,6 +81,17 @@ function initOptionButton(){
 
     var tdForAddOption = document.createElement('td');
     optionRmButtonTr.appendChild(tdForAddOption);
+}
+
+function removeOptionClick(index){
+    var menuOption = menuData.Options[index]
+    var optionID = menuOption.Option.ID
+    DeleteOption(optionID,function(data){
+        if (data){
+            alert("Delete Option Success")
+            init()
+        }        
+    })
 }
 
 function CreateOptionNumSelect(){
@@ -277,7 +293,6 @@ function InitSelectionTable(selectedOptionIndex,selections, newSelectionButtonCl
         selectionTable.appendChild(newTr);
         }); 
 }
-
 
 function NewSelectionTableTr(selection, deleteButtonClick){
     var newTr = document.createElement('tr');
