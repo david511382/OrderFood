@@ -2,9 +2,9 @@ package manager
 
 import (
 	"orderfood/src/database"
-	"orderfood/src/logic"
 	"orderfood/src/database/models"
 	"orderfood/src/handler/models/resp"
+	"orderfood/src/logic"
 	"strconv"
 
 	"strings"
@@ -18,7 +18,7 @@ func AddShop(name string) (*models.Shop, error) {
 		Name: name,
 	}
 
-	err := db.AddShop(shop)
+	err := db.AddShop(shop, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func UpdateShop(id int32, name string) (bool, error) {
 		ID:   id,
 		Name: name,
 	}
-	count, err := db.UpdateShop(shop)
+	count, err := db.UpdateShop(shop, nil)
 	if err != nil {
 		return false, err
 	} else if count == 0 {
@@ -57,7 +57,7 @@ func DeleteShop(id int32) (bool, error) {
 	shop := &models.Shop{
 		ID: id,
 	}
-	count, err := db.DeleteShop(shop)
+	count, err := db.DeleteShop(shop, nil)
 	if err != nil {
 		return false, err
 	} else if count == 0 {
@@ -74,7 +74,7 @@ func AddItem(shopID int, name string, price int) (*models.Item, error) {
 		Shop_ID: shopID,
 		Price:   price,
 	}
-	err := db.AddItem(item)
+	err := db.AddItem(item, nil)
 	return item, err
 }
 
@@ -202,7 +202,7 @@ func UpdateItem(id int, name string, price int) (bool, error) {
 		Name:  name,
 		Price: price,
 	}
-	count, err := db.UpdateItem(item)
+	count, err := db.UpdateItem(item, nil)
 	if err != nil {
 		return false, err
 	} else if count == 0 {
@@ -218,7 +218,7 @@ func DeleteItem(id int) (bool, error) {
 		ID:    id,
 		Price: -1,
 	}
-	count, err := db.DeleteItem(item)
+	count, err := db.DeleteItem(item, nil)
 	if err != nil {
 		return false, err
 	} else if count == 0 {
@@ -234,7 +234,7 @@ func AddItemOption(itemID, optionID int) (*models.ItemOption, error) {
 		Item_ID:   itemID,
 		Option_ID: optionID,
 	}
-	err := db.AddItemOption(itemOption)
+	err := db.AddItemOption(itemOption, nil)
 	return itemOption, err
 }
 
@@ -243,7 +243,7 @@ func DeleteItemOption(id int) (bool, error) {
 	itemOption := &models.ItemOption{
 		ID: id,
 	}
-	count, err := db.DeleteItemOption(itemOption)
+	count, err := db.DeleteItemOption(itemOption, nil)
 	if err != nil {
 		return false, err
 	} else if count == 0 {
@@ -258,7 +258,7 @@ func AddOption(selectNum int) (*models.Option, error) {
 	option := &models.Option{
 		Select_Num: selectNum,
 	}
-	err := db.AddOption(option)
+	err := db.AddOption(option, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -278,7 +278,7 @@ func UpdateOption(id, selectNum int) (bool, error) {
 		ID:         id,
 		Select_Num: selectNum,
 	}
-	count, err := db.UpdateOption(option)
+	count, err := db.UpdateOption(option, nil)
 	if err != nil {
 		return false, err
 	} else if count == 0 {
@@ -293,7 +293,7 @@ func DeleteOption(id int) (bool, error) {
 	option := &models.Option{
 		ID: id,
 	}
-	count, err := db.DeleteOption(option)
+	count, err := db.DeleteOption(option, nil)
 	if err != nil {
 		return false, err
 	} else if count == 0 {
@@ -303,14 +303,14 @@ func DeleteOption(id int) (bool, error) {
 	}
 }
 
-func AddSelection(optionID,price int, name string) (*models.Selection, error) {
+func AddSelection(optionID, price int, name string) (*models.Selection, error) {
 	db := database.Db.Menu()
 	selection := &models.Selection{
 		Name:      name,
-		Option_ID:optionID,
+		Option_ID: optionID,
 		Price:     price,
 	}
-	err := db.AddSelection(selection)
+	err := db.AddSelection(selection, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -318,14 +318,14 @@ func AddSelection(optionID,price int, name string) (*models.Selection, error) {
 	return selection, nil
 }
 
-func UpdateSelection(id, price int,name string) (bool, error) {
+func UpdateSelection(id, price int, name string) (bool, error) {
 	db := database.Db.Menu()
 	selection := &models.Selection{
-		ID:id,
-		Name:      name,		
-		Price:     price,
+		ID:    id,
+		Name:  name,
+		Price: price,
 	}
-	count, err := db.UpdateSelection(selection)
+	count, err := db.UpdateSelection(selection, nil)
 	if err != nil {
 		return false, err
 	} else if count == 0 {
@@ -340,7 +340,7 @@ func DeleteSelection(id int) (bool, error) {
 	selection := &models.Selection{
 		ID: id,
 	}
-	count, err := db.DeleteSelection(selection)
+	count, err := db.DeleteSelection(selection, nil)
 	if err != nil {
 		return false, err
 	} else if count == 0 {

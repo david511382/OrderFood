@@ -1,6 +1,7 @@
 package menu
 
 import (
+	"database/sql"
 	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 
@@ -35,7 +36,7 @@ func (d *MenuDb) GetItem(item *models.Item) ([]*models.Item, error) {
 	return items, err
 }
 
-func (d *MenuDb) AddItem(item *models.Item) error {
+func (d *MenuDb) AddItem(item *models.Item, tx *sql.Tx) error {
 	if item == nil {
 		return common.DbDataError
 	}
@@ -46,12 +47,20 @@ func (d *MenuDb) AddItem(item *models.Item) error {
 		return err
 	}
 
-	db, err := d.Connect()
-	if err != nil {
-		return err
+	var execer sqlx.Execer
+	if tx != nil {
+		execer = tx
+	} else {
+		db, err := d.Connect()
+		if err != nil {
+			return err
+		}
+		defer db.Close()
+
+		execer = db.DB
 	}
-	defer db.Close()
-	dbRes, err := db.Exec(sqlStr, args...)
+
+	dbRes, err := execer.Exec(sqlStr, args...)
 	if err != nil {
 		return err
 	}
@@ -65,7 +74,7 @@ func (d *MenuDb) AddItem(item *models.Item) error {
 	return nil
 }
 
-func (d *MenuDb) UpdateItem(item *models.Item) (int64, error) {
+func (d *MenuDb) UpdateItem(item *models.Item, tx *sql.Tx) (int64, error) {
 	if item == nil {
 		return 0, common.DbDataError
 	}
@@ -92,12 +101,20 @@ func (d *MenuDb) UpdateItem(item *models.Item) (int64, error) {
 		}
 	}
 
-	db, err := d.Connect()
-	if err != nil {
-		return 0, err
+	var execer sqlx.Execer
+	if tx != nil {
+		execer = tx
+	} else {
+		db, err := d.Connect()
+		if err != nil {
+			return 0, err
+		}
+		defer db.Close()
+
+		execer = db.DB
 	}
-	defer db.Close()
-	r, err := db.Exec(sqlStr, args...)
+
+	r, err := execer.Exec(sqlStr, args...)
 	if err != nil {
 		return 0, err
 	}
@@ -106,7 +123,7 @@ func (d *MenuDb) UpdateItem(item *models.Item) (int64, error) {
 	return count, err
 }
 
-func (d *MenuDb) DeleteItem(item *models.Item) (int64, error) {
+func (d *MenuDb) DeleteItem(item *models.Item, tx *sql.Tx) (int64, error) {
 	if item == nil {
 		return 0, common.DbDataError
 	}
@@ -123,13 +140,20 @@ func (d *MenuDb) DeleteItem(item *models.Item) (int64, error) {
 		}
 	}
 
-	db, err := d.Connect()
-	if err != nil {
-		return 0, err
-	}
-	defer db.Close()
+	var execer sqlx.Execer
+	if tx != nil {
+		execer = tx
+	} else {
+		db, err := d.Connect()
+		if err != nil {
+			return 0, err
+		}
+		defer db.Close()
 
-	r, err := db.Exec(sqlStr, args...)
+		execer = db.DB
+	}
+
+	r, err := execer.Exec(sqlStr, args...)
 	if err != nil {
 		return 0, err
 	}

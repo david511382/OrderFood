@@ -1,6 +1,7 @@
 package database
 
 import (
+	"database/sql"
 	"orderfood/src/database/models"
 )
 
@@ -23,7 +24,7 @@ func (d *shopDbSwitch) initRedis() error {
 		}
 
 		for _, shop := range shops {
-			err = redisMenuDb.AddShop(shop)
+			err = redisMenuDb.AddShop(shop, nil)
 			if err != nil {
 				d.redisStatus = false
 				return nil
@@ -49,42 +50,42 @@ func (d *shopDbSwitch) GetShop(shop *models.Shop) ([]*models.Shop, error) {
 	return result, err
 }
 
-func (d *shopDbSwitch) AddShop(shop *models.Shop) error {
-	err := menuDb.AddShop(shop)
+func (d *shopDbSwitch) AddShop(shop *models.Shop, tx *sql.Tx) error {
+	err := menuDb.AddShop(shop, tx)
 	if err != nil {
 		return err
 	}
 
 	if d.redisStatus {
-		err = redisMenuDb.AddShop(shop)
+		err = redisMenuDb.AddShop(shop, tx)
 		if err != nil {
 			d.redisStatus = false
 		}
 	}
 	return nil
 }
-func (d *shopDbSwitch) DeleteShop(shop *models.Shop) (int64, error) {
-	count, err := menuDb.DeleteShop(shop)
+func (d *shopDbSwitch) DeleteShop(shop *models.Shop, tx *sql.Tx) (int64, error) {
+	count, err := menuDb.DeleteShop(shop, tx)
 	if err != nil {
 		return count, err
 	}
 
 	if d.redisStatus {
-		redisCount, err := redisMenuDb.DeleteShop(shop)
+		redisCount, err := redisMenuDb.DeleteShop(shop, tx)
 		if err != nil || count != redisCount {
 			d.redisStatus = false
 		}
 	}
 	return count, nil
 }
-func (d *shopDbSwitch) UpdateShop(shop *models.Shop) (int64, error) {
-	count, err := menuDb.UpdateShop(shop)
+func (d *shopDbSwitch) UpdateShop(shop *models.Shop, tx *sql.Tx) (int64, error) {
+	count, err := menuDb.UpdateShop(shop, tx)
 	if err != nil {
 		return count, err
 	}
 
 	if d.redisStatus {
-		redisCount, err := redisMenuDb.UpdateShop(shop)
+		redisCount, err := redisMenuDb.UpdateShop(shop, tx)
 		if err != nil || count != redisCount {
 			d.redisStatus = false
 		}

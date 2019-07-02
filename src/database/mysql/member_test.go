@@ -43,7 +43,7 @@ func TestAddMember(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := *flag.input
 			output := &input
-			err := memberDb.AddMember(output)
+			err := memberDb.AddMember(output, nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -176,7 +176,7 @@ func TestUpdateMember(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := memberDb.UpdateMember(inputp)
+			output, err := memberDb.UpdateMember(inputp,nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -241,7 +241,7 @@ func TestDeleteMember(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := memberDb.DeleteMember(inputp)
+			output, err := memberDb.DeleteMember(inputp,nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})

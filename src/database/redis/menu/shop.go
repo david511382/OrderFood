@@ -1,6 +1,7 @@
 package menu
 
 import (
+	"database/sql"
 	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 	"strconv"
@@ -71,7 +72,7 @@ func (redis *RedisDb) GetShop(shop *models.Shop) ([]*models.Shop, error) {
 
 	return shops, nil
 }
-func (redis *RedisDb) AddShop(shop *models.Shop) error {
+func (redis *RedisDb) AddShop(shop *models.Shop, tx *sql.Tx) error {
 	data, err := proto.Marshal(shop)
 	if err != nil {
 		return err
@@ -85,7 +86,7 @@ func (redis *RedisDb) AddShop(shop *models.Shop) error {
 	}
 	return nil
 }
-func (redis *RedisDb) UpdateShop(shop *models.Shop) (int64, error) {
+func (redis *RedisDb) UpdateShop(shop *models.Shop, tx *sql.Tx) (int64, error) {
 	r := redis.R
 	id := strconv.Itoa(int(shop.GetID()))
 	v := r.HExists(common.ShopDt.Name(), id)
@@ -112,7 +113,7 @@ func (redis *RedisDb) UpdateShop(shop *models.Shop) (int64, error) {
 	}
 	return 1, nil
 }
-func (redis *RedisDb) DeleteShop(shop *models.Shop) (int64, error) {
+func (redis *RedisDb) DeleteShop(shop *models.Shop, tx *sql.Tx) (int64, error) {
 	r := redis.R
 	id := strconv.Itoa(int(shop.GetID()))
 	if id == "0" {

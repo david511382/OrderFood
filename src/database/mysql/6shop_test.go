@@ -36,7 +36,7 @@ func TestAddShop(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := *flag.input
 			output := &input
-			err := menuDb.AddShop(output)
+			err := menuDb.AddShop(output,nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -132,7 +132,7 @@ func TestUpdateShop(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := menuDb.UpdateShop(inputp)
+			output, err := menuDb.UpdateShop(inputp,nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -143,7 +143,7 @@ func TestUpdateShop(t *testing.T) {
 			&models.Shop{
 				ID:   menuDbShops[1].GetID(),
 				Name: menuDbShops[2].GetName(),
-			})
+			},nil)
 		assert.NotNil(t, err)
 		assert.Equal(t, int64(0), output)
 	})
@@ -191,7 +191,7 @@ func TestDeleteShop(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := menuDb.DeleteShop(inputp)
+			output, err := menuDb.DeleteShop(inputp,nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})

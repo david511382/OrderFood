@@ -1,6 +1,7 @@
 package member
 
 import (
+	"database/sql"
 	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 	"strconv"
@@ -83,7 +84,7 @@ func (redis *RedisDb) GetMember(member *models.Member) ([]*models.Member, error)
 
 	return members, nil
 }
-func (redis *RedisDb) AddMember(member *models.Member) error {
+func (redis *RedisDb) AddMember(member *models.Member, tx *sql.Tx) error {
 	data, err := proto.Marshal(member)
 	if err != nil {
 		return err
@@ -97,7 +98,7 @@ func (redis *RedisDb) AddMember(member *models.Member) error {
 	}
 	return nil
 }
-func (redis *RedisDb) UpdateMember(member *models.Member) (int64, error) {
+func (redis *RedisDb) UpdateMember(member *models.Member, tx *sql.Tx) (int64, error) {
 	r := redis.R
 	id := strconv.Itoa(int(member.GetID()))
 	v := r.HExists(common.MemberDt.Name(), id)
@@ -124,7 +125,7 @@ func (redis *RedisDb) UpdateMember(member *models.Member) (int64, error) {
 	}
 	return 1, nil
 }
-func (redis *RedisDb) DeleteMember(member *models.Member) (int64, error) {
+func (redis *RedisDb) DeleteMember(member *models.Member, tx *sql.Tx) (int64, error) {
 	r := redis.R
 	id := strconv.Itoa(int(member.GetID()))
 	if id == "0" {

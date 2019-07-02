@@ -36,7 +36,7 @@ func TestAddOption(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := *flag.input
 			output := &input
-			err := menuDb.AddOption(output)
+			err := menuDb.AddOption(output,nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -133,7 +133,7 @@ func TestUpdateOption(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := menuDb.UpdateOption(inputp)
+			output, err := menuDb.UpdateOption(inputp,nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -184,7 +184,7 @@ func TestDeleteOption(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := menuDb.DeleteOption(inputp)
+			output, err := menuDb.DeleteOption(inputp,nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})

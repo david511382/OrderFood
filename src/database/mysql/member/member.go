@@ -1,6 +1,7 @@
 package member
 
 import (
+	"database/sql"
 	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 
@@ -35,7 +36,7 @@ func (d *MemberDb) GetMember(member *models.Member) ([]*models.Member, error) {
 	return members, err
 }
 
-func (d *MemberDb) AddMember(member *models.Member) error {
+func (d *MemberDb) AddMember(member *models.Member, tx *sql.Tx) error {
 	if member == nil {
 		return common.DbDataError
 	}
@@ -46,12 +47,19 @@ func (d *MemberDb) AddMember(member *models.Member) error {
 		return err
 	}
 
-	db, err := d.Connect()
-	if err != nil {
-		return err
+	var execer sqlx.Execer
+	if tx != nil {
+		execer = tx
+	} else {
+		db, err := d.Connect()
+		if err != nil {
+			return err
+		}
+		defer db.Close()
+
+		execer = db.DB
 	}
-	defer db.Close()
-	dbRes, err := db.Exec(sqlStr, args...)
+	dbRes, err := execer.Exec(sqlStr, args...)
 	if err != nil {
 		return err
 	}
@@ -65,7 +73,7 @@ func (d *MemberDb) AddMember(member *models.Member) error {
 	return nil
 }
 
-func (d *MemberDb) UpdateMember(member *models.Member) (int64, error) {
+func (d *MemberDb) UpdateMember(member *models.Member, tx *sql.Tx) (int64, error) {
 	if member == nil {
 		return 0, common.DbDataError
 	}
@@ -92,12 +100,19 @@ func (d *MemberDb) UpdateMember(member *models.Member) (int64, error) {
 		}
 	}
 
-	db, err := d.Connect()
-	if err != nil {
-		return 0, err
+	var execer sqlx.Execer
+	if tx != nil {
+		execer = tx
+	} else {
+		db, err := d.Connect()
+		if err != nil {
+			return 0, err
+		}
+		defer db.Close()
+
+		execer = db.DB
 	}
-	defer db.Close()
-	r, err := db.Exec(sqlStr, args...)
+	r, err := execer.Exec(sqlStr, args...)
 	if err != nil {
 		return 0, err
 	}
@@ -106,7 +121,7 @@ func (d *MemberDb) UpdateMember(member *models.Member) (int64, error) {
 	return count, err
 }
 
-func (d *MemberDb) DeleteMember(member *models.Member) (int64, error) {
+func (d *MemberDb) DeleteMember(member *models.Member, tx *sql.Tx) (int64, error) {
 	if member == nil {
 		return 0, common.DbDataError
 	}
@@ -123,13 +138,19 @@ func (d *MemberDb) DeleteMember(member *models.Member) (int64, error) {
 		}
 	}
 
-	db, err := d.Connect()
-	if err != nil {
-		return 0, err
-	}
-	defer db.Close()
+	var execer sqlx.Execer
+	if tx != nil {
+		execer = tx
+	} else {
+		db, err := d.Connect()
+		if err != nil {
+			return 0, err
+		}
+		defer db.Close()
 
-	r, err := db.Exec(sqlStr, args...)
+		execer = db.DB
+	}
+	r, err := execer.Exec(sqlStr, args...)
 	if err != nil {
 		return 0, err
 	}

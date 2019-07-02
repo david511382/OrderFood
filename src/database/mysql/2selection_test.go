@@ -42,7 +42,7 @@ func TestAddSelection(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := *flag.input
 			output := &input
-			err := menuDb.AddSelection(output)
+			err := menuDb.AddSelection(output,nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -194,7 +194,7 @@ func TestUpdateSelection(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := menuDb.UpdateSelection(inputp)
+			output, err := menuDb.UpdateSelection(inputp,nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})
@@ -257,7 +257,7 @@ func TestDeleteSelection(t *testing.T) {
 		t.Run(flag.name, func(t *testing.T) {
 			input := flag.input
 			inputp := &input
-			output, err := menuDb.DeleteSelection(inputp)
+			output, err := menuDb.DeleteSelection(inputp,nil)
 			assert.Equal(t, flag.err, err)
 			assert.Equal(t, flag.output, output)
 		})

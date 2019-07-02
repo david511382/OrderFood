@@ -1,6 +1,7 @@
 package database
 
 import (
+	"database/sql"
 	"orderfood/src/database/models"
 )
 
@@ -23,7 +24,7 @@ func (d *memberDbSwitch) initRedis() error {
 		}
 
 		for _, member := range members {
-			err = redisMemberDb.AddMember(member)
+			err = redisMemberDb.AddMember(member, nil)
 			if err != nil {
 				d.redisStatus = false
 				return nil
@@ -49,42 +50,42 @@ func (d *memberDbSwitch) GetMember(member *models.Member) ([]*models.Member, err
 	return result, err
 }
 
-func (d *memberDbSwitch) AddMember(member *models.Member) error {
-	err := memberDb.AddMember(member)
+func (d *memberDbSwitch) AddMember(member *models.Member, tx *sql.Tx) error {
+	err := memberDb.AddMember(member, tx)
 	if err != nil {
 		return err
 	}
 
 	if d.redisStatus {
-		err = redisMemberDb.AddMember(member)
+		err = redisMemberDb.AddMember(member, tx)
 		if err != nil {
 			d.redisStatus = false
 		}
 	}
 	return nil
 }
-func (d *memberDbSwitch) DeleteMember(member *models.Member) (int64, error) {
-	count, err := memberDb.DeleteMember(member)
+func (d *memberDbSwitch) DeleteMember(member *models.Member, tx *sql.Tx) (int64, error) {
+	count, err := memberDb.DeleteMember(member, tx)
 	if err != nil {
 		return count, err
 	}
 
 	if d.redisStatus {
-		redisCount, err := redisMemberDb.DeleteMember(member)
+		redisCount, err := redisMemberDb.DeleteMember(member, tx)
 		if err != nil || count != redisCount {
 			d.redisStatus = false
 		}
 	}
 	return count, nil
 }
-func (d *memberDbSwitch) UpdateMember(member *models.Member) (int64, error) {
-	count, err := memberDb.UpdateMember(member)
+func (d *memberDbSwitch) UpdateMember(member *models.Member, tx *sql.Tx) (int64, error) {
+	count, err := memberDb.UpdateMember(member, tx)
 	if err != nil {
 		return count, err
 	}
 
 	if d.redisStatus {
-		redisCount, err := redisMemberDb.UpdateMember(member)
+		redisCount, err := redisMemberDb.UpdateMember(member, tx)
 		if err != nil || count != redisCount {
 			d.redisStatus = false
 		}
