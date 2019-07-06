@@ -292,34 +292,49 @@ func getOptionName(selectionNames []string) string {
 	return strings.Join(selectionNames, ",")
 }
 
-func CreateOption(menuOption *reqs.MenuOption) (*resp.OptionMenu, error) {
+func CreateOption(menuOption *reqs.MenuOption) (result *resp.OptionMenu, err error) {
 	shopID32 := menuOption.ShopID
 	shopID := int(shopID32)
 	shops, err := GetShop(shopID32, "")
 	if err != nil {
-		return nil, err
+		return
 	} else if len(shops) == 0 {
-		return nil, logic.ParamError
+		err = logic.ParamError
+		return
 	}
 
 	selectionLen := len(menuOption.Selections)
 	if int(menuOption.SelectNum) > selectionLen {
-		return nil, logic.ParamError
+		err = logic.ParamError
+		return
 	}
 
 	itemLen := len(menuOption.Items)
 	if selectionLen == 0 || itemLen == 0 {
-		return nil, logic.ParamError
+		err = logic.ParamError
+		return
 	}
 
-	// insert option
-	newOption, err := AddOption(int(menuOption.SelectNum))
+	tx, err := database.Db.Menu().Begin()
 	if err != nil {
-		return nil, err
+		return
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		} else {
+			err = tx.Commit()
+		}
+	}()
+
+	// insert option
+	newOption, err := addOption(int(menuOption.SelectNum), tx)
+	if err != nil {
+		return
 	}
 	optionID := int(newOption.GetID())
 
-	result := &resp.OptionMenu{
+	result = &resp.OptionMenu{
 		ShopID: shopID32,
 		MenuOption: &resp.MenuOption{
 			Option: &resp.Option{
@@ -335,9 +350,9 @@ func CreateOption(menuOption *reqs.MenuOption) (*resp.OptionMenu, error) {
 	// insert selection
 	selectionNames := make([]string, 0)
 	for _, selection := range menuOption.Selections {
-		newSelection, err := AddSelection(optionID, int(selection.GetPrice()), selection.GetName())
+		newSelection, err := addSelection(optionID, int(selection.GetPrice()), selection.GetName(), tx)
 		if err != nil {
-			return nil, err
+			return result, err
 		}
 
 		selectionName := newSelection.GetName()
@@ -352,15 +367,15 @@ func CreateOption(menuOption *reqs.MenuOption) (*resp.OptionMenu, error) {
 
 	// insert item
 	for _, item := range menuOption.Items {
-		newItem, err := AddItem(shopID, item.GetName(), int(item.GetPrice()))
+		newItem, err := addItem(shopID, item.GetName(), int(item.GetPrice()), tx)
 		if err != nil {
 			// maybe name duplicate
-			return nil, err
+			return result, err
 		}
 
-		_, err = AddItemOption(newItem.GetID(), optionID)
+		_, err = addItemOption(newItem.GetID(), optionID, tx)
 		if err != nil {
-			return nil, err
+			return result, err
 		}
 
 		result.MenuOption.Items = append(result.MenuOption.Items, &resp.Item{

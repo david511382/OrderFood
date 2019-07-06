@@ -1,6 +1,7 @@
 package manager
 
 import (
+	"database/sql"
 	"orderfood/src/database"
 	"orderfood/src/database/models"
 	"orderfood/src/handler/models/resp"
@@ -68,13 +69,18 @@ func DeleteShop(id int32) (bool, error) {
 }
 
 func AddItem(shopID int, name string, price int) (*models.Item, error) {
+	item, err := addItem(shopID, name, price, nil)
+	return item, err
+}
+
+func addItem(shopID int, name string, price int, tx *sql.Tx) (*models.Item, error) {
 	db := database.Db.Menu()
 	item := &models.Item{
 		Name:    name,
 		Shop_ID: shopID,
 		Price:   price,
 	}
-	err := db.AddItem(item, nil)
+	err := db.AddItem(item, tx)
 	return item, err
 }
 
@@ -229,12 +235,17 @@ func DeleteItem(id int) (bool, error) {
 }
 
 func AddItemOption(itemID, optionID int) (*models.ItemOption, error) {
+	itemOption, err := addItemOption(itemID, optionID, nil)
+	return itemOption, err
+}
+
+func addItemOption(itemID, optionID int, tx *sql.Tx) (*models.ItemOption, error) {
 	db := database.Db.Menu()
 	itemOption := &models.ItemOption{
 		Item_ID:   itemID,
 		Option_ID: optionID,
 	}
-	err := db.AddItemOption(itemOption, nil)
+	err := db.AddItemOption(itemOption, tx)
 	return itemOption, err
 }
 
@@ -254,20 +265,19 @@ func DeleteItemOption(id int) (bool, error) {
 }
 
 func AddOption(selectNum int) (*models.Option, error) {
+	option, err := addOption(selectNum, nil)
+	return option, err
+}
+
+func addOption(selectNum int, tx *sql.Tx) (*models.Option, error) {
 	db := database.Db.Menu()
 	option := &models.Option{
 		Select_Num: selectNum,
 	}
-	err := db.AddOption(option, nil)
+	err := db.AddOption(option, tx)
 	if err != nil {
 		return nil, err
 	}
-
-	// _,err= AddSelection( option.GetID(),0,selectionName)
-	// if err != nil {
-	// 	db.DeleteOption(option)
-	// 	return nil, err
-	// }
 
 	return option, nil
 }
@@ -304,13 +314,18 @@ func DeleteOption(id int) (bool, error) {
 }
 
 func AddSelection(optionID, price int, name string) (*models.Selection, error) {
+	selection, err := addSelection(optionID, price, name, nil)
+	return selection, err
+}
+
+func addSelection(optionID, price int, name string, tx *sql.Tx) (*models.Selection, error) {
 	db := database.Db.Menu()
 	selection := &models.Selection{
 		Name:      name,
 		Option_ID: optionID,
 		Price:     price,
 	}
-	err := db.AddSelection(selection, nil)
+	err := db.AddSelection(selection, tx)
 	if err != nil {
 		return nil, err
 	}

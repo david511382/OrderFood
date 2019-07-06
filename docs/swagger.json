@@ -450,7 +450,8 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "新選單reqs.MenuOption JSON",
+                        "default": "{\"ShopID\": 14,\"SelectNum\": 0,\"Items\":[{\"Name\":\"i1\",\"Price\": 2}],\"Selections\":[{\"Name\": \"s1\",\"Price\": 2}]}",
+                        "description": "新選單 JSON",
                         "name": "menuOptionJS",
                         "in": "formData",
                         "required": true
