@@ -14,21 +14,23 @@ type Transaction struct {
 }
 
 func (t *Transaction) Commit() error {
-	err := t.Tx.Commit()
-	if err != nil {
-		return err
-	}
+	defer func() {
+		t.Closer.Close()
+	}()
 
-	return t.Closer.Close()
+	err := t.Tx.Commit()
+
+	return err
 }
 
 func (t *Transaction) Rollback() error {
-	err := t.Tx.Rollback()
-	if err != nil {
-		return err
-	}
+	defer func() {
+		t.Closer.Close()
+	}()
 
-	return t.Closer.Close()
+	err := t.Tx.Rollback()
+
+	return err
 }
 
 func (t *Transaction) Exec(query string, args ...interface{}) (sql.Result, error) {
