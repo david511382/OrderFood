@@ -1,7 +1,6 @@
 package menu
 
 import (
-	"database/sql"
 	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 
@@ -36,7 +35,7 @@ func (d *MenuDb) GetSelection(selection *models.Selection) ([]*models.Selection,
 	return selections, err
 }
 
-func (d *MenuDb) AddSelection(selection *models.Selection, tx *sql.Tx) error {
+func (d *MenuDb) AddSelection(selection *models.Selection, tx common.IExecer) error {
 	if selection == nil {
 		return common.DbDataError
 	}
@@ -73,7 +72,7 @@ func (d *MenuDb) AddSelection(selection *models.Selection, tx *sql.Tx) error {
 	return nil
 }
 
-func (d *MenuDb) UpdateSelection(selection *models.Selection, tx *sql.Tx) (int64, error) {
+func (d *MenuDb) UpdateSelection(selection *models.Selection, tx common.IExecer) (int64, error) {
 	if selection == nil {
 		return 0, common.DbDataError
 	}
@@ -121,7 +120,7 @@ func (d *MenuDb) UpdateSelection(selection *models.Selection, tx *sql.Tx) (int64
 	return count, err
 }
 
-func (d *MenuDb) DeleteSelection(selection *models.Selection, tx *sql.Tx) (int64, error) {
+func (d *MenuDb) DeleteSelection(selection *models.Selection, tx common.IExecer) (int64, error) {
 	if selection == nil {
 		return 0, common.DbDataError
 	}

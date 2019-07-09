@@ -1,7 +1,7 @@
 package database
 
 import (
-	"database/sql"
+	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 )
 
@@ -50,7 +50,7 @@ func (d *shopDbSwitch) GetShop(shop *models.Shop) ([]*models.Shop, error) {
 	return result, err
 }
 
-func (d *shopDbSwitch) AddShop(shop *models.Shop, tx *sql.Tx) error {
+func (d *shopDbSwitch) AddShop(shop *models.Shop, tx common.IExecer) error {
 	err := menuDb.AddShop(shop, tx)
 	if err != nil {
 		return err
@@ -64,7 +64,7 @@ func (d *shopDbSwitch) AddShop(shop *models.Shop, tx *sql.Tx) error {
 	}
 	return nil
 }
-func (d *shopDbSwitch) DeleteShop(shop *models.Shop, tx *sql.Tx) (int64, error) {
+func (d *shopDbSwitch) DeleteShop(shop *models.Shop, tx common.IExecer) (int64, error) {
 	count, err := menuDb.DeleteShop(shop, tx)
 	if err != nil {
 		return count, err
@@ -78,7 +78,7 @@ func (d *shopDbSwitch) DeleteShop(shop *models.Shop, tx *sql.Tx) (int64, error) 
 	}
 	return count, nil
 }
-func (d *shopDbSwitch) UpdateShop(shop *models.Shop, tx *sql.Tx) (int64, error) {
+func (d *shopDbSwitch) UpdateShop(shop *models.Shop, tx common.IExecer) (int64, error) {
 	count, err := menuDb.UpdateShop(shop, tx)
 	if err != nil {
 		return count, err

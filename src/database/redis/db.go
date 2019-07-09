@@ -2,21 +2,21 @@ package redis
 
 import (
 	"orderfood/src/config"
-	"strconv"
 	"orderfood/src/database/common"
 	"orderfood/src/database/redis/member"
 	"orderfood/src/database/redis/menu"
+	"strconv"
 
 	"github.com/go-redis/redis"
 )
 
-func NewMemberDb(dbCfg config.DbConfig)(common.IRedisMember, error){
+func NewMemberDb(dbCfg config.DbConfig) (common.IRedisMember, error) {
 	rds, err := connect(dbCfg)
 
 	return &member.RedisDb{R: rds}, err
 }
 
-func NewMenuDb(dbCfg config.DbConfig)(common.IRedisMenu, error){
+func NewMenuDb(dbCfg config.DbConfig) (common.IRedisMenu, error) {
 	rds, err := connect(dbCfg)
 
 	return &menu.RedisDb{R: rds}, err

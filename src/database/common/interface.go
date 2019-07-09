@@ -1,8 +1,9 @@
 package common
 
 import (
-	"database/sql"
 	"orderfood/src/database/models"
+
+	"github.com/jmoiron/sqlx"
 )
 
 type IDb interface {
@@ -19,47 +20,47 @@ type IDBM interface {
 
 type IMember interface {
 	GetMember(*models.Member) ([]*models.Member, error)
-	AddMember(*models.Member, *sql.Tx) error
-	UpdateMember(*models.Member, *sql.Tx) (int64, error)
-	DeleteMember(*models.Member, *sql.Tx) (int64, error)
+	AddMember(*models.Member, IExecer) error
+	UpdateMember(*models.Member, IExecer) (int64, error)
+	DeleteMember(*models.Member, IExecer) (int64, error)
 }
 
 type IShop interface {
 	GetShop(*models.Shop) ([]*models.Shop, error)
-	AddShop(*models.Shop, *sql.Tx) error
-	DeleteShop(*models.Shop, *sql.Tx) (int64, error)
-	UpdateShop(*models.Shop, *sql.Tx) (int64, error)
+	AddShop(*models.Shop, IExecer) error
+	DeleteShop(*models.Shop, IExecer) (int64, error)
+	UpdateShop(*models.Shop, IExecer) (int64, error)
 }
 
 type IMenu interface {
-	ITransaction
+	IDbTransaction
 
 	// Shop 。
 	IShop
 
 	// Item 。
 	GetItem(*models.Item) ([]*models.Item, error)
-	AddItem(*models.Item, *sql.Tx) error
-	DeleteItem(*models.Item, *sql.Tx) (int64, error)
-	UpdateItem(*models.Item, *sql.Tx) (int64, error)
+	AddItem(*models.Item, IExecer) error
+	DeleteItem(*models.Item, IExecer) (int64, error)
+	UpdateItem(*models.Item, IExecer) (int64, error)
 
 	// Option 。
 	GetOption(*models.Option) ([]*models.Option, error)
-	AddOption(*models.Option, *sql.Tx) error
-	DeleteOption(*models.Option, *sql.Tx) (int64, error)
-	UpdateOption(*models.Option, *sql.Tx) (int64, error)
+	AddOption(*models.Option, IExecer) error
+	DeleteOption(*models.Option, IExecer) (int64, error)
+	UpdateOption(*models.Option, IExecer) (int64, error)
 
 	// ItemOption 。
 	GetItemOption(*models.ItemOption) ([]*models.ItemOption, error)
-	AddItemOption(*models.ItemOption, *sql.Tx) error
-	DeleteItemOption(*models.ItemOption, *sql.Tx) (int64, error)
-	UpdateItemOption(*models.ItemOption, *sql.Tx) (int64, error)
+	AddItemOption(*models.ItemOption, IExecer) error
+	DeleteItemOption(*models.ItemOption, IExecer) (int64, error)
+	UpdateItemOption(*models.ItemOption, IExecer) (int64, error)
 
 	// selection
 	GetSelection(*models.Selection) ([]*models.Selection, error)
-	AddSelection(*models.Selection, *sql.Tx) error
-	DeleteSelection(*models.Selection, *sql.Tx) (int64, error)
-	UpdateSelection(*models.Selection, *sql.Tx) (int64, error)
+	AddSelection(*models.Selection, IExecer) error
+	DeleteSelection(*models.Selection, IExecer) (int64, error)
+	UpdateSelection(*models.Selection, IExecer) (int64, error)
 
 	// item option view
 	GetItemOptionView(*models.ItemOptionView) ([]*models.ItemOptionView, error)
@@ -68,8 +69,18 @@ type IMenu interface {
 	GetOptionSelectionView(*models.OptionSelectionView) ([]*models.OptionSelectionView, error)
 }
 
+type IExecer interface {
+	sqlx.Execer
+}
+
 type ITransaction interface {
-	Begin() (*sql.Tx, error)
+	IExecer
+	Commit() error
+	Rollback() error
+}
+
+type IDbTransaction interface {
+	Begin() (ITransaction, error)
 }
 
 type IRedisMember interface {

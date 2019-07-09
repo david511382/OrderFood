@@ -1,7 +1,6 @@
 package menu
 
 import (
-	"database/sql"
 	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 
@@ -36,7 +35,7 @@ func (d *MenuDb) GetItemOption(itemOption *models.ItemOption) ([]*models.ItemOpt
 	return itemOptions, err
 }
 
-func (d *MenuDb) AddItemOption(itemOption *models.ItemOption, tx *sql.Tx) error {
+func (d *MenuDb) AddItemOption(itemOption *models.ItemOption, tx common.IExecer) error {
 	if itemOption == nil {
 		return common.DbDataError
 	}
@@ -73,7 +72,7 @@ func (d *MenuDb) AddItemOption(itemOption *models.ItemOption, tx *sql.Tx) error 
 	return nil
 }
 
-func (d *MenuDb) UpdateItemOption(itemOption *models.ItemOption, tx *sql.Tx) (int64, error) {
+func (d *MenuDb) UpdateItemOption(itemOption *models.ItemOption, tx common.IExecer) (int64, error) {
 	if itemOption == nil {
 		return 0, common.DbDataError
 	}
@@ -119,7 +118,7 @@ func (d *MenuDb) UpdateItemOption(itemOption *models.ItemOption, tx *sql.Tx) (in
 	return count, err
 }
 
-func (d *MenuDb) DeleteItemOption(itemOption *models.ItemOption, tx *sql.Tx) (int64, error) {
+func (d *MenuDb) DeleteItemOption(itemOption *models.ItemOption, tx common.IExecer) (int64, error) {
 	if itemOption == nil {
 		return 0, common.DbDataError
 	}

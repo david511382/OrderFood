@@ -1,7 +1,7 @@
 package database
 
 import (
-	"database/sql"
+	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 )
 
@@ -50,7 +50,7 @@ func (d *memberDbSwitch) GetMember(member *models.Member) ([]*models.Member, err
 	return result, err
 }
 
-func (d *memberDbSwitch) AddMember(member *models.Member, tx *sql.Tx) error {
+func (d *memberDbSwitch) AddMember(member *models.Member, tx common.IExecer) error {
 	err := memberDb.AddMember(member, tx)
 	if err != nil {
 		return err
@@ -64,7 +64,7 @@ func (d *memberDbSwitch) AddMember(member *models.Member, tx *sql.Tx) error {
 	}
 	return nil
 }
-func (d *memberDbSwitch) DeleteMember(member *models.Member, tx *sql.Tx) (int64, error) {
+func (d *memberDbSwitch) DeleteMember(member *models.Member, tx common.IExecer) (int64, error) {
 	count, err := memberDb.DeleteMember(member, tx)
 	if err != nil {
 		return count, err
@@ -78,7 +78,7 @@ func (d *memberDbSwitch) DeleteMember(member *models.Member, tx *sql.Tx) (int64,
 	}
 	return count, nil
 }
-func (d *memberDbSwitch) UpdateMember(member *models.Member, tx *sql.Tx) (int64, error) {
+func (d *memberDbSwitch) UpdateMember(member *models.Member, tx common.IExecer) (int64, error) {
 	count, err := memberDb.UpdateMember(member, tx)
 	if err != nil {
 		return count, err

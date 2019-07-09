@@ -1,7 +1,6 @@
 package member
 
 import (
-	"database/sql"
 	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 
@@ -36,7 +35,7 @@ func (d *MemberDb) GetMember(member *models.Member) ([]*models.Member, error) {
 	return members, err
 }
 
-func (d *MemberDb) AddMember(member *models.Member, tx *sql.Tx) error {
+func (d *MemberDb) AddMember(member *models.Member, tx common.IExecer) error {
 	if member == nil {
 		return common.DbDataError
 	}
@@ -73,7 +72,7 @@ func (d *MemberDb) AddMember(member *models.Member, tx *sql.Tx) error {
 	return nil
 }
 
-func (d *MemberDb) UpdateMember(member *models.Member, tx *sql.Tx) (int64, error) {
+func (d *MemberDb) UpdateMember(member *models.Member, tx common.IExecer) (int64, error) {
 	if member == nil {
 		return 0, common.DbDataError
 	}
@@ -121,7 +120,7 @@ func (d *MemberDb) UpdateMember(member *models.Member, tx *sql.Tx) (int64, error
 	return count, err
 }
 
-func (d *MemberDb) DeleteMember(member *models.Member, tx *sql.Tx) (int64, error) {
+func (d *MemberDb) DeleteMember(member *models.Member, tx common.IExecer) (int64, error) {
 	if member == nil {
 		return 0, common.DbDataError
 	}

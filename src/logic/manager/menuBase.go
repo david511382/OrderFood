@@ -1,8 +1,8 @@
 package manager
 
 import (
-	"database/sql"
 	"orderfood/src/database"
+	"orderfood/src/database/common"
 	"orderfood/src/database/models"
 	"orderfood/src/handler/models/resp"
 	"orderfood/src/logic"
@@ -73,7 +73,7 @@ func AddItem(shopID int, name string, price int) (*models.Item, error) {
 	return item, err
 }
 
-func addItem(shopID int, name string, price int, tx *sql.Tx) (*models.Item, error) {
+func addItem(shopID int, name string, price int, tx common.IExecer) (*models.Item, error) {
 	db := database.Db.Menu()
 	item := &models.Item{
 		Name:    name,
@@ -239,7 +239,7 @@ func AddItemOption(itemID, optionID int) (*models.ItemOption, error) {
 	return itemOption, err
 }
 
-func addItemOption(itemID, optionID int, tx *sql.Tx) (*models.ItemOption, error) {
+func addItemOption(itemID, optionID int, tx common.IExecer) (*models.ItemOption, error) {
 	db := database.Db.Menu()
 	itemOption := &models.ItemOption{
 		Item_ID:   itemID,
@@ -269,7 +269,7 @@ func AddOption(selectNum int) (*models.Option, error) {
 	return option, err
 }
 
-func addOption(selectNum int, tx *sql.Tx) (*models.Option, error) {
+func addOption(selectNum int, tx common.IExecer) (*models.Option, error) {
 	db := database.Db.Menu()
 	option := &models.Option{
 		Select_Num: selectNum,
@@ -318,7 +318,7 @@ func AddSelection(optionID, price int, name string) (*models.Selection, error) {
 	return selection, err
 }
 
-func addSelection(optionID, price int, name string, tx *sql.Tx) (*models.Selection, error) {
+func addSelection(optionID, price int, name string, tx common.IExecer) (*models.Selection, error) {
 	db := database.Db.Menu()
 	selection := &models.Selection{
 		Name:      name,
