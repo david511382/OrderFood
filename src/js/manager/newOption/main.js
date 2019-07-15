@@ -1,10 +1,10 @@
-const optionName = "新選單";
+var OPTION_NAME = "新選單";
 init();
 
 function init(){
     var newOptionIndex = -1;
     initShopName();
-    InitCurrentOptionName(optionName);
+    InitCurrentOptionName(OPTION_NAME);
     var select = CreateOptionNumSelect();
     InitItemTable(null,newItemButtonClick);
     InitSelectionTable(newOptionIndex,null,newSelectionButtonClick);
@@ -33,7 +33,7 @@ function newItemButtonClick(){
     var itemTable = document.getElementById('itemTable');
     
     var item = {
-        Options:optionName,
+        Options:OPTION_NAME,
         Name:name,
         Price:price
     };

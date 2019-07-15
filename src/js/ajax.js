@@ -18,21 +18,19 @@ function UpdatePage(updateView){
         let scriptLen = scriptArr.length;
         if (scriptLen != 0){
             const targetelement = "script";
-            const targetattr = "src";
-        
-            let  allsuspects=document.getElementsByTagName(targetelement);
+            let allsuspects = document.getElementsByTagName(targetelement);
 
             for (let i = 0; i < scriptLen; i++){
                 let script = scriptArr[i];
                 let name = script.Key;
                 let data = script.Data;
 
-                for (let i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
+                //search backwards within nodelist for matching elements to remove
+                for (let i=allsuspects.length; i>=0; i--){
                     let target = allsuspects[i];
                     if (target &&
-                        target.getAttribute(targetattr)!=null &&
-                        target.getAttribute(targetattr).indexOf(name)!=-1){
-                        //remove element by calling parentNode.removeChild()
+                        target.id ===name){
+                        //remove element
                         target.parentNode.removeChild(target);
                         break
                     }
@@ -41,7 +39,7 @@ function UpdatePage(updateView){
                 // add
                 let js=document.createElement(targetelement);
                 js.setAttribute("type","text/javascript");
-                js.setAttribute(targetattr, name);
+                js.id = name;
                 js.src = data;
                 document.head.appendChild(js);
             }
@@ -67,7 +65,7 @@ function UpdatePage(updateView){
                     if (target &&
                         target.getAttribute(targetattr)!=null &&
                         target.getAttribute(targetattr).indexOf(name)!=-1){
-                        //remove element by calling parentNode.removeChild()
+                        //remove element
                         target.parentNode.removeChild(target);
                         break
                     }
@@ -77,7 +75,7 @@ function UpdatePage(updateView){
                 let style=document.createElement(targetelement);
                 style.setAttribute("rel", "stylesheet");
                 style.setAttribute("type", "text/css");
-                style.setAttribute(targetattr, name);
+                style.id =  name; 
                 style.src = data;
                 document.head.appendChild(style);
             }

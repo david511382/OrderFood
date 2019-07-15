@@ -1,8 +1,8 @@
-// selectedOptionIndex -1 : new option mode
-// selectedOptionIndex 0 : all option mode
-// selectedOptionIndex 1+ : normal option mode
-
 var menuData;
+// selectedOptionIndex
+// -1 : new option mode
+//  0 : all option mode
+// 1+ : normal option mode
 var selectedOptionIndex;
 init();
 
@@ -13,125 +13,6 @@ function init(){
         initShopName();
         initOptionButton();
     });
-}
-
-function changeOption(index){
-    selectedOptionIndex = index
-    InitCurrentOptionName();
-    initOptionNumSelect();
-    menuOption = menuData.Options[selectedOptionIndex]
-    InitItemTable(menuOption.Items);
-    InitSelectionTable(selectedOptionIndex, menuOption.Selections);
-}
-
-function initShopName(){
-    document.getElementById('shopNameInput').value = menuData.Shop.Name;   
-}
-
-function initOptionButton(){
-    var optionTable = document.getElementById('optionTable');
-    optionTable.innerHTML=""
-    
-    var optionButtonTr = document.createElement('tr');
-    optionTable.appendChild(optionButtonTr)    
-
-    var optionRmButtonTr = document.createElement('tr');
-    optionTable.appendChild(optionRmButtonTr);
-        
-    for (let index = 0;menuData.Options && index < menuData.Options.length;index++){
-        let menuOption = menuData.Options[index];
-
-        var newOptionButtonTd = document.createElement('td');
-        optionButtonTr.appendChild(newOptionButtonTd);
-
-        var newRmButtonTd = document.createElement('td');
-        optionRmButtonTr.appendChild(newRmButtonTd);
-        
-        // add button
-        var newButton = document.createElement('button');
-        newOptionButtonTd.appendChild(newButton);
-
-        var id= 'none';
-        if (menuOption.Option){            
-            // add remove option button to td
-            var newRmButton = document.createElement('button');
-            newRmButton.innerHTML = "-";
-            newRmButton.addEventListener('click',function(){
-                removeOptionClick(index);
-            });
-            newRmButtonTd.appendChild(newRmButton)
-
-            id = index;
-        }
-        newButton.Name = id + "OptionButton";
-        newButton.innerHTML = menuOption.Name;
-        newButton.addEventListener('click',function(){
-            changeOption(index);
-        });
-    }
-    
-    // add option button
-    var addOptionTd = document.createElement('td');
-    optionButtonTr.appendChild(addOptionTd);
-    var addOptionButton = document.createElement('button');
-    addOptionButton.id = "addOptionButton";
-    addOptionButton.innerHTML = "+";
-    addOptionButton.onclick =newOptionButtonClick;
-    addOptionTd.appendChild(addOptionButton);
-
-    var tdForAddOption = document.createElement('td');
-    optionRmButtonTr.appendChild(tdForAddOption);
-}
-
-function removeOptionClick(index){
-    var menuOption = menuData.Options[index]
-    var optionID = menuOption.Option.ID
-    DeleteOption(optionID,function(data){
-        if (data){
-            alert("Delete Option Success")
-            init()
-        }        
-    })
-}
-
-function CreateOptionNumSelect(){
-    var optionSelectTd = document.getElementById('optionSelectTd');
-    var a = document.createElement('a');
-    a.innerHTML = "必選數量";
-    optionSelectTd.appendChild(a);
-
-
-    var select = document.createElement('select');
-    select.innerHTML = "必選數量";
-    select.id = "selectNumSelect"
-    optionSelectTd.appendChild(select);
-
-    var option = document.createElement('option');
-    option.value = 0;
-    option.innerHTML = "0";
-    select.options.add(option);    
-
-    return select;
-}
-
-function initOptionNumSelect(){
-    // clear
-    var optionSelectTd = document.getElementById('optionSelectTd');
-    optionSelectTd.innerHTML = "";
-            
-    menuOption = menuData.Options[selectedOptionIndex];
-    menuSelections = menuOption.Selections;
-    if (!menuSelections){
-        return ;
-    }
-    
-    var select = CreateOptionNumSelect();
-    for (let i = 1; i <= menuSelections.length; i++){
-        let option = document.createElement('option');
-        option.value = i;
-        option.innerHTML = i;
-        select.options.add(option);
-    }    
 }
 
 function InitItemTable(items,addItemButtonClick){    
@@ -158,30 +39,6 @@ function InitItemTable(items,addItemButtonClick){
     }); 
 }
 
-function NewItemTableTr(item, deleteButtonClick){
-    var newTr = document.createElement('tr');
-
-    var newTd = document.createElement('td');
-    newTd.innerHTML = item.Options;
-    newTr.appendChild(newTd);
-
-    newTd = document.createElement('td');
-    newTd.innerHTML = item.Name;
-    newTr.appendChild(newTd);
-
-    newTd = document.createElement('td');
-    newTd.innerHTML = item.Price;
-    newTr.appendChild(newTd);
-
-    newTd = document.createElement('td');
-    var newButton = document.createElement('button');
-    newButton.innerHTML ="刪除";
-    newButton.onclick = deleteButtonClick;
-    newTr.appendChild(newButton);
-
-    return newTr;
-}
-
 function InitCurrentOptionName(name){
     var currentOptionNameA = document.getElementById('currentOptionNameA');
     var itemOptionNameTd = document.getElementById('newItemOptionNameTd');
@@ -200,26 +57,6 @@ function InitCurrentOptionName(name){
 
     currentOptionNameA.innerHTML = name;
     itemOptionNameTd.innerHTML = itemOptionName;
-}
-function newItemButtonClick(){
-    var itemNameInput = document.getElementById('newItemNameInput');
-    var name = itemNameInput.value;
-    if (!name){
-        alert("please input name!");
-        return ;
-    }
-
-    var itemPriceInput = document.getElementById('newItemPriceInput');
-    var price =parseInt(itemPriceInput.value);
-    if (isNaN(price)){
-        alert("please input integer price");
-        return;
-    }
-
-
-    AddItem(menuData.Shop.ID,name,price,function(data){
-        init();
-    });
 }
 
 function InitSelectionTable(selectedOptionIndex,selections, newSelectionButtonClick){
@@ -294,28 +131,135 @@ function InitSelectionTable(selectedOptionIndex,selections, newSelectionButtonCl
         }); 
 }
 
-function NewSelectionTableTr(selection, deleteButtonClick){
-    var newTr = document.createElement('tr');
-
-    var newTd = document.createElement('td');
-    newTd.innerHTML = selection.Name;
-    newTr.appendChild(newTd);
-
-    newTd = document.createElement('td');
-    var price = (selection.Price)? selection.Price : 0;
-    newTd.innerHTML = price;
-    newTr.appendChild(newTd);
-
-    var newButton = document.createElement('button');
-    newButton.innerHTML ="刪除";
-    if (deleteButtonClick === undefined){
-        newButton.onclick = this.deleteButtonClick;    
-    }else{
-        newButton.onclick = deleteButtonClick;
+function initOptionNumSelect(){
+    // clear
+    var optionSelectTd = document.getElementById('optionSelectTd');
+    optionSelectTd.innerHTML = "";
+            
+    menuOption = menuData.Options[selectedOptionIndex];
+    menuSelections = menuOption.Selections;
+    if (!menuSelections){
+        return ;
     }
-    newTr.appendChild(newButton);
+    
+    var select = CreateOptionNumSelect();
+    for (let i = 1; i <= menuSelections.length; i++){
+        let option = document.createElement('option');
+        option.value = i;
+        option.innerHTML = i;
+        select.options.add(option);
+    }    
+}
 
-    return newTr;
+function initShopName(){
+    document.getElementById('shopNameInput').value = menuData.Shop.Name;   
+}
+
+function initOptionButton(){
+    var optionTable = document.getElementById('optionTable');
+    optionTable.innerHTML=""
+    
+    var optionButtonTr = document.createElement('tr');
+    optionTable.appendChild(optionButtonTr)    
+
+    var optionRmButtonTr = document.createElement('tr');
+    optionTable.appendChild(optionRmButtonTr);
+        
+    for (let index = 0;menuData.Options && index < menuData.Options.length;index++){
+        let menuOption = menuData.Options[index];
+
+        var newOptionButtonTd = document.createElement('td');
+        optionButtonTr.appendChild(newOptionButtonTd);
+
+        var newRmButtonTd = document.createElement('td');
+        optionRmButtonTr.appendChild(newRmButtonTd);
+        
+        // add button
+        var newButton = document.createElement('button');
+        newOptionButtonTd.appendChild(newButton);
+
+        var id= 'none';
+        if (menuOption.Option){            
+            // add remove option button to td
+            var newRmButton = document.createElement('button');
+            newRmButton.innerHTML = "-";
+            newRmButton.addEventListener('click',function(){
+                removeOptionButtonClick(index);
+            });
+            newRmButtonTd.appendChild(newRmButton)
+
+            id = index;
+        }
+        newButton.Name = id + "OptionButton";
+        newButton.innerHTML = menuOption.Name;
+        newButton.addEventListener('click',function(){
+            changeOption(index);
+        });
+    }
+    
+    // add option button
+    var addOptionTd = document.createElement('td');
+    optionButtonTr.appendChild(addOptionTd);
+    var addOptionButton = document.createElement('button');
+    addOptionButton.id = "addOptionButton";
+    addOptionButton.innerHTML = "+";
+    addOptionButton.onclick =newOptionButtonClick;
+    addOptionTd.appendChild(addOptionButton);
+
+    var tdForAddOption = document.createElement('td');
+    optionRmButtonTr.appendChild(tdForAddOption);
+}
+
+function CreateOptionNumSelect(){
+    var optionSelectTd = document.getElementById('optionSelectTd');
+    var a = document.createElement('a');
+    a.innerHTML = "必選數量";
+    optionSelectTd.appendChild(a);
+
+
+    var select = document.createElement('select');
+    select.innerHTML = "必選數量";
+    select.id = "selectNumSelect"
+    optionSelectTd.appendChild(select);
+
+    var option = document.createElement('option');
+    option.value = 0;
+    option.innerHTML = "0";
+    select.options.add(option);    
+
+    return select;
+}
+
+function changeOption(index){
+    selectedOptionIndex = index
+    InitCurrentOptionName();
+    initOptionNumSelect();
+    menuOption = menuData.Options[selectedOptionIndex]
+    InitItemTable(menuOption.Items);
+    InitSelectionTable(selectedOptionIndex, menuOption.Selections);
+}
+
+// button click
+
+function newItemButtonClick(){
+    var itemNameInput = document.getElementById('newItemNameInput');
+    var name = itemNameInput.value;
+    if (!name){
+        alert("please input name!");
+        return ;
+    }
+
+    var itemPriceInput = document.getElementById('newItemPriceInput');
+    var price =parseInt(itemPriceInput.value);
+    if (isNaN(price)){
+        alert("please input integer price");
+        return;
+    }
+
+
+    AddItem(menuData.Shop.ID,name,price,function(data){
+        init();
+    });
 }
 
 function newSelectionButtonClick(){
@@ -344,6 +288,45 @@ function newOptionButtonClick(){
             type:'GET',
             url: url
         }).done(UpdatePage);
+}
+
+function removeShopButtonClick(){
+    shopID = menuData.Shop.ID;        
+    if (!shopID){
+        alert("delete err");
+        return 
+    }
+
+    DeleteShop(
+        shopID,// from tree node js
+        function(success){
+            if (!success){
+                alert('fail');
+                return ;
+            }
+
+            var url = '/manager/menutree';
+            $.ajax({
+                type:'GET',
+                url: url
+            }).done(UpdatePage);
+
+            toNewShop();
+            
+            alert('刪除商店成功!');
+        }	
+    );
+}
+
+function removeOptionButtonClick(index){
+    var menuOption = menuData.Options[index]
+    var optionID = menuOption.Option.ID
+    DeleteOption(optionID,function(data){
+        if (data){
+            alert("Delete Option Success")
+            init()
+        }        
+    })
 }
 
 function shopNameInputKeyPress(shopName){
@@ -386,31 +369,50 @@ function shopNameInputKeyPress(shopName){
     };
 }
 
-function removeShopButtonClick(){
-    shopID = menuData.Shop.ID;        
-    if (!shopID){
-        alert("delete err");
-        return 
-    }
+function NewItemTableTr(item, deleteButtonClick){
+    var newTr = document.createElement('tr');
 
-    DeleteShop(
-        shopID,// from tree node js
-        function(success){
-            if (!success){
-                alert('fail');
-                return ;
-            }
+    var newTd = document.createElement('td');
+    newTd.innerHTML = item.Options;
+    newTr.appendChild(newTd);
 
-            var url = '/manager/menutree';
-            $.ajax({
-                type:'GET',
-                url: url
-            }).done(UpdatePage);
+    newTd = document.createElement('td');
+    newTd.innerHTML = item.Name;
+    newTr.appendChild(newTd);
 
-            toNewShop();
-            
-            alert('刪除商店成功!');
-        }	
-    );
+    newTd = document.createElement('td');
+    newTd.innerHTML = item.Price;
+    newTr.appendChild(newTd);
+
+    newTd = document.createElement('td');
+    var newButton = document.createElement('button');
+    newButton.innerHTML ="刪除";
+    newButton.onclick = deleteButtonClick;
+    newTr.appendChild(newButton);
+
+    return newTr;
 }
 
+function NewSelectionTableTr(selection, deleteButtonClick){
+    var newTr = document.createElement('tr');
+
+    var newTd = document.createElement('td');
+    newTd.innerHTML = selection.Name;
+    newTr.appendChild(newTd);
+
+    newTd = document.createElement('td');
+    var price = (selection.Price)? selection.Price : 0;
+    newTd.innerHTML = price;
+    newTr.appendChild(newTd);
+
+    var newButton = document.createElement('button');
+    newButton.innerHTML ="刪除";
+    if (deleteButtonClick === undefined){
+        newButton.onclick = this.deleteButtonClick;    
+    }else{
+        newButton.onclick = deleteButtonClick;
+    }
+    newTr.appendChild(newButton);
+
+    return newTr;
+}

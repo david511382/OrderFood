@@ -51,8 +51,8 @@ func ManagerView(username string) (string, error) {
 		<script src="/src/js/ajax.js"></script>
         <script src="/src/js/post.js"></script>
         <script src="/src/js/websocket.js"></script>
-		<script src="/src/js/manager/home/main.js"></script>
-		<script src="%s"></script>
+		<script id="homeJS" src="/src/js/manager/home/main.js"></script>
+		<script id="%s" src="%s"></script>
     </body>
     </html>
     `
@@ -72,26 +72,10 @@ func ManagerView(username string) (string, error) {
 		"後台",
 		treeHTML,
 		viewSelect,
-		treeJS,
+		treeJS.Key,
+		treeJS.Data,
 	)
 	return html, nil
-}
-
-func viewSelect(shops []*models.Shop) string {
-	shopStr := ""
-	for _, shop := range shops {
-		shopStr += `<option value ="` + strconv.Itoa(int(shop.GetID())) + `">` + shop.GetName() + `</option>`
-	}
-
-	result := `
-	<select id="viewSelect" name="view">
-		%s
-	</select>`
-
-	result = fmt.Sprintf(result,
-		shopStr,
-	)
-	return result
 }
 
 func MenuTreeView() (*resp.UpdateView, error) {
@@ -111,42 +95,11 @@ func MenuTreeView() (*resp.UpdateView, error) {
 	})
 
 	updateView.Script = append(updateView.Script, &resp.KeyValue{
-		Key:  treeJS,
-		Data: treeJS,
+		Key:  treeJS.Key,
+		Data: treeJS.Data,
 	})
 
 	return updateView, nil
-}
-
-func menuTree(shops []*models.Shop) (html string, js string) {
-	linq.From(shops).OrderBy(func(m interface{}) interface{} {
-		shop := m.(*models.Shop)
-		return shop.GetID()
-	}).ToSlice(&shops)
-
-	shopStr := ""
-	for _, shop := range shops {
-		shopStr += `<li onclick="toManageShop(` + strconv.Itoa(int(shop.GetID())) + `)">` + shop.GetName() + "</li>"
-	}
-
-	html = `
-	<ul id="myUL">
-	<li onclick="toHome()">Home</li>
-	<li><a onclick="toNewShop()">New Shop</a>
-	  <ul>
-		%s
-	  </ul>
-	</li>
-	</ul>
-	`
-
-	html = fmt.Sprintf(html,
-		shopStr,
-	)
-
-	js = "/src/js/manager/treenode.js"
-
-	return
 }
 
 func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
@@ -219,7 +172,7 @@ func ManageMenuView(shopID int32) (*resp.UpdateView, error) {
 	})
 
 	updateView.Script = append(updateView.Script, &resp.KeyValue{
-		Key:  "src/js/manager/manageMenu/main.js",
+		Key:  "manageMenuJS",
 		Data: "src/js/manager/manageMenu/main.js",
 	})
 
@@ -246,7 +199,7 @@ func NewShopView() (*resp.UpdateView, error) {
 	})
 
 	updateView.Script = append(updateView.Script, &resp.KeyValue{
-		Key:  "src/js/manager/newshop/main.js",
+		Key:  "newshopJS",
 		Data: "src/js/manager/newshop/main.js",
 	})
 
@@ -283,7 +236,7 @@ func NewOptionView() (*resp.UpdateView, error) {
 	})
 
 	updateView.Script = append(updateView.Script, &resp.KeyValue{
-		Key:  "src/js/manager/newoption/main.js",
+		Key:  "newoptionJS",
 		Data: "src/js/manager/newoption/main.js",
 	})
 
@@ -296,4 +249,55 @@ func newUpdateView() *resp.UpdateView {
 		Script: make([]*resp.KeyValue, 0),
 		Css:    make([]*resp.KeyValue, 0),
 	}
+}
+
+func viewSelect(shops []*models.Shop) string {
+	shopStr := ""
+	for _, shop := range shops {
+		shopStr += `<option value ="` + strconv.Itoa(int(shop.GetID())) + `">` + shop.GetName() + `</option>`
+	}
+
+	result := `
+	<select id="viewSelect" name="view">
+		%s
+	</select>`
+
+	result = fmt.Sprintf(result,
+		shopStr,
+	)
+	return result
+}
+
+func menuTree(shops []*models.Shop) (html string, js *resp.KeyValue) {
+	linq.From(shops).OrderBy(func(m interface{}) interface{} {
+		shop := m.(*models.Shop)
+		return shop.GetID()
+	}).ToSlice(&shops)
+
+	shopStr := ""
+	for _, shop := range shops {
+		shopStr += `<li onclick="toManageShop(` + strconv.Itoa(int(shop.GetID())) + `)">` + shop.GetName() + "</li>"
+	}
+
+	html = `
+	<ul id="myUL">
+	<li onclick="toHome()">Home</li>
+	<li><a onclick="toNewShop()">New Shop</a>
+	  <ul>
+		%s
+	  </ul>
+	</li>
+	</ul>
+	`
+
+	html = fmt.Sprintf(html,
+		shopStr,
+	)
+
+	js = &resp.KeyValue{
+		Key:  "menuTreeJS",
+		Data: "/src/js/manager/treenode.js",
+	}
+
+	return
 }
